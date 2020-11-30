@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Cake.Coverlet</id>
+    <version>2.4.2</version>
+    <authors>Alex McAuliffe</authors>
+    <owners>Alex McAuliffe</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">licence.md</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <projectUrl>https://github.com/romanx/Cake.Coverlet</projectUrl>
+    <iconUrl>https://cdn.jsdelivr.net/gh/cake-contrib/graphics/png/cake-contrib-medium.png</iconUrl>
+    <description>Coverlet extensions for Cake Build</description>
+    <copyright>Copyright © 2018</copyright>
+    <tags>cake script build coverage coverlet cake-build</tags>
+    <repository type="git" url="https://github.com/romanx/Cake.Coverlet" commit="275d8f19ee6c17fb2b37c6619839a009a5fda868" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+</package>

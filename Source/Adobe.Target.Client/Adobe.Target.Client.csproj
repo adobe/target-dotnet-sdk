@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Build">
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package">
+    <Product>Adobe.Target.Client</Product>
+    <Description>Target .NET SDK</Description>
+    <PackageTags>adobe;target;target-sdk;target-client</PackageTags>
+  </PropertyGroup>
+
+</Project>
