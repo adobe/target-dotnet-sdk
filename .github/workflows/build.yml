@@ -45,6 +45,13 @@ jobs:
     - name: 'Dotnet Cake Test'
       run: dotnet cake --target=Test
       shell: pwsh
+    - name: 'Dotnet Cake Coverage'
+      run: dotnet cake --target=Coverage
+      shell: pwsh
+    - name: 'Upload Codecov Coverage'
+      uses: codecov/codecov-action@v1
+      with:
+        directory: ./Artefacts/coverage
     - name: 'Dotnet Cake Pack'
       run: dotnet cake --target=Pack
       shell: pwsh

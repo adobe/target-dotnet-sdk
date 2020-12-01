@@ -53,7 +53,7 @@ Each project can also be built individually directly through the CLI or your edi
 
 ## Releases
 
-We publish nuget packages to [nuget.org](https://www.nuget.org/packages/Adobe.Target.Client) for each release.
+We publish NuGet packages to [nuget.org](https://www.nuget.org/packages/Adobe.Target.Client) for each release.
 
 ### Using nugets built locally in your project
 
