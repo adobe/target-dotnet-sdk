@@ -1,6 +1,6 @@
-#module nuget:?package=Cake.DotNetTool.Module&version=0.4.0
-#tool dotnet:?package=coverlet.console&version=1.7.2
 #addin nuget:?package=Cake.Coverlet&version=2.5.1
+
+#tool nuget:?package=Cake.Coverlet&version=2.5.1
 
 var target = Argument("Target", "Default");
 var configuration =
@@ -49,7 +49,6 @@ Task("Test")
             project.ToString(),
             new DotNetCoreTestSettings()
             {
-                Collectors = new string[] { "XPlat Code Coverage" },
                 Configuration = configuration,
                 Loggers = new string[]
                 {
@@ -60,21 +59,14 @@ Task("Test")
                 NoRestore = true,
                 ResultsDirectory = artefactsDirectory,
                 ArgumentCustomization = x => x.Append("--blame"),
+            },
+            new CoverletSettings
+            {
+                CollectCoverage = true,
+                CoverletOutputFormat = CoverletOutputFormat.opencover,
+                CoverletOutputDirectory = "./Artefacts/coverage",
+                CoverletOutputName = $"results-coverage"
             });
-    });
-
-Task("Coverage")
-    .Description("Generates test coverage.")
-    .DoesForEach(GetFiles("./Tests/**/*.csproj"), project =>
-    {
-    var coverletSettings = new CoverletSettings {
-        CollectCoverage = true,
-        CoverletOutputFormat = CoverletOutputFormat.opencover,
-        CoverletOutputDirectory = "./Artefacts/coverage",
-        CoverletOutputName = $"results-{DateTime.UtcNow:dd-MM-yyyy-HH-mm-ss-FFF}"
-    };
-      DotNetCoreBuild(project.FullPath, new DotNetCoreBuildSettings {Configuration = "Debug"});
-      Coverlet(project, coverletSettings);
     });
 
 Task("Pack")
