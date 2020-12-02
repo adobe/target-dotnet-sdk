@@ -354,4 +354,4 @@ MigrationBackup/
 .ionide/
 
 Artefacts/
-tools/*
+tools/

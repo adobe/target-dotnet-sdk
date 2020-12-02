@@ -16,6 +16,8 @@ The Adobe Target .Net SDK uses the [Target Delivery API] to retrieve and deliver
     - [Build](#build)
   - [Releases](#releases)
     - [Using nugets built locally in your project](#using-nugets-built-locally-in-your-project)
+    - [Contributing](#contributing)
+    - [Licensing](#licensing)
 
 ## Getting started
 
@@ -62,7 +64,14 @@ We publish NuGet packages to [nuget.org](https://www.nuget.org/packages/Adobe.Ta
 dotnet add package Adobe.Target.Client -s <RepoRoot>/Artefacts
 ```
 
+### Contributing
+
+Contributions are welcomed! Read the [Contributing Guide](./.github/CONTRIBUTING.md) for more information.
+
+### Licensing
+
+This project is licensed under the Apache V2 License. See [LICENSE](LICENSE) for more information.
+
 [back to top](#table-of-contents)
 
 [Target Delivery API]: https://developers.adobetarget.com/api/delivery-api/
-
