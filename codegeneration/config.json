@@ -1,0 +1,8 @@
+{
+    "licenseId": "Apache-2.0",
+    "netCoreProjectFile": true,
+    "nonPublicApi": false,
+    "packageName": "Adobe.Target.Delivery",
+    "targetFramework": "netcoreapp3.1",
+    "useOneOfDiscriminatorLookup": true
+}

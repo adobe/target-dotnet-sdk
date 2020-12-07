@@ -64,6 +64,14 @@ Task("Test")
             {
                 CollectCoverage = true,
                 CoverletOutputFormat = CoverletOutputFormat.opencover,
+                Include = new List<string> {
+                    "[Adobe.Target.Client.*]*"
+                },
+                Exclude = new List<string> {
+                    "[Adobe.Target.Client.Test.*]*",
+                    "[xunit*]*",
+                    "[Adobe.Target.Delivery.*]*"
+                },
                 CoverletOutputDirectory = "./Artefacts/coverage",
                 CoverletOutputName = $"results-coverage"
             });

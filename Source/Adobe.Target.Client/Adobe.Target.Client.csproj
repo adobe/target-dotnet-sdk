@@ -10,4 +10,8 @@
     <PackageTags>adobe;target;target-sdk;target-client</PackageTags>
   </PropertyGroup>
 
+  <ItemGroup Label="Project References">
+    <ProjectReference Include="..\Adobe.Target.Delivery\Adobe.Target.Delivery.csproj" />
+  </ItemGroup>
+
 </Project>
