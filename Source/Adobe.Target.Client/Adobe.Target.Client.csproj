@@ -11,7 +11,9 @@
   </PropertyGroup>
 
   <ItemGroup Label="Project References">
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <ProjectReference Include="..\Adobe.Target.Delivery\Adobe.Target.Delivery.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
   </ItemGroup>
 
 </Project>

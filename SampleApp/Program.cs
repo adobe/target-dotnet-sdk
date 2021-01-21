@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2020 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
@@ -8,33 +8,28 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-namespace Adobe.Target.Client
+namespace SampleApp
 {
-    using System;
+    using System.Threading.Tasks;
+    using Microsoft.Extensions.DependencyInjection;
+    using Adobe.Target.Client;
 
-    /// <summary>
-    /// The main TargetClient class
-    /// Contains methods for creating and using TargetClient SDK
-    /// </summary>
-    public class TargetClient : ITargetClient
+    internal class Program
     {
-        /// <summary>
-        /// Initializes an ITargetClient using provided config
-        /// </summary>
-        public void Initialize()
+        public static async Task Main(string[] args)
         {
-            Console.WriteLine("Initialized");
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+            var serviceProvider = services.BuildServiceProvider();
+
+            await serviceProvider.GetService<App>().RunAsync(args);
         }
 
-        /// <summary>
-        /// Test method
-        /// </summary>
-        /// <returns>
-        /// A test value
-        /// </returns>
-        public int TestMe()
+        private static void ConfigureServices(IServiceCollection services)
         {
-            return 1;
+            services.AddTargetLibrary();
+            services.AddLogging();
+            services.AddTransient<App>();
         }
     }
 }

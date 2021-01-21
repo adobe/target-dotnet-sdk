@@ -10,21 +10,15 @@
  */
 namespace Adobe.Target.Client
 {
-    using System;
-
     /// <summary>
-    /// The main TargetClient class
-    /// Contains methods for creating and using TargetClient SDK
+    /// Main ITargetClient service interface
     /// </summary>
-    public class TargetClient : ITargetClient
+    public interface ITargetClient
     {
         /// <summary>
         /// Initializes an ITargetClient using provided config
         /// </summary>
-        public void Initialize()
-        {
-            Console.WriteLine("Initialized");
-        }
+        void Initialize();
 
         /// <summary>
         /// Test method
@@ -32,9 +26,6 @@ namespace Adobe.Target.Client
         /// <returns>
         /// A test value
         /// </returns>
-        public int TestMe()
-        {
-            return 1;
-        }
+        int TestMe();
     }
 }
