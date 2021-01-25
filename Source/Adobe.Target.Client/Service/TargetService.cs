@@ -8,5 +8,22 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1629:DocumentationTextMustEndWithAPeriod", Justification = "Reviewed.")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed.")]
+namespace Adobe.Target.Client.Service
+{
+    /// <summary>
+    /// Target Service
+    /// </summary>
+    public class TargetService
+    {
+        private readonly ClientConfig clientConfig;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TargetService"/> class.
+        /// </summary>
+        /// <param name="clientConfig">Target Client Config <see cref="ClientConfig"/></param>
+        public TargetService(ClientConfig clientConfig)
+        {
+            this.clientConfig = clientConfig;
+        }
+    }
+}

@@ -28,13 +28,17 @@ namespace SampleApp
 
         public async Task RunAsync(string[] args)
         {
-            logger.LogInformation("Starting ...");
+            this.logger.LogInformation("Starting ...");
+
+            ClientConfig clientConfig = new ClientConfig.Builder("clientId", "orgId")
+                .SetServerDomain("mydomain")
+                .Build();
 
             Console.WriteLine("Target init");
-            targetClient.Initialize();
-            Console.WriteLine("Test: " + targetClient.TestMe());
+            this.targetClient.Initialize(clientConfig);
+            Console.WriteLine("Test: " + this.targetClient.TestMe());
 
-            logger.LogInformation("Done.");
+            this.logger.LogInformation("Done.");
 
             await Task.CompletedTask;
         }

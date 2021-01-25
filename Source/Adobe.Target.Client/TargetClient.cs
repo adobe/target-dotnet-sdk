@@ -11,6 +11,7 @@
 namespace Adobe.Target.Client
 {
     using System;
+    using Adobe.Target.Client.Service;
 
     /// <summary>
     /// The main TargetClient class
@@ -18,12 +19,16 @@ namespace Adobe.Target.Client
     /// </summary>
     public class TargetClient : ITargetClient
     {
+        private TargetService targetService;
+
         /// <summary>
-        /// Initializes an ITargetClient using provided config
+        /// Initializes an ITargetClient using provided Target configuration
         /// </summary>
-        public void Initialize()
+        /// <param name="clientConfig">Target <see cref="ClientConfig"/></param>
+        public void Initialize(ClientConfig clientConfig)
         {
-            Console.WriteLine("Initialized");
+            this.targetService = new TargetService(clientConfig);
+            Console.WriteLine("Initialized " + clientConfig.OrganizationId);
         }
 
         /// <summary>

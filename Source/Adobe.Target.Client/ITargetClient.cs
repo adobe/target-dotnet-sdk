@@ -16,9 +16,10 @@ namespace Adobe.Target.Client
     public interface ITargetClient
     {
         /// <summary>
-        /// Initializes an ITargetClient using provided config
+        /// Initializes an ITargetClient using provided Target configuration
         /// </summary>
-        void Initialize();
+        /// <param name="clientConfig">Target <see cref="ClientConfig"/></param>
+        void Initialize(ClientConfig clientConfig);
 
         /// <summary>
         /// Test method
