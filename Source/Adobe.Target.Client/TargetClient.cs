@@ -10,20 +10,99 @@
  */
 namespace Adobe.Target.Client
 {
+    using System;
+    using System.Threading.Tasks;
+    using Adobe.Target.Client.Model;
     using Adobe.Target.Client.Service;
+    using Adobe.Target.Delivery.Model;
 
     /// <summary>
     /// The main TargetClient class
     /// Contains methods for creating and using TargetClient SDK
     /// </summary>
-    public class TargetClient : ITargetClient
+    public sealed class TargetClient : ITargetClient
     {
         private TargetService targetService;
+        private DecisioningMethod defaultDecisioningMethod;
+        private string defaultPropertyToken;
 
-        /// <inheritdoc/>
-        public void Initialize(ClientConfig clientConfig)
+        /// <summary>
+        /// Creates a TargetClient using provided Target configuration
+        /// </summary>
+        /// <param name="clientConfig">Target Client configuration</param>
+        /// <returns>Created <see cref="TargetClient"/> instance</returns>
+        public static TargetClient Create(TargetClientConfig clientConfig)
+        {
+            var targetClient = new TargetClient();
+            targetClient.Initialize(clientConfig);
+
+            return targetClient;
+        }
+
+        /// <inheritdoc />
+        public void Initialize(TargetClientConfig clientConfig)
         {
             this.targetService = new TargetService(clientConfig);
+            this.defaultDecisioningMethod = clientConfig.DecisioningMethod;
+            this.defaultPropertyToken = clientConfig.DefaultPropertyToken;
+            Console.WriteLine("Initialized " + clientConfig.OrganizationId);
+        }
+
+        /// <inheritdoc/>
+        public TargetDeliveryResponse GetOffers(TargetDeliveryRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var decisioning = request.DecisioningMethod ?? this.defaultDecisioningMethod;
+            this.UpdatePropertyToken(request);
+
+            if (decisioning == DecisioningMethod.OnDevice || decisioning == DecisioningMethod.Hybrid)
+            {
+                throw new NotImplementedException();
+            }
+
+            return this.targetService.ExecuteRequest(request);
+        }
+
+        /// <inheritdoc/>
+        public Task<TargetDeliveryResponse> GetOffersAsync(TargetDeliveryRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var decisioning = request.DecisioningMethod ?? this.defaultDecisioningMethod;
+            this.UpdatePropertyToken(request);
+
+            if (decisioning == DecisioningMethod.OnDevice || decisioning == DecisioningMethod.Hybrid)
+            {
+                throw new NotImplementedException();
+            }
+
+            return this.targetService.ExecuteRequestAsync(request);
+        }
+
+        private void UpdatePropertyToken(TargetDeliveryRequest request)
+        {
+            var property = request.DeliveryRequest.Property;
+
+            if (string.IsNullOrEmpty(this.defaultPropertyToken) || property?.Token != null)
+            {
+                return;
+            }
+
+            if (property == null)
+            {
+                property = new Property(this.defaultPropertyToken);
+                request.DeliveryRequest.Property = property;
+                return;
+            }
+
+            property.Token = this.defaultPropertyToken;
         }
     }
 }

@@ -11,8 +11,12 @@
 namespace SampleApp
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Adobe.Target.Client;
+    using Adobe.Target.Client.Model;
+    using Adobe.Target.Client.Util;
+    using Adobe.Target.Delivery.Model;
     using Microsoft.Extensions.Logging;
 
     public class App
@@ -30,16 +34,36 @@ namespace SampleApp
         {
             this.logger.LogInformation("Starting ...");
 
-            ClientConfig clientConfig = new ClientConfig.Builder("clientId", "orgId")
-                .SetServerDomain("mydomain")
+            var targetClientConfig = new TargetClientConfig.Builder("adobetargetmobile", "B8A054D958807F770A495DD6@AdobeOrg")
                 .Build();
 
             Console.WriteLine("Target init");
-            this.targetClient.Initialize(clientConfig);
+            this.targetClient.Initialize(targetClientConfig);
 
-            this.logger.LogInformation("Done.");
+            var deliveryRequest = new TargetDeliveryRequest.Builder()
+                .SetSessionId(Guid.NewGuid().ToString())
+                .SetThirdPartyId("testThirdPartyId")
+                .SetContext(new Context(ChannelType.Web))
+                .SetExecute(new ExecuteRequest(null, new List<MboxRequest>
+                {
+                    new MboxRequest(index:1, name: "a1-serverside-ab")
+                }))
+                .Build();
+
+            var response = await this.targetClient.GetOffersAsync(deliveryRequest);
+
+            App.PrintResponse(response);
+
+            this.logger.LogInformation("Done");
 
             await Task.CompletedTask;
+        }
+
+        internal static void PrintResponse(TargetDeliveryResponse response)
+        {
+            Console.WriteLine(response.Response.ToJson());
+            Console.WriteLine("Mbox cookie: " + response.GetCookies()[TargetConstants.MboxCookieName].Value);
+            Console.WriteLine("Cluster cookie: " + response.GetCookies()[TargetConstants.ClusterCookieName].Value);
         }
     }
 }
