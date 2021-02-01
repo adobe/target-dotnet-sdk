@@ -79,10 +79,10 @@ Task("Test")
 
 Task("Pack")
     .Description("Creates NuGet packages and outputs them to the artefacts directory.")
-    .Does(() =>
+    .DoesForEach(GetFiles("./Source/**/*.csproj"), project =>
     {
         DotNetCorePack(
-            ".",
+            project.ToString(),
             new DotNetCorePackSettings()
             {
                 Configuration = configuration,

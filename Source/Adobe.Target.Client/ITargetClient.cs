@@ -10,20 +10,15 @@
  */
 namespace Adobe.Target.Client
 {
-    using Adobe.Target.Client.Service;
-
     /// <summary>
-    /// The main TargetClient class
-    /// Contains methods for creating and using TargetClient SDK
+    /// Main ITargetClient service interface
     /// </summary>
-    public class TargetClient : ITargetClient
+    public interface ITargetClient
     {
-        private TargetService targetService;
-
-        /// <inheritdoc/>
-        public void Initialize(ClientConfig clientConfig)
-        {
-            this.targetService = new TargetService(clientConfig);
-        }
+        /// <summary>
+        /// Initializes an ITargetClient using provided Target configuration
+        /// </summary>
+        /// <param name="clientConfig">Target Client config</param>
+        void Initialize(ClientConfig clientConfig);
     }
 }

@@ -10,20 +10,22 @@
  */
 namespace Adobe.Target.Client
 {
-    using Adobe.Target.Client.Service;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    /// The main TargetClient class
-    /// Contains methods for creating and using TargetClient SDK
+    /// Adobe Target Service collection extension
     /// </summary>
-    public class TargetClient : ITargetClient
+    public static class IServiceCollectionExtension
     {
-        private TargetService targetService;
-
-        /// <inheritdoc/>
-        public void Initialize(ClientConfig clientConfig)
+        /// <summary>
+        /// Adds Target library service
+        /// </summary>
+        /// <param name="services">Service collection</param>
+        /// <returns>Provided IServiceCollection with added Target library</returns>
+        public static IServiceCollection AddTargetLibrary(this IServiceCollection services)
         {
-            this.targetService = new TargetService(clientConfig);
+            services.AddSingleton<ITargetClient, TargetClient>();
+            return services;
         }
     }
 }

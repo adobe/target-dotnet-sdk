@@ -8,20 +8,22 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-namespace Adobe.Target.Client.Test
+namespace Adobe.Target.Client.Service
 {
-    using Adobe.Target.Client;
-    using Xunit;
-
-    public class TargetClient_TestMeShould
+    /// <summary>
+    /// Target Service
+    /// </summary>
+    public class TargetService
     {
-        [Fact]
-        public void TestMe_Return1()
-        {
-            var targetClient = new TargetClient();
-            int actual = targetClient.TestMe();
+        private readonly ClientConfig clientConfig;
 
-            Assert.Equal(1, actual);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TargetService"/> class.
+        /// </summary>
+        /// <param name="clientConfig">Target Client Config <see cref="ClientConfig"/></param>
+        public TargetService(ClientConfig clientConfig)
+        {
+            this.clientConfig = clientConfig;
         }
     }
 }

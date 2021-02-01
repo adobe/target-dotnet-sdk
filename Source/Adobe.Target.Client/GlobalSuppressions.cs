@@ -8,22 +8,5 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-namespace Adobe.Target.Client
-{
-    using Adobe.Target.Client.Service;
-
-    /// <summary>
-    /// The main TargetClient class
-    /// Contains methods for creating and using TargetClient SDK
-    /// </summary>
-    public class TargetClient : ITargetClient
-    {
-        private TargetService targetService;
-
-        /// <inheritdoc/>
-        public void Initialize(ClientConfig clientConfig)
-        {
-            this.targetService = new TargetService(clientConfig);
-        }
-    }
-}
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1629:DocumentationTextMustEndWithAPeriod", Justification = "Reviewed.")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed.")]
