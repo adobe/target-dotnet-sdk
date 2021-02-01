@@ -36,7 +36,6 @@ namespace SampleApp
 
             Console.WriteLine("Target init");
             this.targetClient.Initialize(clientConfig);
-            Console.WriteLine("Test: " + this.targetClient.TestMe());
 
             this.logger.LogInformation("Done.");
 

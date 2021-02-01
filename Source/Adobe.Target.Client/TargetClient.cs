@@ -10,7 +10,6 @@
  */
 namespace Adobe.Target.Client
 {
-    using System;
     using Adobe.Target.Client.Service;
 
     /// <summary>
@@ -21,25 +20,10 @@ namespace Adobe.Target.Client
     {
         private TargetService targetService;
 
-        /// <summary>
-        /// Initializes an ITargetClient using provided Target configuration
-        /// </summary>
-        /// <param name="clientConfig">Target <see cref="ClientConfig"/></param>
+        /// <inheritdoc/>
         public void Initialize(ClientConfig clientConfig)
         {
             this.targetService = new TargetService(clientConfig);
-            Console.WriteLine("Initialized " + clientConfig.OrganizationId);
-        }
-
-        /// <summary>
-        /// Test method
-        /// </summary>
-        /// <returns>
-        /// A test value
-        /// </returns>
-        public int TestMe()
-        {
-            return 1;
         }
     }
 }
