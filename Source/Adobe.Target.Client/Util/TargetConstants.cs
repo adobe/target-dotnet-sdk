@@ -21,12 +21,12 @@ namespace Adobe.Target.Client.Util
         public const string ClusterCookieName = "mboxEdgeCluster";
 
         /// <summary>
-        /// Cluster cookie name
+        /// SessionId cookie name
         /// </summary>
         public const string SessionIdCookieName = "session";
 
         /// <summary>
-        /// Cluster cookie name
+        /// DeviceId cookie name
         /// </summary>
         public const string DeviceIdCookieName = "PC";
     }
