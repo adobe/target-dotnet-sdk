@@ -21,8 +21,8 @@ namespace Adobe.Target.Client.Test
     {
         private const string DeliveryPathSuffix = "/rest/v1/delivery";
         private const string testClientId = "testClientId";
-        private const string testOrgId = "testClientId";
-        private const string testDomain = "testOrgId";
+        private const string testOrgId = "testOrgId";
+        private const string testDomain = "testDomain";
         private const string testPropertyToken = "testPropertyToken";
         private const int testTimeout = 20000;
 
@@ -44,7 +44,7 @@ namespace Adobe.Target.Client.Test
 
             Assert.Equal(testClientId, targetClientConfig.Client);
             Assert.Equal(testOrgId, targetClientConfig.OrganizationId);
-            Assert.Equal("https://" + testClientId + "." + testDomain + DeliveryPathSuffix, targetClientConfig.DefaultUrl);
+            Assert.Equal("https://" + testClientId + "." + testDomain, targetClientConfig.DefaultUrl);
             Assert.Equal(testPropertyToken, targetClientConfig.DefaultPropertyToken);
             Assert.Equal(testLogger, targetClientConfig.Logger);
             Assert.Equal(testTimeout, targetClientConfig.Timeout);
