@@ -10,11 +10,10 @@
  */
 namespace Adobe.Target.Client.Util
 {
-    internal static class Constants
+    internal static class Messages
     {
-        internal const string SdkNameHeader = "X-EXC-SDK";
-        internal const string SdkNameValue = "AdobeTargetNet";
-        internal const string SdkVersionHeader = "X-EXC-SDK-Version";
-        internal static readonly string SdkUserAgent = $"{SdkNameValue}/{TargetConstants.SdkVersion}";
+        internal const string ExecuteFieldsRequired = "Either PageLoad or Mboxes is required in Execute";
+        internal const string PrefetchFieldsRequired = "Either Views, PageLoad or Mboxes is required in Prefetch";
+        internal const string NotificationsRequired = "Notifications array is required in request";
     }
 }

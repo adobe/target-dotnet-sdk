@@ -10,7 +10,6 @@
  */
 namespace Adobe.Target.Client.Service
 {
-    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Threading.Tasks;
@@ -23,11 +22,11 @@ namespace Adobe.Target.Client.Service
     /// <summary>
     /// Target Service
     /// </summary>
-    public class TargetService
+    public sealed class TargetService
     {
         private readonly TargetClientConfig clientConfig;
-        private DeliveryApi deliveryApi;
-        private string stickyLocationHint;
+        private volatile DeliveryApi deliveryApi;
+        private volatile string stickyLocationHint;
         private volatile string stickyBaseUrl;
 
         /// <summary>

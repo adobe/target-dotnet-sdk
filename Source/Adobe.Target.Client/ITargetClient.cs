@@ -20,6 +20,7 @@ namespace Adobe.Target.Client
     {
         /// <summary>
         /// Initializes an ITargetClient using provided Target configuration
+        /// Call this after an ITargetClient has been injected via DI
         /// </summary>
         /// <param name="clientConfig">Target Client configuration</param>
         void Initialize(TargetClientConfig clientConfig);
@@ -37,5 +38,19 @@ namespace Adobe.Target.Client
         /// <param name="request">Target Delivery Request</param>
         /// <returns>Target Delivery Response Task</returns>
         public Task<TargetDeliveryResponse> GetOffersAsync(TargetDeliveryRequest request);
+
+        /// <summary>
+        /// Send Notifications
+        /// </summary>
+        /// <param name="request">Target Delivery Request</param>
+        /// <returns>Target Delivery Response</returns>
+        public TargetDeliveryResponse SendNotifications(TargetDeliveryRequest request);
+
+        /// <summary>
+        /// Get Offers Async
+        /// </summary>
+        /// <param name="request">Target Delivery Request</param>
+        /// <returns>Target Delivery Response Task</returns>
+        public Task<TargetDeliveryResponse> SendNotificationsAsync(TargetDeliveryRequest request);
     }
 }

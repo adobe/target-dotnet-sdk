@@ -1,3 +1,14 @@
+/*
+ * Copyright 2020 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+#nullable enable
 namespace Adobe.Target.Client.Util
 {
     using System;
@@ -29,13 +40,11 @@ namespace Adobe.Target.Client.Util
                 return new Dictionary<string, string>();
             }
 
-            var nowInSeconds = (int)(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000);
-
             return targetCookie.Split(CookieValueSeparator)
                 .TakeWhile(cookie => !string.IsNullOrEmpty(cookie))
                 .Select(DeserializeInternalCookie)
-                .Where(internalCookie => internalCookie != null && internalCookie.MaxAge > nowInSeconds)
-                .ToDictionary(internalCookie => internalCookie.Name, internalCookie => internalCookie.Value);
+                .Where(internalCookie => internalCookie != null && internalCookie.MaxAge > GetNowInSeconds())
+                .ToDictionary(internalCookie => internalCookie!.Name, internalCookie => internalCookie!.Value);
         }
 
         /// <summary>
@@ -43,7 +52,7 @@ namespace Adobe.Target.Client.Util
         /// </summary>
         /// <param name="tntId">Tnt Id</param>
         /// <returns>Location hint</returns>
-        internal static string LocationHintFromTntId(string tntId)
+        internal static string? LocationHintFromTntId(string tntId)
         {
             var parts = tntId.Split('.');
             if (parts.Length != 2)
@@ -55,9 +64,9 @@ namespace Adobe.Target.Client.Util
             return nodeDetails.Length != 2 ? null : nodeDetails[0];
         }
 
-        internal static TargetCookie CreateTargetCookie(string sessionId, string deviceId)
+        internal static TargetCookie? CreateTargetCookie(string sessionId, string deviceId)
         {
-            var nowInSeconds = (int)(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000);
+            var nowInSeconds = GetNowInSeconds();
             var targetCookieValue = new StringBuilder();
             long maxAge = 0;
             maxAge = CreateSessionId(sessionId, nowInSeconds, targetCookieValue, maxAge);
@@ -67,7 +76,7 @@ namespace Adobe.Target.Client.Util
             return string.IsNullOrEmpty(cookieValue) ? null : new TargetCookie(TargetConstants.MboxCookieName, cookieValue, (int)(maxAge / 1000));
         }
 
-        internal static TargetCookie CreateClusterCookie(string tntId)
+        internal static TargetCookie? CreateClusterCookie(string tntId)
         {
             if (tntId == null)
             {
@@ -81,10 +90,14 @@ namespace Adobe.Target.Client.Util
                 return null;
             }
 
-            var nowInSeconds = (int)(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000);
-            long maxAge = nowInSeconds + ClusterLocationHintMaxAge;
+            long maxAge = GetNowInSeconds() + ClusterLocationHintMaxAge;
 
             return new TargetCookie(TargetConstants.ClusterCookieName, locationHint, (int)(maxAge / 1000));
+        }
+
+        private static int GetNowInSeconds()
+        {
+            return (int)(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000);
         }
 
         private static long CreateDeviceId(string deviceId, int nowInSeconds, StringBuilder targetCookieValue, long maxAge)
@@ -125,7 +138,7 @@ namespace Adobe.Target.Client.Util
                 .Append(CookieValueSeparator);
         }
 
-        private static TargetCookie DeserializeInternalCookie(string cookie)
+        private static TargetCookie? DeserializeInternalCookie(string cookie)
         {
             var cookieTokens = cookie.Split(InternalCookieSerializationSeparator);
             if (cookieTokens.Length != 3)

@@ -19,7 +19,6 @@ namespace Adobe.Target.Client.Test
 
     public class ClientConfigBuildShould
     {
-        private const string DeliveryPathSuffix = "/rest/v1/delivery";
         private const string testClientId = "testClientId";
         private const string testOrgId = "testOrgId";
         private const string testDomain = "testDomain";

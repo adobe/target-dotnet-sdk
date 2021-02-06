@@ -41,7 +41,6 @@ namespace SampleApp
             this.targetClient.Initialize(targetClientConfig);
 
             var deliveryRequest = new TargetDeliveryRequest.Builder()
-                .SetSessionId(Guid.NewGuid().ToString())
                 .SetThirdPartyId("testThirdPartyId")
                 .SetContext(new Context(ChannelType.Web))
                 .SetExecute(new ExecuteRequest(null, new List<MboxRequest>
@@ -53,6 +52,20 @@ namespace SampleApp
             var response = await this.targetClient.GetOffersAsync(deliveryRequest);
 
             App.PrintResponse(response);
+
+            var notificationRequest = new TargetDeliveryRequest.Builder()
+                .SetSessionId(response.Request.SessionId)
+                .SetTntId(response.Response?.Id?.TntId)
+                .SetThirdPartyId("testThirdPartyId")
+                .SetContext(new Context(ChannelType.Web))
+                .SetNotifications(new List<Notification>()
+                {
+                    { new(id:"notificationId1", type: MetricType.Display, timestamp: DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
+                        tokens: new List<string>())}
+                })
+                .Build();
+
+            App.PrintResponse(await this.targetClient.SendNotificationsAsync(notificationRequest));
 
             this.logger.LogInformation("Done");
 

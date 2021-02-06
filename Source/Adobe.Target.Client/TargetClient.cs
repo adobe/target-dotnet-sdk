@@ -11,9 +11,11 @@
 namespace Adobe.Target.Client
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
     using Adobe.Target.Client.Model;
     using Adobe.Target.Client.Service;
+    using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
 
     /// <summary>
@@ -51,10 +53,7 @@ namespace Adobe.Target.Client
         /// <inheritdoc/>
         public TargetDeliveryResponse GetOffers(TargetDeliveryRequest request)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
+            ValidateGetOffers(request);
 
             var decisioning = request.DecisioningMethod ?? this.defaultDecisioningMethod;
             this.UpdatePropertyToken(request);
@@ -70,10 +69,7 @@ namespace Adobe.Target.Client
         /// <inheritdoc/>
         public Task<TargetDeliveryResponse> GetOffersAsync(TargetDeliveryRequest request)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
+            ValidateGetOffers(request);
 
             var decisioning = request.DecisioningMethod ?? this.defaultDecisioningMethod;
             this.UpdatePropertyToken(request);
@@ -84,6 +80,56 @@ namespace Adobe.Target.Client
             }
 
             return this.targetService.ExecuteRequestAsync(request);
+        }
+
+        /// <inheritdoc />
+        public TargetDeliveryResponse SendNotifications(TargetDeliveryRequest request)
+        {
+            ValidateSendNotifications(request);
+            return this.targetService.ExecuteRequest(request);
+        }
+
+        /// <inheritdoc />
+        public Task<TargetDeliveryResponse> SendNotificationsAsync(TargetDeliveryRequest request)
+        {
+            ValidateSendNotifications(request);
+            return this.targetService.ExecuteRequestAsync(request);
+        }
+
+        private static void ValidateGetOffers(TargetDeliveryRequest deliveryRequest)
+        {
+            var request = deliveryRequest?.DeliveryRequest;
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(deliveryRequest));
+            }
+
+            if (request.Execute != null && request.Execute.PageLoad == null &&
+                (request.Execute.Mboxes == null || request.Execute.Mboxes.Count == 0))
+            {
+                throw new ValidationException(Messages.ExecuteFieldsRequired);
+            }
+
+            if (request.Prefetch != null && request.Prefetch.PageLoad == null &&
+                (request.Prefetch.Mboxes == null || request.Prefetch.Mboxes.Count == 0) &&
+                (request.Prefetch.Views == null || request.Prefetch.Views.Count == 0))
+            {
+                throw new ValidationException(Messages.PrefetchFieldsRequired);
+            }
+        }
+
+        private static void ValidateSendNotifications(TargetDeliveryRequest deliveryRequest)
+        {
+            var request = deliveryRequest?.DeliveryRequest;
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(deliveryRequest));
+            }
+
+            if (request.Notifications == null || request.Notifications.Count == 0)
+            {
+                throw new ValidationException(Messages.NotificationsRequired);
+            }
         }
 
         private void UpdatePropertyToken(TargetDeliveryRequest request)
