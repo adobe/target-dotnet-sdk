@@ -1,7 +1,18 @@
+/*
+ * Copyright 2020 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 namespace Adobe.Target.Client
 {
     using System;
     using System.Net;
+    using Adobe.Target.Delivery.Model;
     using Microsoft.Extensions.Logging;
     using Polly;
     using RestSharp;
@@ -9,30 +20,30 @@ namespace Adobe.Target.Client
     /// <summary>
     /// Target ClientConfig
     /// </summary>
-    public sealed class ClientConfig
+    public sealed class TargetClientConfig
     {
         private const string ClusterPrefix = "mboxedge";
-        private const string DeliveryPathSuffix = "/rest/v1/delivery";
 
-        private ClientConfig()
+        private TargetClientConfig()
         {
         }
 
-        private ClientConfig(Builder builder)
+        private TargetClientConfig(Builder builder)
         {
             ValidateConfig(builder);
             this.Client = builder.Client;
             this.OrganizationId = builder.OrganizationId;
             this.Protocol = builder.Secure ? "https://" : "http://";
             this.DefaultPropertyToken = builder.DefaultPropertyToken;
-            this.DefaultUrl = this.Protocol + this.Client + "." + builder.ServerDomain + DeliveryPathSuffix;
+            this.DefaultUrl = this.Protocol + this.Client + "." + builder.ServerDomain;
             this.ClusterUrlPrefix = this.Protocol + ClusterPrefix;
-            this.ClusterUrlSuffix = "." + builder.ServerDomain + DeliveryPathSuffix;
+            this.ClusterUrlSuffix = "." + builder.ServerDomain;
             this.Logger = builder.Logger;
             this.Timeout = builder.Timeout;
             this.Proxy = builder.Proxy;
             this.RetryPolicy = builder.RetryPolicy;
             this.AsyncRetryPolicy = builder.AsyncRetryPolicy;
+            this.DecisioningMethod = builder.DecisioningMethod;
         }
 
         /// <summary>
@@ -94,6 +105,11 @@ namespace Adobe.Target.Client
         /// Async Retry Policy
         /// </summary>
         public AsyncPolicy<IRestResponse> AsyncRetryPolicy { get; }
+
+        /// <summary>
+        /// Decisioning Method
+        /// </summary>
+        public DecisioningMethod DecisioningMethod { get; }
 
         private static void ValidateConfig(Builder builder)
         {
@@ -173,6 +189,11 @@ namespace Adobe.Target.Client
             /// Async Retry Policy
             /// </summary>
             internal AsyncPolicy<IRestResponse> AsyncRetryPolicy { get; private set; }
+
+            /// <summary>
+            /// Decisioning Method
+            /// </summary>
+            internal DecisioningMethod DecisioningMethod { get; private set; } = DecisioningMethod.ServerSide;
 
             /// <summary>
             /// Sets ServerDomain
@@ -263,12 +284,23 @@ namespace Adobe.Target.Client
             }
 
             /// <summary>
-            /// Builds the <see cref="ClientConfig"/>
+            /// Sets Decisioning Method
             /// </summary>
-            /// <returns>Built <see cref="ClientConfig"/></returns>
-            public ClientConfig Build()
+            /// <param name="decisioningMethod">Decisioning Method</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetDecisioningMethod(DecisioningMethod decisioningMethod)
             {
-                return new ClientConfig(this);
+                this.DecisioningMethod = decisioningMethod;
+                return this;
+            }
+
+            /// <summary>
+            /// Builds the <see cref="TargetClientConfig"/>
+            /// </summary>
+            /// <returns>Built <see cref="TargetClientConfig"/></returns>
+            public TargetClientConfig Build()
+            {
+                return new (this);
             }
         }
     }

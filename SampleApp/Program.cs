@@ -16,6 +16,8 @@ namespace SampleApp
 
     internal class Program
     {
+
+        #pragma warning disable VSTHRD200
         public static async Task Main(string[] args)
         {
             var services = new ServiceCollection();

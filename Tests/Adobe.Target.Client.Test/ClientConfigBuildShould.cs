@@ -12,41 +12,43 @@ namespace Adobe.Target.Client.Test
 {
     using System.Net;
     using Adobe.Target.Client;
+    using Delivery.Model;
     using Microsoft.Extensions.Logging;
     using Moq;
     using Xunit;
 
-    public class ClientConfig_BuildShould
+    public class ClientConfigBuildShould
     {
-        private const string DeliveryPathSuffix = "/rest/v1/delivery";
         private const string testClientId = "testClientId";
-        private const string testOrgId = "testClientId";
-        private const string testDomain = "testOrgId";
+        private const string testOrgId = "testOrgId";
+        private const string testDomain = "testDomain";
         private const string testPropertyToken = "testPropertyToken";
         private const int testTimeout = 20000;
 
         [Fact]
         public void Build_ReturnClientConfig()
         {
-            WebProxy testWebProxy = new Mock<WebProxy>().Object;
-            ILogger testLogger = new Mock<ILogger>().Object;
+            var testWebProxy = new Mock<WebProxy>().Object;
+            var testLogger = new Mock<ILogger>().Object;
 
-            ClientConfig clientConfig = new ClientConfig.Builder(testClientId, testOrgId)
+            var targetClientConfig = new TargetClientConfig.Builder(testClientId, testOrgId)
                 .SetServerDomain(testDomain)
                 .SetDefaultPropertyToken(testPropertyToken)
                 .SetSecure(true)
                 .SetLogger(testLogger)
                 .SetTimeout(testTimeout)
                 .SetProxy(testWebProxy)
+                .SetDecisioningMethod(DecisioningMethod.OnDevice)
                 .Build();
 
-            Assert.Equal(testClientId, clientConfig.Client);
-            Assert.Equal(testOrgId, clientConfig.OrganizationId);
-            Assert.Equal("https://" + testClientId + "." + testDomain + DeliveryPathSuffix, clientConfig.DefaultUrl);
-            Assert.Equal(testPropertyToken, clientConfig.DefaultPropertyToken);
-            Assert.Equal(testLogger, clientConfig.Logger);
-            Assert.Equal(testTimeout, clientConfig.Timeout);
-            Assert.Equal(testWebProxy, clientConfig.Proxy);
+            Assert.Equal(testClientId, targetClientConfig.Client);
+            Assert.Equal(testOrgId, targetClientConfig.OrganizationId);
+            Assert.Equal("https://" + testClientId + "." + testDomain, targetClientConfig.DefaultUrl);
+            Assert.Equal(testPropertyToken, targetClientConfig.DefaultPropertyToken);
+            Assert.Equal(testLogger, targetClientConfig.Logger);
+            Assert.Equal(testTimeout, targetClientConfig.Timeout);
+            Assert.Equal(testWebProxy, targetClientConfig.Proxy);
+            Assert.Equal(DecisioningMethod.OnDevice, targetClientConfig.DecisioningMethod);
         }
     }
 }

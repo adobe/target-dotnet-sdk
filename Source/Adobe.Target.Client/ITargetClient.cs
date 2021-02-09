@@ -10,15 +10,47 @@
  */
 namespace Adobe.Target.Client
 {
+    using System.Threading.Tasks;
+    using Adobe.Target.Client.Model;
+
     /// <summary>
-    /// Main ITargetClient service interface
+    /// Main ITargetClient interface
     /// </summary>
     public interface ITargetClient
     {
         /// <summary>
         /// Initializes an ITargetClient using provided Target configuration
+        /// Call this after an ITargetClient has been injected via DI
         /// </summary>
-        /// <param name="clientConfig">Target Client config</param>
-        void Initialize(ClientConfig clientConfig);
+        /// <param name="clientConfig">Target Client configuration</param>
+        void Initialize(TargetClientConfig clientConfig);
+
+        /// <summary>
+        /// Get Offers
+        /// </summary>
+        /// <param name="request">Target Delivery Request</param>
+        /// <returns>Target Delivery Response</returns>
+        public TargetDeliveryResponse GetOffers(TargetDeliveryRequest request);
+
+        /// <summary>
+        /// Get Offers Async
+        /// </summary>
+        /// <param name="request">Target Delivery Request</param>
+        /// <returns>Target Delivery Response Task</returns>
+        public Task<TargetDeliveryResponse> GetOffersAsync(TargetDeliveryRequest request);
+
+        /// <summary>
+        /// Send Notifications
+        /// </summary>
+        /// <param name="request">Target Delivery Request</param>
+        /// <returns>Target Delivery Response</returns>
+        public TargetDeliveryResponse SendNotifications(TargetDeliveryRequest request);
+
+        /// <summary>
+        /// Get Offers Async
+        /// </summary>
+        /// <param name="request">Target Delivery Request</param>
+        /// <returns>Target Delivery Response Task</returns>
+        public Task<TargetDeliveryResponse> SendNotificationsAsync(TargetDeliveryRequest request);
     }
 }
