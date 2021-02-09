@@ -39,5 +39,10 @@ namespace Adobe.Target.Client.Util
         /// DeviceId cookie name
         /// </summary>
         public const string DeviceIdCookieName = "PC";
+
+        internal const string SdkNameHeader = "X-EXC-SDK";
+        internal const string SdkNameValue = "AdobeTargetNet";
+        internal const string SdkVersionHeader = "X-EXC-SDK-Version";
+        internal static readonly string SdkUserAgent = $"{SdkNameValue}/{SdkVersion}";
     }
 }

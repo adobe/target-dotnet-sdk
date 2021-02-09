@@ -146,7 +146,11 @@ namespace Adobe.Target.Client.Util
                 return null;
             }
 
-            var maxAge = int.Parse(cookieTokens[2]);
+            if (!int.TryParse(cookieTokens[2], out var maxAge))
+            {
+                return null;
+            }
+
             return new TargetCookie(cookieTokens[0], cookieTokens[1], maxAge);
         }
     }

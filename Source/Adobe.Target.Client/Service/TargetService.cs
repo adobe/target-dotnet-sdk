@@ -72,8 +72,8 @@ namespace Adobe.Target.Client.Service
         {
             return new Dictionary<string, string>()
             {
-                { Constants.SdkNameHeader, Constants.SdkNameValue },
-                { Constants.SdkVersionHeader, TargetConstants.SdkVersion },
+                { TargetConstants.SdkNameHeader, TargetConstants.SdkNameValue },
+                { TargetConstants.SdkVersionHeader, TargetConstants.SdkVersion },
             };
         }
 
@@ -99,7 +99,7 @@ namespace Adobe.Target.Client.Service
             return new ()
             {
                 BasePath = basePath,
-                UserAgent = Constants.SdkUserAgent,
+                UserAgent = TargetConstants.SdkUserAgent,
                 DefaultHeaders = GetHeaders(),
                 Timeout = this.clientConfig.Timeout,
                 Proxy = this.clientConfig.Proxy,
