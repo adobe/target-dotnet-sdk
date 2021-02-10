@@ -3,6 +3,6 @@
     "netCoreProjectFile": true,
     "nonPublicApi": false,
     "packageName": "Adobe.Target.Delivery",
-    "targetFramework": "netcoreapp3.1",
+    "targetFramework": "netstandard2.0",
     "useOneOfDiscriminatorLookup": true
 }
