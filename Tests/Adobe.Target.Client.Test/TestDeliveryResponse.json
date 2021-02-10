@@ -1,0 +1,124 @@
+{
+  "status": 200,
+  "requestId": "c9a886a9-fe15-489b-8a87-f3c01e5aac4b",
+  "id": {
+    "tntId": "ca5394ce-03d5-49aa-96bf-0763e9da99de.37_0",
+    "thirdPartyId": "testThirdPartyId"
+  },
+  "client": "adobetargetmobile",
+  "edgeHost": "mboxedge37.tt.omtrdc.net",
+  "execute": {
+    "mboxes": [
+      {
+        "index": 1,
+        "name": "mbox1",
+        "options": [
+          {
+            "type": "json",
+            "content": {
+              "strVal1": "Welcome Message1",
+              "boolVal1": false,
+              "intVal1": 121,
+              "doubleVal1": 451.123,
+              "longVal1": 9223372036854775801
+            },
+            "responseTokens": {
+              "profile.memberlevel": "0",
+              "geo.city": "chisinau",
+              "activity.id": "180876",
+              "experience.name": "Experience A",
+              "geo.country": "moldova"
+            }
+          },
+          {
+            "type": "actions",
+            "content": "skipMe"
+          },
+          {
+            "type": "json",
+            "content": {
+              "strVal2": "Welcome Message2",
+              "boolVal2": true,
+              "intVal2": 122,
+              "doubleVal2": 452.123,
+              "longVal2": 9223372036854775802
+            }
+          },
+          {
+            "type": "json",
+            "content": {
+              "strVal1": "strValLast"
+            }
+          }
+        ]
+      }
+    ],
+    "pageLoad": {
+      "options": [
+        {
+          "type": "json",
+          "content": {
+            "executePageLoad": "executePageLoad"
+          }
+        }
+      ]
+    }
+  },
+  "prefetch": {
+    "pageLoad": {
+      "options": [
+        {
+          "type": "json",
+          "content": {
+            "prefetchPageLoad": "prefetchPageLoad"
+          }
+        }
+      ]
+    },
+    "mboxes": [
+      {
+        "index": 1,
+        "name": "mbox2",
+        "options": [
+          {
+            "type": "json",
+            "content": {
+              "strVal1": "Welcome Message1",
+              "boolVal1": false,
+              "intVal1": 121,
+              "doubleVal1": 451.123,
+              "longVal1": 9223372036854775801
+            },
+            "responseTokens": {
+              "profile.memberlevel": "0",
+              "geo.city": "chisinau",
+              "activity.id": "180876",
+              "experience.name": "Experience A",
+              "geo.country": "moldova"
+            }
+          },
+          {
+            "type": "actions",
+            "content": "skipMe"
+          },
+          {
+            "type": "json",
+            "content": {
+              "strVal2": "Welcome Message2",
+              "boolVal2": true,
+              "intVal2": 122,
+              "doubleVal2": 452.123,
+              "longVal2": 9223372036854775802
+            }
+          },
+          {
+            "type": "json",
+            "content": {
+              "strVal1": "strValLast"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

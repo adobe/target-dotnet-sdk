@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Adobe. All rights reserved.
+ * Copyright 2021 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -22,8 +22,8 @@ namespace Adobe.Target.Client.Util
     /// </summary>
     internal static class CookieUtils
     {
-        private const string CookieValueSeparator = "|";
-        private const string InternalCookieSerializationSeparator = "#";
+        private const char CookieValueSeparator = '|';
+        private const char InternalCookieSerializationSeparator = '#';
         private const int SessionIdCookieMaxAge = 1860;
         private const int DeviceIdCookieMaxAge = 63244800;
         private const int ClusterLocationHintMaxAge = 1860;
