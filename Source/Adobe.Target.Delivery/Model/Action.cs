@@ -118,22 +118,22 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Type == input.Type ||
                     (this.Type != null &&
                     this.Type.Equals(input.Type))
-                ) &&
+                ) && 
                 (
                     this.Selector == input.Selector ||
                     (this.Selector != null &&
                     this.Selector.Equals(input.Selector))
-                ) &&
+                ) && 
                 (
                     this.CssSelector == input.CssSelector ||
                     (this.CssSelector != null &&
                     this.CssSelector.Equals(input.CssSelector))
-                ) &&
+                ) && 
                 (
                     this.Content == input.Content ||
                     (this.Content != null &&

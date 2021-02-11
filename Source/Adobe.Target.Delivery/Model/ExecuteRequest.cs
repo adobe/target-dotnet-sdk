@@ -29,7 +29,7 @@ using OpenAPIDateConverter = Adobe.Target.Delivery.Client.OpenAPIDateConverter;
 namespace Adobe.Target.Delivery.Model
 {
     /// <summary>
-    /// The execute part of the request that will be evaluated on the server side immediately. Impressions will be incremented for the matching activities.
+    /// The execute part of the request that will be evaluated on the server side immediately. Impressions will be incremented for the matching activities. 
     /// </summary>
     [DataContract(Name = "ExecuteRequest")]
     public partial class ExecuteRequest : IEquatable<ExecuteRequest>, IValidatableObject
@@ -101,12 +101,12 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.PageLoad == input.PageLoad ||
                     (this.PageLoad != null &&
                     this.PageLoad.Equals(input.PageLoad))
-                ) &&
+                ) && 
                 (
                     this.Mboxes == input.Mboxes ||
                     this.Mboxes != null &&

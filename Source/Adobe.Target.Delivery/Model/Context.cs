@@ -130,7 +130,7 @@ namespace Adobe.Target.Delivery.Model
         public string UserAgent { get; set; }
 
         /// <summary>
-        /// In case beacon &#x3D; true is provided in the request, the server will return a 204 No Content response with no response body.
+        /// In case beacon &#x3D; true is provided in the request, the server will return a 204 No Content response with no response body. 
         /// </summary>
         /// <value>In case beacon &#x3D; true is provided in the request, the server will return a 204 No Content response with no response body. </value>
         [DataMember(Name = "beacon", EmitDefaultValue = false)]
@@ -188,55 +188,55 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Channel == input.Channel ||
                     this.Channel.Equals(input.Channel)
-                ) &&
+                ) && 
                 (
                     this.MobilePlatform == input.MobilePlatform ||
                     (this.MobilePlatform != null &&
                     this.MobilePlatform.Equals(input.MobilePlatform))
-                ) &&
+                ) && 
                 (
                     this.Application == input.Application ||
                     (this.Application != null &&
                     this.Application.Equals(input.Application))
-                ) &&
+                ) && 
                 (
                     this.Screen == input.Screen ||
                     (this.Screen != null &&
                     this.Screen.Equals(input.Screen))
-                ) &&
+                ) && 
                 (
                     this.Window == input.Window ||
                     (this.Window != null &&
                     this.Window.Equals(input.Window))
-                ) &&
+                ) && 
                 (
                     this.Browser == input.Browser ||
                     (this.Browser != null &&
                     this.Browser.Equals(input.Browser))
-                ) &&
+                ) && 
                 (
                     this.Address == input.Address ||
                     (this.Address != null &&
                     this.Address.Equals(input.Address))
-                ) &&
+                ) && 
                 (
                     this.Geo == input.Geo ||
                     (this.Geo != null &&
                     this.Geo.Equals(input.Geo))
-                ) &&
+                ) && 
                 (
                     this.TimeOffsetInMinutes == input.TimeOffsetInMinutes ||
                     this.TimeOffsetInMinutes.Equals(input.TimeOffsetInMinutes)
-                ) &&
+                ) && 
                 (
                     this.UserAgent == input.UserAgent ||
                     (this.UserAgent != null &&
                     this.UserAgent.Equals(input.UserAgent))
-                ) &&
+                ) && 
                 (
                     this.Beacon == input.Beacon ||
                     this.Beacon.Equals(input.Beacon)

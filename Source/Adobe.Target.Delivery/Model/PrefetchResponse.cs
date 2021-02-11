@@ -29,7 +29,7 @@ using OpenAPIDateConverter = Adobe.Target.Delivery.Client.OpenAPIDateConverter;
 namespace Adobe.Target.Delivery.Model
 {
     /// <summary>
-    /// The object that will return the prefetched content based on the request, active activites etc
+    /// The object that will return the prefetched content based on the request, active activites etc 
     /// </summary>
     [DataContract(Name = "PrefetchResponse")]
     public partial class PrefetchResponse : IEquatable<PrefetchResponse>, IValidatableObject
@@ -50,7 +50,7 @@ namespace Adobe.Target.Delivery.Model
         }
 
         /// <summary>
-        /// Contains all the views matching the request.
+        /// Contains all the views matching the request. 
         /// </summary>
         /// <value>Contains all the views matching the request. </value>
         [DataMember(Name = "views", EmitDefaultValue = false)]
@@ -63,14 +63,14 @@ namespace Adobe.Target.Delivery.Model
         public PageLoadResponse PageLoad { get; set; }
 
         /// <summary>
-        /// Prefetched mboxes, including content and notification tokens to be sent back when the mboxes are displayed.
+        /// Prefetched mboxes, including content and notification tokens to be sent back when the mboxes are displayed. 
         /// </summary>
         /// <value>Prefetched mboxes, including content and notification tokens to be sent back when the mboxes are displayed. </value>
         [DataMember(Name = "mboxes", EmitDefaultValue = false)]
         public List<PrefetchMboxResponse> Mboxes { get; set; }
 
         /// <summary>
-        /// The click track metrics that are not assigned to a view but are present in activites that have views, except in case the same activity is serving content for selectors both assinged to a view and selectors without any views, and having click track metrics that are not assotiated with any view within the activity, then:   * in case of a prefetch only request, these metrics (tokens) will be set in the prefetch response&#39;s metrics.   * in case of an execute only request, the metrics will be set in the page load response&#39;s metrics.   * in case of a request, with both, execute and prefetch, metrics will be set in the page load response&#39;s     metrics only.
+        /// The click track metrics that are not assigned to a view but are present in activites that have views, except in case the same activity is serving content for selectors both assinged to a view and selectors without any views, and having click track metrics that are not assotiated with any view within the activity, then:   * in case of a prefetch only request, these metrics (tokens) will be set in the prefetch response&#39;s metrics.   * in case of an execute only request, the metrics will be set in the page load response&#39;s metrics.   * in case of a request, with both, execute and prefetch, metrics will be set in the page load response&#39;s     metrics only. 
         /// </summary>
         /// <value>The click track metrics that are not assigned to a view but are present in activites that have views, except in case the same activity is serving content for selectors both assinged to a view and selectors without any views, and having click track metrics that are not assotiated with any view within the activity, then:   * in case of a prefetch only request, these metrics (tokens) will be set in the prefetch response&#39;s metrics.   * in case of an execute only request, the metrics will be set in the page load response&#39;s metrics.   * in case of a request, with both, execute and prefetch, metrics will be set in the page load response&#39;s     metrics only. </value>
         [DataMember(Name = "metrics", EmitDefaultValue = false)]
@@ -121,24 +121,24 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Views == input.Views ||
                     this.Views != null &&
                     input.Views != null &&
                     this.Views.SequenceEqual(input.Views)
-                ) &&
+                ) && 
                 (
                     this.PageLoad == input.PageLoad ||
                     (this.PageLoad != null &&
                     this.PageLoad.Equals(input.PageLoad))
-                ) &&
+                ) && 
                 (
                     this.Mboxes == input.Mboxes ||
                     this.Mboxes != null &&
                     input.Mboxes != null &&
                     this.Mboxes.SequenceEqual(input.Mboxes)
-                ) &&
+                ) && 
                 (
                     this.Metrics == input.Metrics ||
                     this.Metrics != null &&

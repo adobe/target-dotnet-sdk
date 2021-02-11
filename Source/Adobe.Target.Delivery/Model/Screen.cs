@@ -130,23 +130,23 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Width == input.Width ||
                     this.Width.Equals(input.Width)
-                ) &&
+                ) && 
                 (
                     this.Height == input.Height ||
                     this.Height.Equals(input.Height)
-                ) &&
+                ) && 
                 (
                     this.ColorDepth == input.ColorDepth ||
                     this.ColorDepth.Equals(input.ColorDepth)
-                ) &&
+                ) && 
                 (
                     this.PixelRatio == input.PixelRatio ||
                     this.PixelRatio.Equals(input.PixelRatio)
-                ) &&
+                ) && 
                 (
                     this.Orientation == input.Orientation ||
                     this.Orientation.Equals(input.Orientation)

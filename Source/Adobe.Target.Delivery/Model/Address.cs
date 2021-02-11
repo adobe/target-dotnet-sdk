@@ -102,12 +102,12 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Url == input.Url ||
                     (this.Url != null &&
                     this.Url.Equals(input.Url))
-                ) &&
+                ) && 
                 (
                     this.ReferringUrl == input.ReferringUrl ||
                     (this.ReferringUrl != null &&

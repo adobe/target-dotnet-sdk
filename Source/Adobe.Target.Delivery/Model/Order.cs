@@ -63,21 +63,21 @@ namespace Adobe.Target.Delivery.Model
         public string Id { get; set; }
 
         /// <summary>
-        /// Order Total. The amount of money in the current order.
+        /// Order Total. The amount of money in the current order. 
         /// </summary>
         /// <value>Order Total. The amount of money in the current order. </value>
         [DataMember(Name = "total", EmitDefaultValue = false)]
         public decimal Total { get; set; }
 
         /// <summary>
-        /// Order&#39;s product ids. Validation   * No blank values allowed.   * Each product Id max length 50.   * Product ids, separated by commas and concatenated, total length should not exceed 250.
+        /// Order&#39;s product ids. Validation   * No blank values allowed.   * Each product Id max length 50.   * Product ids, separated by commas and concatenated, total length should not exceed 250. 
         /// </summary>
         /// <value>Order&#39;s product ids. Validation   * No blank values allowed.   * Each product Id max length 50.   * Product ids, separated by commas and concatenated, total length should not exceed 250. </value>
         [DataMember(Name = "purchasedProductIds", EmitDefaultValue = false)]
         public List<string> PurchasedProductIds { get; set; }
 
         /// <summary>
-        /// Time in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals) format
+        /// Time in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals) format 
         /// </summary>
         /// <value>Time in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals) format </value>
         [DataMember(Name = "time", EmitDefaultValue = false)]
@@ -152,35 +152,35 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Id == input.Id ||
                     (this.Id != null &&
                     this.Id.Equals(input.Id))
-                ) &&
+                ) && 
                 (
                     this.Total == input.Total ||
                     this.Total.Equals(input.Total)
-                ) &&
+                ) && 
                 (
                     this.PurchasedProductIds == input.PurchasedProductIds ||
                     this.PurchasedProductIds != null &&
                     input.PurchasedProductIds != null &&
                     this.PurchasedProductIds.SequenceEqual(input.PurchasedProductIds)
-                ) &&
+                ) && 
                 (
                     this.Time == input.Time ||
                     (true &&
                     this.Time.Equals(input.Time))
-                ) &&
+                ) && 
                 (
                     this.ExperienceLocalId == input.ExperienceLocalId ||
                     this.ExperienceLocalId.Equals(input.ExperienceLocalId)
-                ) &&
+                ) && 
                 (
                     this.Duplicate == input.Duplicate ||
                     this.Duplicate.Equals(input.Duplicate)
-                ) &&
+                ) && 
                 (
                     this.Outlier == input.Outlier ||
                     this.Outlier.Equals(input.Outlier)

@@ -100,12 +100,12 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.AudienceManager == input.AudienceManager ||
                     (this.AudienceManager != null &&
                     this.AudienceManager.Equals(input.AudienceManager))
-                ) &&
+                ) && 
                 (
                     this.Analytics == input.Analytics ||
                     (this.Analytics != null &&

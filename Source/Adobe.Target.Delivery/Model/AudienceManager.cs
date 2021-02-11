@@ -46,14 +46,14 @@ namespace Adobe.Target.Delivery.Model
         }
 
         /// <summary>
-        /// DCS location hint. Used to determine which AAM DCS Endpoint to hit in order to retrieve the profile.
+        /// DCS location hint. Used to determine which AAM DCS Endpoint to hit in order to retrieve the profile. 
         /// </summary>
         /// <value>DCS location hint. Used to determine which AAM DCS Endpoint to hit in order to retrieve the profile. </value>
         [DataMember(Name = "locationHint", EmitDefaultValue = false)]
         public int LocationHint { get; set; }
 
         /// <summary>
-        /// AAM Blob. Used to send additional data to AAM. Validation   * Cannot be blank.
+        /// AAM Blob. Used to send additional data to AAM. Validation   * Cannot be blank. 
         /// </summary>
         /// <value>AAM Blob. Used to send additional data to AAM. Validation   * Cannot be blank. </value>
         [DataMember(Name = "blob", EmitDefaultValue = false)]
@@ -102,11 +102,11 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.LocationHint == input.LocationHint ||
                     this.LocationHint.Equals(input.LocationHint)
-                ) &&
+                ) && 
                 (
                     this.Blob == input.Blob ||
                     (this.Blob != null &&

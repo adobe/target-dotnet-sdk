@@ -32,9 +32,9 @@ namespace Adobe.Target.Delivery.Model
     /// Notification type. Currently only click and display are supported.
     /// </summary>
     /// <value>Notification type. Currently only click and display are supported.</value>
-
+    
     [JsonConverter(typeof(StringEnumConverter))]
-
+    
     public enum MetricType
     {
         /// <summary>

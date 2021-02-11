@@ -110,16 +110,16 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Type == input.Type ||
                     this.Type.Equals(input.Type)
-                ) &&
+                ) && 
                 (
                     this.Selector == input.Selector ||
                     (this.Selector != null &&
                     this.Selector.Equals(input.Selector))
-                ) &&
+                ) && 
                 (
                     this.EventToken == input.EventToken ||
                     (this.EventToken != null &&

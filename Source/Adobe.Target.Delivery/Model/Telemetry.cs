@@ -92,7 +92,7 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Entries == input.Entries ||
                     this.Entries != null &&

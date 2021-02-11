@@ -29,12 +29,12 @@ using OpenAPIDateConverter = Adobe.Target.Delivery.Client.OpenAPIDateConverter;
 namespace Adobe.Target.Delivery.Model
 {
     /// <summary>
-    /// Field is mandatory when Mobile Platform is specified. Only activities that match the specified deviceType or have the device type set to &#39;null&#39; will be evaluated. Ex if device type is &#39;phone&#39; in the delivery request, then only activities that have the device type equal to &#39;phone&#39; or set to &#39;null&#39; will be evaluated. An activity with &#39;null&#39; device type will be evaluated for requests for both, &#39;phone&#39; and &#39;tablet&#39;.
+    /// Field is mandatory when Mobile Platform is specified. Only activities that match the specified deviceType or have the device type set to &#39;null&#39; will be evaluated. Ex if device type is &#39;phone&#39; in the delivery request, then only activities that have the device type equal to &#39;phone&#39; or set to &#39;null&#39; will be evaluated. An activity with &#39;null&#39; device type will be evaluated for requests for both, &#39;phone&#39; and &#39;tablet&#39;. 
     /// </summary>
     /// <value>Field is mandatory when Mobile Platform is specified. Only activities that match the specified deviceType or have the device type set to &#39;null&#39; will be evaluated. Ex if device type is &#39;phone&#39; in the delivery request, then only activities that have the device type equal to &#39;phone&#39; or set to &#39;null&#39; will be evaluated. An activity with &#39;null&#39; device type will be evaluated for requests for both, &#39;phone&#39; and &#39;tablet&#39;. </value>
-
+    
     [JsonConverter(typeof(StringEnumConverter))]
-
+    
     public enum DeviceType
     {
         /// <summary>

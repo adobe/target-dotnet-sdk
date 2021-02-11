@@ -91,7 +91,7 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Payload == input.Payload ||
                     (this.Payload != null &&

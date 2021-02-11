@@ -63,14 +63,14 @@ namespace Adobe.Target.Delivery.Model
         }
 
         /// <summary>
-        /// Notification id will be returned in response and will indicate that the notification was processed successfully.
+        /// Notification id will be returned in response and will indicate that the notification was processed successfully. 
         /// </summary>
         /// <value>Notification id will be returned in response and will indicate that the notification was processed successfully. </value>
         [DataMember(Name = "id", EmitDefaultValue = false)]
         public string Id { get; set; }
 
         /// <summary>
-        /// Impression id is used to stitch (link) the current notification with a previous notification or execute request. In case they both of them match, the second and other subsequent requests will not generate a new impression to the activity, experience etc.
+        /// Impression id is used to stitch (link) the current notification with a previous notification or execute request. In case they both of them match, the second and other subsequent requests will not generate a new impression to the activity, experience etc. 
         /// </summary>
         /// <value>Impression id is used to stitch (link) the current notification with a previous notification or execute request. In case they both of them match, the second and other subsequent requests will not generate a new impression to the activity, experience etc. </value>
         [DataMember(Name = "impressionId", EmitDefaultValue = false)]
@@ -157,41 +157,41 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Id == input.Id ||
                     (this.Id != null &&
                     this.Id.Equals(input.Id))
-                ) &&
+                ) && 
                 (
                     this.ImpressionId == input.ImpressionId ||
                     (this.ImpressionId != null &&
                     this.ImpressionId.Equals(input.ImpressionId))
-                ) &&
+                ) && 
                 (
                     this.Type == input.Type ||
                     this.Type.Equals(input.Type)
-                ) &&
+                ) && 
                 (
                     this.Timestamp == input.Timestamp ||
                     this.Timestamp.Equals(input.Timestamp)
-                ) &&
+                ) && 
                 (
                     this.Tokens == input.Tokens ||
                     this.Tokens != null &&
                     input.Tokens != null &&
                     this.Tokens.SequenceEqual(input.Tokens)
-                ) &&
+                ) && 
                 (
                     this.Mbox == input.Mbox ||
                     (this.Mbox != null &&
                     this.Mbox.Equals(input.Mbox))
-                ) &&
+                ) && 
                 (
                     this.View == input.View ||
                     (this.View != null &&
                     this.View.Equals(input.View))
-                ) &&
+                ) && 
                 (
                     this.PageLoad == input.PageLoad ||
                     (this.PageLoad != null &&

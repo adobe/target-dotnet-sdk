@@ -29,7 +29,7 @@ using OpenAPIDateConverter = Adobe.Target.Delivery.Client.OpenAPIDateConverter;
 namespace Adobe.Target.Delivery.Model
 {
     /// <summary>
-    /// Page load response. Contains the result of prefetching or executing a request that will retrieve content for all selectors not associated with a particular view.
+    /// Page load response. Contains the result of prefetching or executing a request that will retrieve content for all selectors not associated with a particular view. 
     /// </summary>
     [DataContract(Name = "PageLoadResponse")]
     public partial class PageLoadResponse : IEquatable<PageLoadResponse>, IValidatableObject
@@ -52,14 +52,14 @@ namespace Adobe.Target.Delivery.Model
         }
 
         /// <summary>
-        /// List of options that should be applied. Note: options that have been set on selectors assigned to views will not be included here.
+        /// List of options that should be applied. Note: options that have been set on selectors assigned to views will not be included here. 
         /// </summary>
         /// <value>List of options that should be applied. Note: options that have been set on selectors assigned to views will not be included here. </value>
         [DataMember(Name = "options", EmitDefaultValue = false)]
         public List<Option> Options { get; set; }
 
         /// <summary>
-        /// Click track metrics. Note that click metrics for selectors set with views will not be included here. In case the same activity is serving content for selectors both assinged to a view and selectors without any views, and having click track metrics that are not assotiated with any view within the activity, then:   * in case of a prefetch only request, these metrics (tokens) will be set in the Prefetch response&#39;s metrics.   * in case of an execute only request, the metrics will be set in the page load response&#39;s metrics.   * in case of a request, with both, execute and prefetch, metrics will be set in the page load response&#39;s     metrics only.
+        /// Click track metrics. Note that click metrics for selectors set with views will not be included here. In case the same activity is serving content for selectors both assinged to a view and selectors without any views, and having click track metrics that are not assotiated with any view within the activity, then:   * in case of a prefetch only request, these metrics (tokens) will be set in the Prefetch response&#39;s metrics.   * in case of an execute only request, the metrics will be set in the page load response&#39;s metrics.   * in case of a request, with both, execute and prefetch, metrics will be set in the page load response&#39;s     metrics only. 
         /// </summary>
         /// <value>Click track metrics. Note that click metrics for selectors set with views will not be included here. In case the same activity is serving content for selectors both assinged to a view and selectors without any views, and having click track metrics that are not assotiated with any view within the activity, then:   * in case of a prefetch only request, these metrics (tokens) will be set in the Prefetch response&#39;s metrics.   * in case of an execute only request, the metrics will be set in the page load response&#39;s metrics.   * in case of a request, with both, execute and prefetch, metrics will be set in the page load response&#39;s     metrics only. </value>
         [DataMember(Name = "metrics", EmitDefaultValue = false)]
@@ -72,14 +72,14 @@ namespace Adobe.Target.Delivery.Model
         public AnalyticsResponse Analytics { get; set; }
 
         /// <summary>
-        /// View state token that must be sent back with display notification for the view. May only be present for prefetch requests.
+        /// View state token that must be sent back with display notification for the view. May only be present for prefetch requests. 
         /// </summary>
         /// <value>View state token that must be sent back with display notification for the view. May only be present for prefetch requests. </value>
         [DataMember(Name = "state", EmitDefaultValue = false)]
         public string State { get; set; }
 
         /// <summary>
-        /// The object containing all trace data for the request, only present if the trace token was provided in the request.
+        /// The object containing all trace data for the request, only present if the trace token was provided in the request. 
         /// </summary>
         /// <value>The object containing all trace data for the request, only present if the trace token was provided in the request. </value>
         [DataMember(Name = "trace", EmitDefaultValue = false)]
@@ -131,29 +131,29 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Options == input.Options ||
                     this.Options != null &&
                     input.Options != null &&
                     this.Options.SequenceEqual(input.Options)
-                ) &&
+                ) && 
                 (
                     this.Metrics == input.Metrics ||
                     this.Metrics != null &&
                     input.Metrics != null &&
                     this.Metrics.SequenceEqual(input.Metrics)
-                ) &&
+                ) && 
                 (
                     this.Analytics == input.Analytics ||
                     (this.Analytics != null &&
                     this.Analytics.Equals(input.Analytics))
-                ) &&
+                ) && 
                 (
                     this.State == input.State ||
                     (this.State != null &&
                     this.State.Equals(input.State))
-                ) &&
+                ) && 
                 (
                     this.Trace == input.Trace ||
                     this.Trace != null &&

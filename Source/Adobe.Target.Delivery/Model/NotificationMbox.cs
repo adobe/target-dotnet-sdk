@@ -46,7 +46,7 @@ namespace Adobe.Target.Delivery.Model
         }
 
         /// <summary>
-        /// Mbox name. Validation   * No blank values allowed.   * A &#39;-clicked&#39; suffix or the following names are not allowed for mbox names: ** display mboxes **, ** any mbox **, ** click from display mbox **   * Allowed chars: - &#39;-, ./&#x3D;&#x60;:;&amp;!@#$%^&amp;*()+|?~[]{}&#39;
+        /// Mbox name. Validation   * No blank values allowed.   * A &#39;-clicked&#39; suffix or the following names are not allowed for mbox names: ** display mboxes **, ** any mbox **, ** click from display mbox **   * Allowed chars: - &#39;-, ./&#x3D;&#x60;:;&amp;!@#$%^&amp;*()+|?~[]{}&#39; 
         /// </summary>
         /// <value>Mbox name. Validation   * No blank values allowed.   * A &#39;-clicked&#39; suffix or the following names are not allowed for mbox names: ** display mboxes **, ** any mbox **, ** click from display mbox **   * Allowed chars: - &#39;-, ./&#x3D;&#x60;:;&amp;!@#$%^&amp;*()+|?~[]{}&#39; </value>
         [DataMember(Name = "name", EmitDefaultValue = false)]
@@ -102,12 +102,12 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Name == input.Name ||
                     (this.Name != null &&
                     this.Name.Equals(input.Name))
-                ) &&
+                ) && 
                 (
                     this.State == input.State ||
                     (this.State != null &&

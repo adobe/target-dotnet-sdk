@@ -52,7 +52,7 @@ namespace Adobe.Target.Delivery.Model
         }
 
         /// <summary>
-        /// HTTP response codes: * &#x60;400&#x60; - Validation error (ex. invalid token) * &#x60;500&#x60; - An internal server error during processing
+        /// HTTP response codes: * &#x60;400&#x60; - Validation error (ex. invalid token) * &#x60;500&#x60; - An internal server error during processing 
         /// </summary>
         /// <value>HTTP response codes: * &#x60;400&#x60; - Validation error (ex. invalid token) * &#x60;500&#x60; - An internal server error during processing </value>
         [DataMember(Name = "status", IsRequired = true, EmitDefaultValue = false)]
@@ -108,11 +108,11 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Status == input.Status ||
                     this.Status.Equals(input.Status)
-                ) &&
+                ) && 
                 (
                     this.Message == input.Message ||
                     (this.Message != null &&

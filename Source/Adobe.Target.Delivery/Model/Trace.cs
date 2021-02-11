@@ -29,7 +29,7 @@ using OpenAPIDateConverter = Adobe.Target.Delivery.Client.OpenAPIDateConverter;
 namespace Adobe.Target.Delivery.Model
 {
     /// <summary>
-    /// Enables the trace for delivery API. At present it is not be possible to set the metrics and packages for the trace.
+    /// Enables the trace for delivery API. At present it is not be possible to set the metrics and packages for the trace. 
     /// </summary>
     [DataContract(Name = "Trace")]
     public partial class Trace : IEquatable<Trace>, IValidatableObject
@@ -58,7 +58,7 @@ namespace Adobe.Target.Delivery.Model
         public string AuthorizationToken { get; set; }
 
         /// <summary>
-        /// A String dictionary of client SDK usage tracking and internal diagnostics metadata.
+        /// A String dictionary of client SDK usage tracking and internal diagnostics metadata. 
         /// </summary>
         /// <value>A String dictionary of client SDK usage tracking and internal diagnostics metadata. </value>
         [DataMember(Name = "usage", EmitDefaultValue = false)]
@@ -107,12 +107,12 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.AuthorizationToken == input.AuthorizationToken ||
                     (this.AuthorizationToken != null &&
                     this.AuthorizationToken.Equals(input.AuthorizationToken))
-                ) &&
+                ) && 
                 (
                     this.Usage == input.Usage ||
                     this.Usage != null &&

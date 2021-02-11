@@ -29,7 +29,7 @@ using OpenAPIDateConverter = Adobe.Target.Delivery.Client.OpenAPIDateConverter;
 namespace Adobe.Target.Delivery.Model
 {
     /// <summary>
-    /// Analytics payload for client side integration that should be sent to Analytics after content has been applied.
+    /// Analytics payload for client side integration that should be sent to Analytics after content has been applied. 
     /// </summary>
     [DataContract(Name = "AnalyticsPayload")]
     public partial class AnalyticsPayload : IEquatable<AnalyticsPayload>, IValidatableObject
@@ -102,12 +102,12 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Pe == input.Pe ||
                     (this.Pe != null &&
                     this.Pe.Equals(input.Pe))
-                ) &&
+                ) && 
                 (
                     this.Tnta == input.Tnta ||
                     (this.Tnta != null &&

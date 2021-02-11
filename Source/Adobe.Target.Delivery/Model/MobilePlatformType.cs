@@ -32,9 +32,9 @@ namespace Adobe.Target.Delivery.Model
     /// Only activities with the specified mobile platform type will be evaluated.
     /// </summary>
     /// <value>Only activities with the specified mobile platform type will be evaluated.</value>
-
+    
     [JsonConverter(typeof(StringEnumConverter))]
-
+    
     public enum MobilePlatformType
     {
         /// <summary>

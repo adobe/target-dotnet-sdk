@@ -58,14 +58,14 @@ namespace Adobe.Target.Delivery.Model
         public Address Address { get; set; }
 
         /// <summary>
-        /// Parameters map. Same object is reused for mbox or profile parameters with slight validation differences. Following names are not allowed for mbox parameters: &#39;orderId&#39;, &#39;orderTotal&#39;, productPurchasedIds&#39; Validation (for both mbox and profile parameters):   * Max 50 parameters limit.   * Parameter name should not be blank.   * Parameter name max length 128.   * Parameter name should not start with &#39;profile.&#39;   * Parameter value length max 5000.
+        /// Parameters map. Same object is reused for mbox or profile parameters with slight validation differences. Following names are not allowed for mbox parameters: &#39;orderId&#39;, &#39;orderTotal&#39;, productPurchasedIds&#39; Validation (for both mbox and profile parameters):   * Max 50 parameters limit.   * Parameter name should not be blank.   * Parameter name max length 128.   * Parameter name should not start with &#39;profile.&#39;   * Parameter value length max 5000. 
         /// </summary>
         /// <value>Parameters map. Same object is reused for mbox or profile parameters with slight validation differences. Following names are not allowed for mbox parameters: &#39;orderId&#39;, &#39;orderTotal&#39;, productPurchasedIds&#39; Validation (for both mbox and profile parameters):   * Max 50 parameters limit.   * Parameter name should not be blank.   * Parameter name max length 128.   * Parameter name should not start with &#39;profile.&#39;   * Parameter value length max 5000. </value>
         [DataMember(Name = "parameters", EmitDefaultValue = false)]
         public Dictionary<string, string> Parameters { get; set; }
 
         /// <summary>
-        /// Parameters map. Same object is reused for mbox or profile parameters with slight validation differences. Following names are not allowed for mbox parameters: &#39;orderId&#39;, &#39;orderTotal&#39;, productPurchasedIds&#39; Validation (for both mbox and profile parameters):   * Max 50 parameters limit.   * Parameter name should not be blank.   * Parameter name max length 128.   * Parameter name should not start with &#39;profile.&#39;   * Parameter value length max 5000.
+        /// Parameters map. Same object is reused for mbox or profile parameters with slight validation differences. Following names are not allowed for mbox parameters: &#39;orderId&#39;, &#39;orderTotal&#39;, productPurchasedIds&#39; Validation (for both mbox and profile parameters):   * Max 50 parameters limit.   * Parameter name should not be blank.   * Parameter name max length 128.   * Parameter name should not start with &#39;profile.&#39;   * Parameter value length max 5000. 
         /// </summary>
         /// <value>Parameters map. Same object is reused for mbox or profile parameters with slight validation differences. Following names are not allowed for mbox parameters: &#39;orderId&#39;, &#39;orderTotal&#39;, productPurchasedIds&#39; Validation (for both mbox and profile parameters):   * Max 50 parameters limit.   * Parameter name should not be blank.   * Parameter name max length 128.   * Parameter name should not start with &#39;profile.&#39;   * Parameter value length max 5000. </value>
         [DataMember(Name = "profileParameters", EmitDefaultValue = false)]
@@ -129,29 +129,29 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Address == input.Address ||
                     (this.Address != null &&
                     this.Address.Equals(input.Address))
-                ) &&
+                ) && 
                 (
                     this.Parameters == input.Parameters ||
                     this.Parameters != null &&
                     input.Parameters != null &&
                     this.Parameters.SequenceEqual(input.Parameters)
-                ) &&
+                ) && 
                 (
                     this.ProfileParameters == input.ProfileParameters ||
                     this.ProfileParameters != null &&
                     input.ProfileParameters != null &&
                     this.ProfileParameters.SequenceEqual(input.ProfileParameters)
-                ) &&
+                ) && 
                 (
                     this.Order == input.Order ||
                     (this.Order != null &&
                     this.Order.Equals(input.Order))
-                ) &&
+                ) && 
                 (
                     this.Product == input.Product ||
                     (this.Product != null &&

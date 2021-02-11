@@ -62,7 +62,7 @@ namespace Adobe.Target.Delivery.Model
         public string Language { get; set; }
 
         /// <summary>
-        /// This is an optional field, added to help with device detection using device atlas
+        /// This is an optional field, added to help with device detection using device atlas 
         /// </summary>
         /// <value>This is an optional field, added to help with device detection using device atlas </value>
         [DataMember(Name = "webGLRenderer", EmitDefaultValue = false)]
@@ -112,17 +112,17 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Host == input.Host ||
                     (this.Host != null &&
                     this.Host.Equals(input.Host))
-                ) &&
+                ) && 
                 (
                     this.Language == input.Language ||
                     (this.Language != null &&
                     this.Language.Equals(input.Language))
-                ) &&
+                ) && 
                 (
                     this.WebGLRenderer == input.WebGLRenderer ||
                     (this.WebGLRenderer != null &&

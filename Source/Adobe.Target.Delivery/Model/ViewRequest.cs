@@ -62,14 +62,14 @@ namespace Adobe.Target.Delivery.Model
         public Address Address { get; set; }
 
         /// <summary>
-        /// Parameters map. Same object is reused for mbox or profile parameters with slight validation differences. Following names are not allowed for mbox parameters: &#39;orderId&#39;, &#39;orderTotal&#39;, productPurchasedIds&#39; Validation (for both mbox and profile parameters):   * Max 50 parameters limit.   * Parameter name should not be blank.   * Parameter name max length 128.   * Parameter name should not start with &#39;profile.&#39;   * Parameter value length max 5000.
+        /// Parameters map. Same object is reused for mbox or profile parameters with slight validation differences. Following names are not allowed for mbox parameters: &#39;orderId&#39;, &#39;orderTotal&#39;, productPurchasedIds&#39; Validation (for both mbox and profile parameters):   * Max 50 parameters limit.   * Parameter name should not be blank.   * Parameter name max length 128.   * Parameter name should not start with &#39;profile.&#39;   * Parameter value length max 5000. 
         /// </summary>
         /// <value>Parameters map. Same object is reused for mbox or profile parameters with slight validation differences. Following names are not allowed for mbox parameters: &#39;orderId&#39;, &#39;orderTotal&#39;, productPurchasedIds&#39; Validation (for both mbox and profile parameters):   * Max 50 parameters limit.   * Parameter name should not be blank.   * Parameter name max length 128.   * Parameter name should not start with &#39;profile.&#39;   * Parameter value length max 5000. </value>
         [DataMember(Name = "parameters", EmitDefaultValue = false)]
         public Dictionary<string, string> Parameters { get; set; }
 
         /// <summary>
-        /// Parameters map. Same object is reused for mbox or profile parameters with slight validation differences. Following names are not allowed for mbox parameters: &#39;orderId&#39;, &#39;orderTotal&#39;, productPurchasedIds&#39; Validation (for both mbox and profile parameters):   * Max 50 parameters limit.   * Parameter name should not be blank.   * Parameter name max length 128.   * Parameter name should not start with &#39;profile.&#39;   * Parameter value length max 5000.
+        /// Parameters map. Same object is reused for mbox or profile parameters with slight validation differences. Following names are not allowed for mbox parameters: &#39;orderId&#39;, &#39;orderTotal&#39;, productPurchasedIds&#39; Validation (for both mbox and profile parameters):   * Max 50 parameters limit.   * Parameter name should not be blank.   * Parameter name max length 128.   * Parameter name should not start with &#39;profile.&#39;   * Parameter value length max 5000. 
         /// </summary>
         /// <value>Parameters map. Same object is reused for mbox or profile parameters with slight validation differences. Following names are not allowed for mbox parameters: &#39;orderId&#39;, &#39;orderTotal&#39;, productPurchasedIds&#39; Validation (for both mbox and profile parameters):   * Max 50 parameters limit.   * Parameter name should not be blank.   * Parameter name max length 128.   * Parameter name should not start with &#39;profile.&#39;   * Parameter value length max 5000. </value>
         [DataMember(Name = "profileParameters", EmitDefaultValue = false)]
@@ -88,14 +88,14 @@ namespace Adobe.Target.Delivery.Model
         public Product Product { get; set; }
 
         /// <summary>
-        /// View Name - Unique view name. If the activity has a metric with a view with this name it will be matched, providing the Key matches as well or is null and view and metric targeting is matched.
+        /// View Name - Unique view name. If the activity has a metric with a view with this name it will be matched, providing the Key matches as well or is null and view and metric targeting is matched. 
         /// </summary>
         /// <value>View Name - Unique view name. If the activity has a metric with a view with this name it will be matched, providing the Key matches as well or is null and view and metric targeting is matched. </value>
         [DataMember(Name = "name", EmitDefaultValue = false)]
         public string Name { get; set; }
 
         /// <summary>
-        /// View Key - An optional encoded String identifier used in advanced scenarios, such as View fingerprinting. Same matching conditions as for View Name.
+        /// View Key - An optional encoded String identifier used in advanced scenarios, such as View fingerprinting. Same matching conditions as for View Name. 
         /// </summary>
         /// <value>View Key - An optional encoded String identifier used in advanced scenarios, such as View fingerprinting. Same matching conditions as for View Name. </value>
         [DataMember(Name = "key", EmitDefaultValue = false)]
@@ -149,39 +149,39 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Address == input.Address ||
                     (this.Address != null &&
                     this.Address.Equals(input.Address))
-                ) &&
+                ) && 
                 (
                     this.Parameters == input.Parameters ||
                     this.Parameters != null &&
                     input.Parameters != null &&
                     this.Parameters.SequenceEqual(input.Parameters)
-                ) &&
+                ) && 
                 (
                     this.ProfileParameters == input.ProfileParameters ||
                     this.ProfileParameters != null &&
                     input.ProfileParameters != null &&
                     this.ProfileParameters.SequenceEqual(input.ProfileParameters)
-                ) &&
+                ) && 
                 (
                     this.Order == input.Order ||
                     (this.Order != null &&
                     this.Order.Equals(input.Order))
-                ) &&
+                ) && 
                 (
                     this.Product == input.Product ||
                     (this.Product != null &&
                     this.Product.Equals(input.Product))
-                ) &&
+                ) && 
                 (
                     this.Name == input.Name ||
                     (this.Name != null &&
                     this.Name.Equals(input.Name))
-                ) &&
+                ) && 
                 (
                     this.Key == input.Key ||
                     (this.Key != null &&

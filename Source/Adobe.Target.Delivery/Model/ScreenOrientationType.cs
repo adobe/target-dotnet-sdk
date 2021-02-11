@@ -29,12 +29,12 @@ using OpenAPIDateConverter = Adobe.Target.Delivery.Client.OpenAPIDateConverter;
 namespace Adobe.Target.Delivery.Model
 {
     /// <summary>
-    /// If not specified, all activities with any screen orientation will be evaluated. If specified, only the activities with the matching screen orientation will evaluated.
+    /// If not specified, all activities with any screen orientation will be evaluated. If specified, only the activities with the matching screen orientation will evaluated. 
     /// </summary>
     /// <value>If not specified, all activities with any screen orientation will be evaluated. If specified, only the activities with the matching screen orientation will evaluated. </value>
-
+    
     [JsonConverter(typeof(StringEnumConverter))]
-
+    
     public enum ScreenOrientationType
     {
         /// <summary>

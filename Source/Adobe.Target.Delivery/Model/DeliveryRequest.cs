@@ -74,14 +74,14 @@ namespace Adobe.Target.Delivery.Model
         }
 
         /// <summary>
-        /// The request ID that will be returned in the response. In case it is not provided, an UUID is generated and returned automatically.
+        /// The request ID that will be returned in the response. In case it is not provided, an UUID is generated and returned automatically. 
         /// </summary>
         /// <value>The request ID that will be returned in the response. In case it is not provided, an UUID is generated and returned automatically. </value>
         [DataMember(Name = "requestId", EmitDefaultValue = false)]
         public string RequestId { get; set; }
 
         /// <summary>
-        /// If not present it will be automatically generated (UUID). If present,  second and subsequent requests with the same id will not increment impressions to activities/metrics. Similar to page id.
+        /// If not present it will be automatically generated (UUID). If present,  second and subsequent requests with the same id will not increment impressions to activities/metrics. Similar to page id. 
         /// </summary>
         /// <value>If not present it will be automatically generated (UUID). If present,  second and subsequent requests with the same id will not increment impressions to activities/metrics. Similar to page id. </value>
         [DataMember(Name = "impressionId", EmitDefaultValue = false)]
@@ -209,67 +209,67 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.RequestId == input.RequestId ||
                     (this.RequestId != null &&
                     this.RequestId.Equals(input.RequestId))
-                ) &&
+                ) && 
                 (
                     this.ImpressionId == input.ImpressionId ||
                     (this.ImpressionId != null &&
                     this.ImpressionId.Equals(input.ImpressionId))
-                ) &&
+                ) && 
                 (
                     this.Id == input.Id ||
                     (this.Id != null &&
                     this.Id.Equals(input.Id))
-                ) &&
+                ) && 
                 (
                     this.EnvironmentId == input.EnvironmentId ||
                     this.EnvironmentId.Equals(input.EnvironmentId)
-                ) &&
+                ) && 
                 (
                     this.Property == input.Property ||
                     (this.Property != null &&
                     this.Property.Equals(input.Property))
-                ) &&
+                ) && 
                 (
                     this.Trace == input.Trace ||
                     (this.Trace != null &&
                     this.Trace.Equals(input.Trace))
-                ) &&
+                ) && 
                 (
                     this.Context == input.Context ||
                     (this.Context != null &&
                     this.Context.Equals(input.Context))
-                ) &&
+                ) && 
                 (
                     this.ExperienceCloud == input.ExperienceCloud ||
                     (this.ExperienceCloud != null &&
                     this.ExperienceCloud.Equals(input.ExperienceCloud))
-                ) &&
+                ) && 
                 (
                     this.Execute == input.Execute ||
                     (this.Execute != null &&
                     this.Execute.Equals(input.Execute))
-                ) &&
+                ) && 
                 (
                     this.Prefetch == input.Prefetch ||
                     (this.Prefetch != null &&
                     this.Prefetch.Equals(input.Prefetch))
-                ) &&
+                ) && 
                 (
                     this.Telemetry == input.Telemetry ||
                     (this.Telemetry != null &&
                     this.Telemetry.Equals(input.Telemetry))
-                ) &&
+                ) && 
                 (
                     this.Notifications == input.Notifications ||
                     this.Notifications != null &&
                     input.Notifications != null &&
                     this.Notifications.SequenceEqual(input.Notifications)
-                ) &&
+                ) && 
                 (
                     this.QaMode == input.QaMode ||
                     (this.QaMode != null &&

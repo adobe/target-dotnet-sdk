@@ -29,12 +29,12 @@ using OpenAPIDateConverter = Adobe.Target.Delivery.Client.OpenAPIDateConverter;
 namespace Adobe.Target.Delivery.Model
 {
     /// <summary>
-    /// Specifies the channel for the request. Only activities with the matching channel will be evaluated.
+    /// Specifies the channel for the request. Only activities with the matching channel will be evaluated. 
     /// </summary>
     /// <value>Specifies the channel for the request. Only activities with the matching channel will be evaluated. </value>
-
+    
     [JsonConverter(typeof(StringEnumConverter))]
-
+    
     public enum ChannelType
     {
         /// <summary>

@@ -59,11 +59,6 @@ namespace Adobe.Target.Delivery.Client
                     string.Format("Error calling {0}: {1}", methodName, response.RawContent),
                     response.RawContent, response.Headers);
             }
-            if (status == 0)
-            {
-                return new ApiException(status,
-                    string.Format("Error calling {0}: {1}", methodName, response.ErrorText), response.ErrorText);
-            }
             return null;
         };
 

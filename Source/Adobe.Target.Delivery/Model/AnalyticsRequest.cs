@@ -55,7 +55,7 @@ namespace Adobe.Target.Delivery.Model
         }
 
         /// <summary>
-        /// Supplemental data id, used for **server side** integrations. Format &lt;16 hexadecimal digits&gt;-&lt;16 hexadecimal digits&gt;
+        /// Supplemental data id, used for **server side** integrations. Format &lt;16 hexadecimal digits&gt;-&lt;16 hexadecimal digits&gt; 
         /// </summary>
         /// <value>Supplemental data id, used for **server side** integrations. Format &lt;16 hexadecimal digits&gt;-&lt;16 hexadecimal digits&gt; </value>
         [DataMember(Name = "supplementalDataId", EmitDefaultValue = false)]
@@ -120,21 +120,21 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.SupplementalDataId == input.SupplementalDataId ||
                     (this.SupplementalDataId != null &&
                     this.SupplementalDataId.Equals(input.SupplementalDataId))
-                ) &&
+                ) && 
                 (
                     this.Logging == input.Logging ||
                     this.Logging.Equals(input.Logging)
-                ) &&
+                ) && 
                 (
                     this.TrackingServer == input.TrackingServer ||
                     (this.TrackingServer != null &&
                     this.TrackingServer.Equals(input.TrackingServer))
-                ) &&
+                ) && 
                 (
                     this.TrackingServerSecure == input.TrackingServerSecure ||
                     (this.TrackingServerSecure != null &&

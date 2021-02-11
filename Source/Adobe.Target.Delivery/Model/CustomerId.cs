@@ -116,17 +116,17 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Id == input.Id ||
                     (this.Id != null &&
                     this.Id.Equals(input.Id))
-                ) &&
+                ) && 
                 (
                     this.IntegrationCode == input.IntegrationCode ||
                     (this.IntegrationCode != null &&
                     this.IntegrationCode.Equals(input.IntegrationCode))
-                ) &&
+                ) && 
                 (
                     this.AuthenticatedState == input.AuthenticatedState ||
                     this.AuthenticatedState.Equals(input.AuthenticatedState)

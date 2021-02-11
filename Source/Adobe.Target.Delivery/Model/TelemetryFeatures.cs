@@ -90,7 +90,7 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.DecisioningMethod == input.DecisioningMethod ||
                     this.DecisioningMethod.Equals(input.DecisioningMethod)

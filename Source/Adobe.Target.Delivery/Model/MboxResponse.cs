@@ -29,7 +29,7 @@ using OpenAPIDateConverter = Adobe.Target.Delivery.Client.OpenAPIDateConverter;
 namespace Adobe.Target.Delivery.Model
 {
     /// <summary>
-    /// Mbox response object.
+    /// Mbox response object. 
     /// </summary>
     [DataContract(Name = "MboxResponse")]
     public partial class MboxResponse : IEquatable<MboxResponse>, IValidatableObject
@@ -54,21 +54,21 @@ namespace Adobe.Target.Delivery.Model
         }
 
         /// <summary>
-        /// Indicates that the response is for mbox with the same index, as was specified in the prefetch or execute request.
+        /// Indicates that the response is for mbox with the same index, as was specified in the prefetch or execute request. 
         /// </summary>
         /// <value>Indicates that the response is for mbox with the same index, as was specified in the prefetch or execute request. </value>
         [DataMember(Name = "index", EmitDefaultValue = false)]
         public int Index { get; set; }
 
         /// <summary>
-        /// The name of the mbox. Since the same mbox name can be specified multiple times in the request it should be used in conjunction with the index.
+        /// The name of the mbox. Since the same mbox name can be specified multiple times in the request it should be used in conjunction with the index. 
         /// </summary>
         /// <value>The name of the mbox. Since the same mbox name can be specified multiple times in the request it should be used in conjunction with the index. </value>
         [DataMember(Name = "name", EmitDefaultValue = false)]
         public string Name { get; set; }
 
         /// <summary>
-        /// The option that was matched for the current mbox. Cannot be an offer with templates or a visual offer.
+        /// The option that was matched for the current mbox. Cannot be an offer with templates or a visual offer. 
         /// </summary>
         /// <value>The option that was matched for the current mbox. Cannot be an offer with templates or a visual offer. </value>
         [DataMember(Name = "options", EmitDefaultValue = false)]
@@ -88,7 +88,7 @@ namespace Adobe.Target.Delivery.Model
         public AnalyticsResponse Analytics { get; set; }
 
         /// <summary>
-        /// The object containing all trace data for the request, only present if the trace token was provided in the request.
+        /// The object containing all trace data for the request, only present if the trace token was provided in the request. 
         /// </summary>
         /// <value>The object containing all trace data for the request, only present if the trace token was provided in the request. </value>
         [DataMember(Name = "trace", EmitDefaultValue = false)]
@@ -141,33 +141,33 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Index == input.Index ||
                     this.Index.Equals(input.Index)
-                ) &&
+                ) && 
                 (
                     this.Name == input.Name ||
                     (this.Name != null &&
                     this.Name.Equals(input.Name))
-                ) &&
+                ) && 
                 (
                     this.Options == input.Options ||
                     this.Options != null &&
                     input.Options != null &&
                     this.Options.SequenceEqual(input.Options)
-                ) &&
+                ) && 
                 (
                     this.Metrics == input.Metrics ||
                     this.Metrics != null &&
                     input.Metrics != null &&
                     this.Metrics.SequenceEqual(input.Metrics)
-                ) &&
+                ) && 
                 (
                     this.Analytics == input.Analytics ||
                     (this.Analytics != null &&
                     this.Analytics.Equals(input.Analytics))
-                ) &&
+                ) && 
                 (
                     this.Trace == input.Trace ||
                     this.Trace != null &&

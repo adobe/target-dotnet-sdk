@@ -29,12 +29,12 @@ using OpenAPIDateConverter = Adobe.Target.Delivery.Client.OpenAPIDateConverter;
 namespace Adobe.Target.Delivery.Model
 {
     /// <summary>
-    /// Indicates whether integraion will be done via client side (from the client) or server side (edge servers)
+    /// Indicates whether integraion will be done via client side (from the client) or server side (edge servers) 
     /// </summary>
     /// <value>Indicates whether integraion will be done via client side (from the client) or server side (edge servers) </value>
-
+    
     [JsonConverter(typeof(StringEnumConverter))]
-
+    
     public enum LoggingType
     {
         /// <summary>

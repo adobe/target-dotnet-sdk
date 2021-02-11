@@ -29,7 +29,7 @@ using OpenAPIDateConverter = Adobe.Target.Delivery.Client.OpenAPIDateConverter;
 namespace Adobe.Target.Delivery.Model
 {
     /// <summary>
-    /// Use this object to enable the QA mode in the request. Use the QA mode to test the look and feel of your site or application for various activities in isolation or together, with the possibilty to match or not match specified audiences, select a specific experience, count the impressions/visits for the reporting or not.
+    /// Use this object to enable the QA mode in the request. Use the QA mode to test the look and feel of your site or application for various activities in isolation or together, with the possibilty to match or not match specified audiences, select a specific experience, count the impressions/visits for the reporting or not. 
     /// </summary>
     [DataContract(Name = "QAMode")]
     public partial class QAMode : IEquatable<QAMode>, IValidatableObject
@@ -52,35 +52,35 @@ namespace Adobe.Target.Delivery.Model
         }
 
         /// <summary>
-        /// The encrypted token for the QA mode. It contains the list of the activity ids that are allowed to be executed in QA mode. Validation   * After decryption, the client code from the token should match the one from the request.   * After decryption, activities with the ids specified in the token should belong to the client.
+        /// The encrypted token for the QA mode. It contains the list of the activity ids that are allowed to be executed in QA mode. Validation   * After decryption, the client code from the token should match the one from the request.   * After decryption, activities with the ids specified in the token should belong to the client. 
         /// </summary>
         /// <value>The encrypted token for the QA mode. It contains the list of the activity ids that are allowed to be executed in QA mode. Validation   * After decryption, the client code from the token should match the one from the request.   * After decryption, activities with the ids specified in the token should belong to the client. </value>
         [DataMember(Name = "token", EmitDefaultValue = false)]
         public string Token { get; set; }
 
         /// <summary>
-        /// Specifies whether qa_mode campaigns should be executed in isolation or if they should be evaluated along other active campaigns for current environment.
+        /// Specifies whether qa_mode campaigns should be executed in isolation or if they should be evaluated along other active campaigns for current environment. 
         /// </summary>
         /// <value>Specifies whether qa_mode campaigns should be executed in isolation or if they should be evaluated along other active campaigns for current environment. </value>
         [DataMember(Name = "listedActivitiesOnly", EmitDefaultValue = false)]
         public bool ListedActivitiesOnly { get; set; }
 
         /// <summary>
-        /// List of audience ids that should be always evaluated as TRUE in the scope of the delivery request
+        /// List of audience ids that should be always evaluated as TRUE in the scope of the delivery request 
         /// </summary>
         /// <value>List of audience ids that should be always evaluated as TRUE in the scope of the delivery request </value>
         [DataMember(Name = "evaluateAsTrueAudienceIds", EmitDefaultValue = false)]
         public List<long> EvaluateAsTrueAudienceIds { get; set; }
 
         /// <summary>
-        /// List of audience ids that should be always evaluated as FALSE in the scope of the delivery request
+        /// List of audience ids that should be always evaluated as FALSE in the scope of the delivery request 
         /// </summary>
         /// <value>List of audience ids that should be always evaluated as FALSE in the scope of the delivery request </value>
         [DataMember(Name = "evaluateAsFalseAudienceIds", EmitDefaultValue = false)]
         public List<long> EvaluateAsFalseAudienceIds { get; set; }
 
         /// <summary>
-        /// List of preview indexes. If present, the list cannot be empty.
+        /// List of preview indexes. If present, the list cannot be empty. 
         /// </summary>
         /// <value>List of preview indexes. If present, the list cannot be empty. </value>
         [DataMember(Name = "previewIndexes", EmitDefaultValue = false)]
@@ -132,28 +132,28 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Token == input.Token ||
                     (this.Token != null &&
                     this.Token.Equals(input.Token))
-                ) &&
+                ) && 
                 (
                     this.ListedActivitiesOnly == input.ListedActivitiesOnly ||
                     this.ListedActivitiesOnly.Equals(input.ListedActivitiesOnly)
-                ) &&
+                ) && 
                 (
                     this.EvaluateAsTrueAudienceIds == input.EvaluateAsTrueAudienceIds ||
                     this.EvaluateAsTrueAudienceIds != null &&
                     input.EvaluateAsTrueAudienceIds != null &&
                     this.EvaluateAsTrueAudienceIds.SequenceEqual(input.EvaluateAsTrueAudienceIds)
-                ) &&
+                ) && 
                 (
                     this.EvaluateAsFalseAudienceIds == input.EvaluateAsFalseAudienceIds ||
                     this.EvaluateAsFalseAudienceIds != null &&
                     input.EvaluateAsFalseAudienceIds != null &&
                     this.EvaluateAsFalseAudienceIds.SequenceEqual(input.EvaluateAsFalseAudienceIds)
-                ) &&
+                ) && 
                 (
                     this.PreviewIndexes == input.PreviewIndexes ||
                     this.PreviewIndexes != null &&

@@ -121,20 +121,20 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.RequestId == input.RequestId ||
                     (this.RequestId != null &&
                     this.RequestId.Equals(input.RequestId))
-                ) &&
+                ) && 
                 (
                     this.Timestamp == input.Timestamp ||
                     this.Timestamp.Equals(input.Timestamp)
-                ) &&
+                ) && 
                 (
                     this.Execution == input.Execution ||
                     this.Execution.Equals(input.Execution)
-                ) &&
+                ) && 
                 (
                     this.Features == input.Features ||
                     (this.Features != null &&

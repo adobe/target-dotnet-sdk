@@ -65,14 +65,14 @@ namespace Adobe.Target.Delivery.Model
         }
 
         /// <summary>
-        /// Optional field, added to help with device detection using device atlas. This is equivalent of a.DeviceName field passed in from Mobile SDK
+        /// Optional field, added to help with device detection using device atlas. This is equivalent of a.DeviceName field passed in from Mobile SDK 
         /// </summary>
         /// <value>Optional field, added to help with device detection using device atlas. This is equivalent of a.DeviceName field passed in from Mobile SDK </value>
         [DataMember(Name = "deviceName", EmitDefaultValue = false)]
         public string DeviceName { get; set; }
 
         /// <summary>
-        /// If not specified - all activities with any platformVersion will be evaluated. If specified - only activities with the same platformVersion will be evaluated.
+        /// If not specified - all activities with any platformVersion will be evaluated. If specified - only activities with the same platformVersion will be evaluated. 
         /// </summary>
         /// <value>If not specified - all activities with any platformVersion will be evaluated. If specified - only activities with the same platformVersion will be evaluated. </value>
         [DataMember(Name = "version", EmitDefaultValue = false)]
@@ -123,20 +123,20 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.DeviceName == input.DeviceName ||
                     (this.DeviceName != null &&
                     this.DeviceName.Equals(input.DeviceName))
-                ) &&
+                ) && 
                 (
                     this.DeviceType == input.DeviceType ||
                     this.DeviceType.Equals(input.DeviceType)
-                ) &&
+                ) && 
                 (
                     this.PlatformType == input.PlatformType ||
                     this.PlatformType.Equals(input.PlatformType)
-                ) &&
+                ) && 
                 (
                     this.Version == input.Version ||
                     (this.Version != null &&

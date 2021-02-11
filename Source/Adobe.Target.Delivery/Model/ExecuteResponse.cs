@@ -101,12 +101,12 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.PageLoad == input.PageLoad ||
                     (this.PageLoad != null &&
                     this.PageLoad.Equals(input.PageLoad))
-                ) &&
+                ) && 
                 (
                     this.Mboxes == input.Mboxes ||
                     this.Mboxes != null &&

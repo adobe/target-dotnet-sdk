@@ -31,21 +31,6 @@ namespace SampleApp
 
             App.PrintResponse(response);
 
-            var cont = response.Response.Execute.Mboxes[0].Options[0].Content;
-            // var dict = (Dictionary<string, Object>) cont;
-            var dict = ((JObject)cont).ToObject<Dictionary<string, Object>>();
-            Console.WriteLine("ZZ: " + dict["title"] + " X " + dict["title"].GetType() + " Y " + (dict["title"] is string));
-
-            var dd = JsonConvert.DeserializeObject<Object>("{\"a\":1, \"b\":1.2, \"c\":false}");
-            var dict2 = ((JObject)dd).ToObject<Dictionary<string, Object>>();
-            Console.WriteLine("TT:" + dd.GetType() + " T " + dict2.GetType());
-            Console.WriteLine("ZZ: " + dict2["a"] + " X " + dict2["a"].GetType() + " Y " + (dict2["a"] is int));
-            Console.WriteLine("ZZ: " + dict2["b"] + " X " + dict2["b"].GetType() + " Y " + (dict2["b"] is double));
-            Console.WriteLine("ZZ: " + dict2["c"] + " X " + dict2["c"].GetType() + " Y " + (dict2["c"] is bool));
-
-            var z = TestConvert(dict2["a"]);
-            Console.WriteLine("VV: " + TestConvert(dict2["a"]) + TestConvert(dict2["b"]) + TestConvert(dict2["c"]));
-
             var notificationRequest = new TargetDeliveryRequest.Builder()
                 .SetSessionId(response.Request.SessionId)
                 .SetTntId(response.Response?.Id?.TntId)
@@ -59,18 +44,6 @@ namespace SampleApp
                 .Build();
 
             App.PrintResponse(targetClient.SendNotifications(notificationRequest));
-        }
-
-        private static int TestConvert(object value)
-        {
-            try
-            {
-                return (int)Convert.ChangeType(value, TypeCode.Int32);
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
         }
     }
 }

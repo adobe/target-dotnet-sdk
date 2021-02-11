@@ -29,7 +29,7 @@ using OpenAPIDateConverter = Adobe.Target.Delivery.Client.OpenAPIDateConverter;
 namespace Adobe.Target.Delivery.Model
 {
     /// <summary>
-    /// Specifies the at_property via the token field. It can be used to control the scope for the delivery.
+    /// Specifies the at_property via the token field. It can be used to control the scope for the delivery. 
     /// </summary>
     [DataContract(Name = "Property")]
     public partial class Property : IEquatable<Property>, IValidatableObject
@@ -50,7 +50,7 @@ namespace Adobe.Target.Delivery.Model
         }
 
         /// <summary>
-        /// The at_property token  Validation * Required if the property is specified.
+        /// The at_property token  Validation * Required if the property is specified. 
         /// </summary>
         /// <value>The at_property token  Validation * Required if the property is specified. </value>
         [DataMember(Name = "token", IsRequired = true, EmitDefaultValue = false)]
@@ -98,7 +98,7 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Token == input.Token ||
                     (this.Token != null &&

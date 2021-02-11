@@ -102,11 +102,11 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Width == input.Width ||
                     this.Width.Equals(input.Width)
-                ) &&
+                ) && 
                 (
                     this.Height == input.Height ||
                     this.Height.Equals(input.Height)

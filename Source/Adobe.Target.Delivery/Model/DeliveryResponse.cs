@@ -62,7 +62,7 @@ namespace Adobe.Target.Delivery.Model
         public int Status { get; set; }
 
         /// <summary>
-        /// ID of the processed request. If it&#39;s not sent in the request, a random ID (UUID) is generated and returned with the response.
+        /// ID of the processed request. If it&#39;s not sent in the request, a random ID (UUID) is generated and returned with the response. 
         /// </summary>
         /// <value>ID of the processed request. If it&#39;s not sent in the request, a random ID (UUID) is generated and returned with the response. </value>
         [DataMember(Name = "requestId", EmitDefaultValue = false)]
@@ -148,36 +148,36 @@ namespace Adobe.Target.Delivery.Model
             if (input == null)
                 return false;
 
-            return
+            return 
                 (
                     this.Status == input.Status ||
                     this.Status.Equals(input.Status)
-                ) &&
+                ) && 
                 (
                     this.RequestId == input.RequestId ||
                     (this.RequestId != null &&
                     this.RequestId.Equals(input.RequestId))
-                ) &&
+                ) && 
                 (
                     this.Id == input.Id ||
                     (this.Id != null &&
                     this.Id.Equals(input.Id))
-                ) &&
+                ) && 
                 (
                     this._Client == input._Client ||
                     (this._Client != null &&
                     this._Client.Equals(input._Client))
-                ) &&
+                ) && 
                 (
                     this.EdgeHost == input.EdgeHost ||
                     (this.EdgeHost != null &&
                     this.EdgeHost.Equals(input.EdgeHost))
-                ) &&
+                ) && 
                 (
                     this.Execute == input.Execute ||
                     (this.Execute != null &&
                     this.Execute.Equals(input.Execute))
-                ) &&
+                ) && 
                 (
                     this.Prefetch == input.Prefetch ||
                     (this.Prefetch != null &&
