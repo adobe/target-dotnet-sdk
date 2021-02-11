@@ -1,23 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  <PropertyGroup Label="Build">
     <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
-    <AssemblyName>Adobe.Target.Delivery</AssemblyName>
-    <PackageId>Adobe.Target.Delivery</PackageId>
-    <OutputType>Library</OutputType>
-    <Authors>OpenAPI</Authors>
-    <Company>OpenAPI</Company>
-    <AssemblyTitle>OpenAPI Library</AssemblyTitle>
-    <Description>A library generated from a OpenAPI doc</Description>
-    <Copyright>No Copyright</Copyright>
-    <RootNamespace>Adobe.Target.Delivery</RootNamespace>
-    <Version>1.0.0</Version>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Adobe.Target.Delivery.xml</DocumentationFile>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/GIT_USER_ID/GIT_REPO_ID.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>Minor update</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package">
+    <Product>Adobe.Target.Delivery</Product>
+    <Description>Target .NET Delivery API</Description>
+    <PackageTags>adobe;target;target-delivery;target-delivery-api</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
