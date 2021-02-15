@@ -13,6 +13,7 @@ namespace SampleApp
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using Adobe.Target.Client;
+    using Microsoft.Extensions.Logging;
 
     internal class Program
     {
@@ -30,7 +31,11 @@ namespace SampleApp
         private static void ConfigureServices(IServiceCollection services)
         {
             services.AddTargetLibrary();
-            services.AddLogging();
+            services.AddLogging(builder =>
+            {
+                builder.AddSimpleConsole(options => options.TimestampFormat = "hh:mm:ss ");
+                builder.SetMinimumLevel(LogLevel.Debug);
+            });
             services.AddTransient<App>();
         }
     }

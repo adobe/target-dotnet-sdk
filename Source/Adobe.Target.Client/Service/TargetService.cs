@@ -18,6 +18,7 @@ namespace Adobe.Target.Client.Service
     using Adobe.Target.Delivery.Api;
     using Adobe.Target.Delivery.Client;
     using Adobe.Target.Delivery.Model;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Target Service
@@ -51,6 +52,7 @@ namespace Adobe.Target.Client.Service
         {
             this.SetUrl(this.GetLocationHint(request));
             CommonUtils.AddTelemetry(request.DeliveryRequest, this.clientConfig);
+            this.LogRequest(request);
             var response = this.deliveryApi.Execute(this.clientConfig.OrganizationId, request.SessionId, request.DeliveryRequest);
 
             return this.GetTargetDeliveryResponse(request, response);
@@ -81,6 +83,7 @@ namespace Adobe.Target.Client.Service
         private TargetDeliveryResponse GetTargetDeliveryResponse(TargetDeliveryRequest request, DeliveryResponse response)
         {
             this.UpdateStickyLocationHint(response);
+            this.LogResponse(response);
             return new TargetDeliveryResponse(request, response, (HttpStatusCode)response.Status, null);
         }
 
@@ -132,6 +135,22 @@ namespace Adobe.Target.Client.Service
         private string GetLocationHint(TargetDeliveryRequest request)
         {
             return request.LocationHint ?? this.stickyLocationHint;
+        }
+
+        private void LogRequest(TargetDeliveryRequest request)
+        {
+            if (this.clientConfig.Logger != null && this.clientConfig.Logger.IsEnabled(LogLevel.Debug))
+            {
+                this.clientConfig.Logger.LogDebug(Messages.LogTargetServiceRequest, this.clientConfig.OrganizationId, request.SessionId, request.DeliveryRequest.ToJson());
+            }
+        }
+
+        private void LogResponse(DeliveryResponse response)
+        {
+            if (this.clientConfig.Logger != null && this.clientConfig.Logger.IsEnabled(LogLevel.Debug))
+            {
+                this.clientConfig.Logger.LogDebug(Messages.LogTargetServiceResponse, response.ToJson());
+            }
         }
     }
 }
