@@ -10,10 +10,12 @@
  */
 namespace Adobe.Target.Client.Model
 {
+    using System;
+
     /// <summary>
     /// TargetCookie
     /// </summary>
-    public sealed class TargetCookie
+    public sealed class TargetCookie : IEquatable<TargetCookie>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TargetCookie"/> class.
@@ -42,5 +44,36 @@ namespace Adobe.Target.Client.Model
         /// Max-Age
         /// </summary>
         public int MaxAge { get; private set; }
+
+        /// <inheritdoc />
+        public bool Equals(TargetCookie other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return this.Name == other.Name && this.Value == other.Value && this.MaxAge == other.MaxAge;
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj) => ReferenceEquals(this, obj) || (obj is TargetCookie other && this.Equals(other));
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = this.Name != null ? this.Name.GetHashCode() : 0;
+                hashCode = (hashCode * 397) ^ (this.Value != null ? this.Value.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ this.MaxAge;
+                return hashCode;
+            }
+        }
     }
 }
