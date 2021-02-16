@@ -66,6 +66,8 @@ namespace Adobe.Target.Client.Service
         public Task<TargetDeliveryResponse> ExecuteRequestAsync(TargetDeliveryRequest request)
         {
             this.SetUrl(this.GetLocationHint(request));
+            CommonUtils.AddTelemetry(request.DeliveryRequest, this.clientConfig);
+            this.LogRequest(request);
             var executeTask = this.deliveryApi.ExecuteAsync(this.clientConfig.OrganizationId, request.SessionId, request.DeliveryRequest);
 
             return executeTask.ContinueWith(task => this.GetTargetDeliveryResponse(request, task.Result), TaskScheduler.Default);

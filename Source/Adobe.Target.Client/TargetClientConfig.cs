@@ -12,6 +12,7 @@ namespace Adobe.Target.Client
 {
     using System;
     using System.Net;
+    using Adobe.Target.Client.Model.OnDevice;
     using Adobe.Target.Delivery.Model;
     using Microsoft.Extensions.Logging;
     using Polly;
@@ -45,6 +46,7 @@ namespace Adobe.Target.Client
             this.AsyncRetryPolicy = builder.AsyncRetryPolicy;
             this.DecisioningMethod = builder.DecisioningMethod;
             this.TelemetryEnabled = builder.TelemetryEnabled;
+            this.OnDeviceDecisioningHandler = builder.OnDeviceDecisioningHandler;
         }
 
         /// <summary>
@@ -116,6 +118,11 @@ namespace Adobe.Target.Client
         /// Telemetry
         /// </summary>
         public bool TelemetryEnabled { get; }
+
+        /// <summary>
+        /// OnDeviceDecisioning Event Handler
+        /// </summary>
+        public IOnDeviceDecisioningHandler OnDeviceDecisioningHandler { get; }
 
         private static void ValidateConfig(Builder builder)
         {
@@ -205,6 +212,11 @@ namespace Adobe.Target.Client
             /// Telemetry (enabled by default)
             /// </summary>
             internal bool TelemetryEnabled { get; private set; } = true;
+
+            /// <summary>
+            /// OnDeviceDecisioning Event Handler
+            /// </summary>
+            internal IOnDeviceDecisioningHandler OnDeviceDecisioningHandler { get; private set; }
 
             /// <summary>
             /// Sets ServerDomain
@@ -313,6 +325,17 @@ namespace Adobe.Target.Client
             public Builder SetTelemetryEnabled(bool telemetry)
             {
                 this.TelemetryEnabled = telemetry;
+                return this;
+            }
+
+            /// <summary>
+            /// Sets OnDeviceDecisioning Event Handler
+            /// </summary>
+            /// <param name="handler">OnDeviceDecisioning event handler</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetOnDeviceDecisioningHandler(IOnDeviceDecisioningHandler handler)
+            {
+                this.OnDeviceDecisioningHandler = handler;
                 return this;
             }
 
