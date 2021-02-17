@@ -8,13 +8,13 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-namespace Adobe.Target.Client.Util
+namespace Adobe.Target.Client.Extension
 {
     using System.Collections.Generic;
 
-    internal static class CollectionUtils
+    internal static class DictionaryExtension
     {
-        internal static TValue GetOrCreate<TKey, TValue>(IDictionary<TKey, TValue> dict, TKey key)
+        internal static TValue GetOrCreate<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key)
             where TValue : new()
         {
             if (dict.TryGetValue(key, out var val))
@@ -28,7 +28,8 @@ namespace Adobe.Target.Client.Util
             return val;
         }
 
-        internal static void AddAll<TKey, TValue>(IDictionary<TKey, TValue> to, IDictionary<TKey, TValue> from)
+        internal static void AddAll<TKey, TValue>(this IDictionary<TKey, TValue> to, IDictionary<TKey, TValue> from)
+            where TValue : new()
         {
             foreach (var entry in from)
             {

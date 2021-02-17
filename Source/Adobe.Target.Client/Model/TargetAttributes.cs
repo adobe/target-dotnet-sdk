@@ -13,7 +13,7 @@ namespace Adobe.Target.Client.Model
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Adobe.Target.Client.Util;
+    using Adobe.Target.Client.Extension;
     using Adobe.Target.Delivery.Model;
     using Newtonsoft.Json.Linq;
 
@@ -153,26 +153,26 @@ namespace Adobe.Target.Client.Model
                 return null;
             }
 
-            var result = new Dictionary<string, Dictionary<string, object>>();
             var prefetchResponse = deliveryResponse.Response.Prefetch;
             var executeResponse = deliveryResponse.Response.Execute;
+            var result = new Dictionary<string, Dictionary<string, object>>();
 
-            ProcessResponse(result, prefetchResponse?.PageLoad, prefetchResponse?.Mboxes);
-            ProcessResponse(result, executeResponse?.PageLoad, executeResponse?.Mboxes);
+            result = ProcessResponse(result, prefetchResponse?.PageLoad, prefetchResponse?.Mboxes);
+            result = ProcessResponse(result, executeResponse?.PageLoad, executeResponse?.Mboxes);
 
             return result.ToDictionary(pair => pair.Key, pair => (IReadOnlyDictionary<string, object>)pair.Value);
         }
 
-        private static void ProcessResponse(IDictionary<string, Dictionary<string, object>> accumulator, PageLoadResponse pageLoad, List<PrefetchMboxResponse> mboxes)
+        private static Dictionary<string, Dictionary<string, object>> ProcessResponse(Dictionary<string, Dictionary<string, object>> accumulator, PageLoadResponse pageLoad, List<PrefetchMboxResponse> mboxes)
         {
             if (pageLoad != null)
             {
-                AddOptions(accumulator, pageLoad.Options, GlobalMbox);
+                accumulator = AddOptions(accumulator, pageLoad.Options, GlobalMbox);
             }
 
             if (mboxes == null || mboxes.Count == 0)
             {
-                return;
+                return accumulator;
             }
 
             for (var i = mboxes.Count - 1; i >= 0; i--)
@@ -183,20 +183,22 @@ namespace Adobe.Target.Client.Model
                     continue;
                 }
 
-                AddOptions(accumulator, mbox.Options, mbox.Name);
+                accumulator = AddOptions(accumulator, mbox.Options, mbox.Name);
             }
+
+            return accumulator;
         }
 
-        private static void ProcessResponse(IDictionary<string, Dictionary<string, object>> accumulator, PageLoadResponse pageLoad, List<MboxResponse> mboxes)
+        private static Dictionary<string, Dictionary<string, object>> ProcessResponse(Dictionary<string, Dictionary<string, object>> accumulator, PageLoadResponse pageLoad, List<MboxResponse> mboxes)
         {
             if (pageLoad != null)
             {
-                AddOptions(accumulator, pageLoad.Options, GlobalMbox);
+                accumulator = AddOptions(accumulator, pageLoad.Options, GlobalMbox);
             }
 
             if (mboxes == null || mboxes.Count == 0)
             {
-                return;
+                return accumulator;
             }
 
             for (var i = mboxes.Count - 1; i >= 0; i--)
@@ -207,13 +209,15 @@ namespace Adobe.Target.Client.Model
                     continue;
                 }
 
-                AddOptions(accumulator, mbox.Options, mbox.Name);
+                accumulator = AddOptions(accumulator, mbox.Options, mbox.Name);
             }
+
+            return accumulator;
         }
 
-        private static void AddOptions(IDictionary<string, Dictionary<string, object>> accumulator, IReadOnlyList<Option> options, string mbox)
+        private static Dictionary<string, Dictionary<string, object>> AddOptions(Dictionary<string, Dictionary<string, object>> accumulator, IReadOnlyList<Option> options, string mbox)
         {
-            var mboxContent = CollectionUtils.GetOrCreate(accumulator, mbox);
+            var mboxContent = accumulator.GetOrCreate(mbox);
             for (var i = options.Count - 1; i >= 0; i--)
             {
                 var option = options[i];
@@ -228,8 +232,10 @@ namespace Adobe.Target.Client.Model
                     continue;
                 }
 
-                CollectionUtils.AddAll(mboxContent, contentDict);
+                mboxContent.AddAll(contentDict);
             }
+
+            return accumulator;
         }
     }
 }

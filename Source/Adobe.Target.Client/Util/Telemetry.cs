@@ -14,7 +14,7 @@ namespace Adobe.Target.Client.Util
     using System.Collections.Generic;
     using Adobe.Target.Delivery.Model;
 
-    internal static class CommonUtils
+    internal static class Telemetry
     {
         internal static void AddTelemetry(DeliveryRequest request, TargetClientConfig config, int execution = 0)
         {
@@ -23,7 +23,7 @@ namespace Adobe.Target.Client.Util
                 return;
             }
 
-            request.Telemetry ??= new Telemetry(new List<TelemetryEntry>());
+            request.Telemetry ??= new Delivery.Model.Telemetry(new List<TelemetryEntry>());
 
             var entry = new TelemetryEntry(
                 request.RequestId,

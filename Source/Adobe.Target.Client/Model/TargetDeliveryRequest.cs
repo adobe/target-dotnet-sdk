@@ -15,6 +15,7 @@ namespace Adobe.Target.Client.Model
     using System.Net;
     using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
+    using Telemetry = Adobe.Target.Delivery.Model.Telemetry;
 
     /// <summary>
     /// Target Delivery request
