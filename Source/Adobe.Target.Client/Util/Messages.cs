@@ -12,6 +12,7 @@ namespace Adobe.Target.Client.Util
 {
     internal static class Messages
     {
+        internal const string ClientNotInitialized = "Target Client not initialized";
         internal const string ExecuteFieldsRequired = "Either PageLoad or Mboxes is required in Execute";
         internal const string PrefetchFieldsRequired = "Either Views, PageLoad or Mboxes is required in Prefetch";
         internal const string NotificationsRequired = "Notifications array is required in request";
