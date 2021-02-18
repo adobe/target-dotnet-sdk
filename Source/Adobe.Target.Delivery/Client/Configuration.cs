@@ -113,7 +113,7 @@ namespace Adobe.Target.Delivery.Client
             {
                 {
                     new Dictionary<string, object> {
-                        {"url", "https://{clientCode}.tt.omtrdc.net/"},
+                        {"url", "https://{clientCode}.tt.omtrdc.net"},
                         {"description", "No description provided"},
                     }
                 }
