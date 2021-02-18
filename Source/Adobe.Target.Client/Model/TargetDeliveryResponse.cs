@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Adobe. All rights reserved.
+ * Copyright 2021 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -27,7 +27,7 @@ namespace Adobe.Target.Client.Model
         /// <param name="response">Response</param>
         /// <param name="status">Status</param>
         /// <param name="message">Message</param>
-        public TargetDeliveryResponse(TargetDeliveryRequest request, DeliveryResponse response, HttpStatusCode status, string message)
+        public TargetDeliveryResponse(TargetDeliveryRequest request, DeliveryResponse response, HttpStatusCode status, string message = "")
         {
             this.Request = request;
             this.Response = response;

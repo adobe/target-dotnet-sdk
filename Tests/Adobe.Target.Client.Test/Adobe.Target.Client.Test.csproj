@@ -8,4 +8,10 @@
     <ProjectReference Include="..\..\Source\Adobe.Target.Client\Adobe.Target.Client.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestDeliveryResponse.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

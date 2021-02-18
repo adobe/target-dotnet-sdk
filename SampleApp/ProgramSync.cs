@@ -5,6 +5,7 @@ namespace SampleApp
     using Adobe.Target.Client;
     using Adobe.Target.Client.Model;
     using Adobe.Target.Delivery.Model;
+    using Microsoft.Extensions.Logging;
 
     internal class ProgramSync
     {
@@ -12,7 +13,15 @@ namespace SampleApp
         {
             Console.WriteLine("Sync app");
 
+            using var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSimpleConsole(options => options.TimestampFormat = "hh:mm:ss ");
+                builder.SetMinimumLevel(LogLevel.Debug);
+            });
+            var logger = loggerFactory.CreateLogger<ProgramSync>();
+
             var targetClientConfig = new TargetClientConfig.Builder("adobetargetmobile", "B8A054D958807F770A495DD6@AdobeOrg")
+                .SetLogger(logger)
                 .Build();
             var targetClient = TargetClient.Create(targetClientConfig);
 
@@ -27,7 +36,7 @@ namespace SampleApp
 
             var response = targetClient.GetOffers(deliveryRequest);
 
-            App.PrintResponse(response);
+            App.PrintCookies(logger, response);
 
             var notificationRequest = new TargetDeliveryRequest.Builder()
                 .SetSessionId(response.Request.SessionId)
@@ -41,7 +50,7 @@ namespace SampleApp
                 })
                 .Build();
 
-            App.PrintResponse(targetClient.SendNotifications(notificationRequest));
+            App.PrintCookies(logger, targetClient.SendNotifications(notificationRequest));
         }
     }
 }

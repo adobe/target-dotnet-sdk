@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Adobe. All rights reserved.
+ * Copyright 2021 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,6 +13,7 @@ namespace SampleApp
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using Adobe.Target.Client;
+    using Microsoft.Extensions.Logging;
 
     internal class Program
     {
@@ -30,7 +31,11 @@ namespace SampleApp
         private static void ConfigureServices(IServiceCollection services)
         {
             services.AddTargetLibrary();
-            services.AddLogging();
+            services.AddLogging(builder =>
+            {
+                builder.AddSimpleConsole(options => options.TimestampFormat = "hh:mm:ss ");
+                builder.SetMinimumLevel(LogLevel.Debug);
+            });
             services.AddTransient<App>();
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Adobe. All rights reserved.
+ * Copyright 2021 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,6 +12,7 @@ namespace Adobe.Target.Client
 {
     using System;
     using System.Net;
+    using Adobe.Target.Client.Model.OnDevice;
     using Adobe.Target.Delivery.Model;
     using Microsoft.Extensions.Logging;
     using Polly;
@@ -44,6 +45,8 @@ namespace Adobe.Target.Client
             this.RetryPolicy = builder.RetryPolicy;
             this.AsyncRetryPolicy = builder.AsyncRetryPolicy;
             this.DecisioningMethod = builder.DecisioningMethod;
+            this.TelemetryEnabled = builder.TelemetryEnabled;
+            this.OnDeviceDecisioningHandler = builder.OnDeviceDecisioningHandler;
         }
 
         /// <summary>
@@ -110,6 +113,16 @@ namespace Adobe.Target.Client
         /// Decisioning Method
         /// </summary>
         public DecisioningMethod DecisioningMethod { get; }
+
+        /// <summary>
+        /// Telemetry
+        /// </summary>
+        public bool TelemetryEnabled { get; }
+
+        /// <summary>
+        /// OnDeviceDecisioning Event Handler
+        /// </summary>
+        public IOnDeviceDecisioningHandler OnDeviceDecisioningHandler { get; }
 
         private static void ValidateConfig(Builder builder)
         {
@@ -194,6 +207,16 @@ namespace Adobe.Target.Client
             /// Decisioning Method
             /// </summary>
             internal DecisioningMethod DecisioningMethod { get; private set; } = DecisioningMethod.ServerSide;
+
+            /// <summary>
+            /// Telemetry (enabled by default)
+            /// </summary>
+            internal bool TelemetryEnabled { get; private set; } = true;
+
+            /// <summary>
+            /// OnDeviceDecisioning Event Handler
+            /// </summary>
+            internal IOnDeviceDecisioningHandler OnDeviceDecisioningHandler { get; private set; }
 
             /// <summary>
             /// Sets ServerDomain
@@ -291,6 +314,28 @@ namespace Adobe.Target.Client
             public Builder SetDecisioningMethod(DecisioningMethod decisioningMethod)
             {
                 this.DecisioningMethod = decisioningMethod;
+                return this;
+            }
+
+            /// <summary>
+            /// Sets Telemetry
+            /// </summary>
+            /// <param name="telemetry">Telemetry</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetTelemetryEnabled(bool telemetry)
+            {
+                this.TelemetryEnabled = telemetry;
+                return this;
+            }
+
+            /// <summary>
+            /// Sets OnDeviceDecisioning Event Handler
+            /// </summary>
+            /// <param name="handler">OnDeviceDecisioning event handler</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetOnDeviceDecisioningHandler(IOnDeviceDecisioningHandler handler)
+            {
+                this.OnDeviceDecisioningHandler = handler;
                 return this;
             }
 

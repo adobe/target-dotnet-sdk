@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Adobe. All rights reserved.
+ * Copyright 2021 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,6 +15,7 @@ namespace Adobe.Target.Client.Model
     using System.Net;
     using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
+    using Telemetry = Adobe.Target.Delivery.Model.Telemetry;
 
     /// <summary>
     /// Target Delivery request
@@ -396,6 +397,7 @@ namespace Adobe.Target.Client.Model
             {
                 this.SetTargetValues();
                 this.CreateVisitorId();
+                this.SetRequestId();
                 return new TargetDeliveryRequest(this);
             }
 
@@ -424,6 +426,16 @@ namespace Adobe.Target.Client.Model
                 var visitorId = new VisitorId(this.TntId, this.ThirdPartyId, this.MarketingCloudVisitorId, this.TargetCustomerIds);
 
                 this.DeliveryRequest.Id = visitorId;
+            }
+
+            private void SetRequestId()
+            {
+                if (this.DeliveryRequest.RequestId != null)
+                {
+                    return;
+                }
+
+                this.DeliveryRequest.RequestId = Guid.NewGuid().ToString();
             }
 
             private void SetSessionId(IReadOnlyDictionary<string, string> targetCookies)
