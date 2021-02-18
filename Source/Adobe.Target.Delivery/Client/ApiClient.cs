@@ -165,7 +165,7 @@ namespace Adobe.Target.Delivery.Client
     /// </summary>
     public partial class ApiClient : ISynchronousClient, IAsynchronousClient
     {
-        private readonly String _baseUrl;
+        private String _baseUrl;
 
         /// <summary>
         /// Allows for extending request processing for <see cref="ApiClient"/> generated code.
@@ -199,6 +199,15 @@ namespace Adobe.Target.Delivery.Client
                 throw new ArgumentException("basePath cannot be empty");
 
             _baseUrl = basePath;
+        }
+
+        /// <summary>
+        /// Sets base URL
+        /// </summary>
+        /// <param name="newBaseUrl"></param>
+        public void SetBaseUrl(String newBaseUrl)
+        {
+            _baseUrl = newBaseUrl;
         }
 
         /// <summary>

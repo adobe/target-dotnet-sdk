@@ -41,7 +41,7 @@ namespace Adobe.Target.Client.Service
             this.clientConfig = clientConfig;
             this.logger = clientConfig.Logger;
             this.stickyBaseUrl = this.clientConfig.DefaultUrl;
-            this.SetDeliveryApi();
+            this.deliveryApi = new DeliveryApi(this.GetDeliveryApiConfig(this.stickyBaseUrl));
             RetryConfiguration.RetryPolicy = clientConfig.RetryPolicy;
             RetryConfiguration.AsyncRetryPolicy = clientConfig.AsyncRetryPolicy;
         }
@@ -129,12 +129,8 @@ namespace Adobe.Target.Client.Service
             }
 
             this.stickyBaseUrl = newUrl;
-            this.SetDeliveryApi();
-        }
-
-        private void SetDeliveryApi()
-        {
-            this.deliveryApi = new DeliveryApi(this.GetDeliveryApiConfig(this.stickyBaseUrl));
+            ((ApiClient)this.deliveryApi.Client).SetBaseUrl(this.stickyBaseUrl);
+            ((ApiClient)this.deliveryApi.AsynchronousClient).SetBaseUrl(this.stickyBaseUrl);
         }
 
         private string GetLocationHint(TargetDeliveryRequest request)
