@@ -11,6 +11,7 @@
 namespace Adobe.Target.Client
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using Adobe.Target.Client.Model.OnDevice;
     using Adobe.Target.Delivery.Model;
@@ -47,6 +48,11 @@ namespace Adobe.Target.Client
             this.DecisioningMethod = builder.DecisioningMethod;
             this.TelemetryEnabled = builder.TelemetryEnabled;
             this.OnDeviceDecisioningHandler = builder.OnDeviceDecisioningHandler;
+            this.OnDeviceEnvironment = builder.OnDeviceEnvironment;
+            this.OnDeviceConfigHostname = builder.OnDeviceConfigHostname;
+            this.OnDeviceDecisioningPollingIntSecs = builder.OnDeviceDecisioningPollingIntSecs;
+            this.OnDeviceArtifactPayload = builder.OnDeviceArtifactPayload;
+            this.OnDeviceAllMatchingRulesMboxes = builder.OnDeviceAllMatchingRulesMboxes;
         }
 
         /// <summary>
@@ -123,6 +129,31 @@ namespace Adobe.Target.Client
         /// OnDeviceDecisioning Event Handler
         /// </summary>
         public IOnDeviceDecisioningHandler OnDeviceDecisioningHandler { get; }
+
+        /// <summary>
+        /// OnDevice Environment
+        /// </summary>
+        public string OnDeviceEnvironment { get; }
+
+        /// <summary>
+        /// OnDevice Configuration Hostname
+        /// </summary>
+        public string OnDeviceConfigHostname { get; }
+
+        /// <summary>
+        /// Number of seconds between OnDevice rule update requests
+        /// </summary>
+        public int OnDeviceDecisioningPollingIntSecs { get; }
+
+        /// <summary>
+        /// OnDevice Artifact Payload
+        /// </summary>
+        public string OnDeviceArtifactPayload { get; }
+
+        /// <summary>
+        /// Mboxes for which rule evaluation will always be skipped
+        /// </summary>
+        public ISet<string> OnDeviceAllMatchingRulesMboxes { get; }
 
         private static void ValidateConfig(Builder builder)
         {
@@ -217,6 +248,31 @@ namespace Adobe.Target.Client
             /// OnDeviceDecisioning Event Handler
             /// </summary>
             internal IOnDeviceDecisioningHandler OnDeviceDecisioningHandler { get; private set; }
+
+            /// <summary>
+            /// OnDevice Environment
+            /// </summary>
+            internal string OnDeviceEnvironment { get; private set; }
+
+            /// <summary>
+            /// OnDevice Configuration Hostname
+            /// </summary>
+            internal string OnDeviceConfigHostname { get; private set; }
+
+            /// <summary>
+            /// Number of seconds between OnDevice rule update requests
+            /// </summary>
+            internal int OnDeviceDecisioningPollingIntSecs { get; private set; }
+
+            /// <summary>
+            /// OnDevice Artifact Payload
+            /// </summary>
+            internal string OnDeviceArtifactPayload { get; private set; }
+
+            /// <summary>
+            /// Mboxes for which rule evaluation will always be skipped
+            /// </summary>
+            internal ISet<string> OnDeviceAllMatchingRulesMboxes { get; private set; }
 
             /// <summary>
             /// Sets ServerDomain
@@ -336,6 +392,62 @@ namespace Adobe.Target.Client
             public Builder SetOnDeviceDecisioningHandler(IOnDeviceDecisioningHandler handler)
             {
                 this.OnDeviceDecisioningHandler = handler;
+                return this;
+            }
+
+            /// <summary>
+            /// Sets OnDevice Environment
+            /// </summary>
+            /// <param name="environment">OnDevice Environment</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetOnDeviceEnvironment(string environment)
+            {
+                this.OnDeviceEnvironment = environment;
+                return this;
+            }
+
+            /// <summary>
+            /// Sets OnDevice Configuration Hostname
+            /// </summary>
+            /// <param name="hostname">OnDevice Configuration Hostname</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetOnDeviceConfigHostname(string hostname)
+            {
+                this.OnDeviceConfigHostname = hostname;
+                return this;
+            }
+
+            /// <summary>
+            /// Sets OnDevice Decisioning Artifact Payload
+            /// </summary>
+            /// <param name="artifactPayload">OnDevice Decisioning Artifact Payload</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetOnDeviceArtifactPayload(string artifactPayload)
+            {
+                this.OnDeviceArtifactPayload = artifactPayload;
+                return this;
+            }
+
+            /// <summary>
+            /// Sets OnDevice Decisioning Polling Interval Seconds
+            /// </summary>
+            /// <param name="pollingSeconds">OnDevice Decisioning Polling Interval Seconds</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetOnDeviceDecisioningPollingIntSecs(int pollingSeconds)
+            {
+                this.OnDeviceDecisioningPollingIntSecs = pollingSeconds;
+                return this;
+            }
+
+            /// <summary>
+            /// Sets OnDevice All Matching Rules Mboxes
+            /// Mboxes for which rule evaluation will always be skipped
+            /// </summary>
+            /// <param name="mboxes">OnDevice Decisioning All Matching Rules Mboxes</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetOnDeviceAllMatchingRulesMboxes(ISet<string> mboxes)
+            {
+                this.OnDeviceAllMatchingRulesMboxes = mboxes;
                 return this;
             }
 

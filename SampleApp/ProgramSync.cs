@@ -2,6 +2,7 @@ namespace SampleApp
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using Adobe.Target.Client;
     using Adobe.Target.Client.Model;
     using Adobe.Target.Delivery.Model;
@@ -51,6 +52,8 @@ namespace SampleApp
                 .Build();
 
             App.PrintCookies(logger, targetClient.SendNotifications(notificationRequest));
+
+            Thread.Sleep(10000);
         }
     }
 }

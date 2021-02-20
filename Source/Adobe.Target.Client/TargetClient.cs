@@ -24,6 +24,7 @@ namespace Adobe.Target.Client
     public sealed class TargetClient : ITargetClient
     {
         private TargetService targetService;
+        private OnDeviceDecisioningService localService;
         private DecisioningMethod defaultDecisioningMethod;
         private string defaultPropertyToken;
 
@@ -44,6 +45,7 @@ namespace Adobe.Target.Client
         public void Initialize(TargetClientConfig clientConfig)
         {
             this.targetService = new TargetService(clientConfig);
+            this.localService = new OnDeviceDecisioningService(clientConfig);
             this.defaultDecisioningMethod = clientConfig.DecisioningMethod;
             this.defaultPropertyToken = clientConfig.DefaultPropertyToken;
             Console.WriteLine("Initialized " + clientConfig.OrganizationId);
@@ -58,7 +60,7 @@ namespace Adobe.Target.Client
             var decisioning = request.DecisioningMethod ?? this.defaultDecisioningMethod;
             this.UpdatePropertyToken(request);
 
-            if (decisioning == DecisioningMethod.OnDevice || decisioning == DecisioningMethod.Hybrid)
+            if (decisioning != DecisioningMethod.ServerSide)
             {
                 throw new NotImplementedException();
             }

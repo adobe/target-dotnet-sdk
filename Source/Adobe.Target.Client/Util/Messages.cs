@@ -16,7 +16,9 @@ namespace Adobe.Target.Client.Util
         internal const string ExecuteFieldsRequired = "Either PageLoad or Mboxes is required in Execute";
         internal const string PrefetchFieldsRequired = "Either Views, PageLoad or Mboxes is required in Prefetch";
         internal const string NotificationsRequired = "Notifications array is required in request";
-        internal const string LogTargetServiceRequest = "Request IMSOrgId: {imsOrgId}, sessionId: {sessionId}, request: {request}";
+        internal const string LogTargetServiceRequest = "Request sessionId: {sessionId}, request: {request}";
         internal const string LogTargetServiceResponse = "Response: {response}";
+        internal const string RuleLoadingFailed = "Artifact download failed";
+        internal const string RuleDeserializationFailed = "Artifact deserialization failed";
     }
 }
