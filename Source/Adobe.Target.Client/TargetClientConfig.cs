@@ -252,17 +252,17 @@ namespace Adobe.Target.Client
             /// <summary>
             /// OnDevice Environment
             /// </summary>
-            internal string OnDeviceEnvironment { get; private set; }
+            internal string OnDeviceEnvironment { get; private set; } = "production";
 
             /// <summary>
             /// OnDevice Configuration Hostname
             /// </summary>
-            internal string OnDeviceConfigHostname { get; private set; }
+            internal string OnDeviceConfigHostname { get; private set; } = "assets.adobetarget.com";
 
             /// <summary>
             /// Number of seconds between OnDevice rule update requests
             /// </summary>
-            internal int OnDeviceDecisioningPollingIntSecs { get; private set; }
+            internal int OnDeviceDecisioningPollingIntSecs { get; private set; } = 300;
 
             /// <summary>
             /// OnDevice Artifact Payload
@@ -275,7 +275,8 @@ namespace Adobe.Target.Client
             internal ISet<string> OnDeviceAllMatchingRulesMboxes { get; private set; }
 
             /// <summary>
-            /// Sets ServerDomain
+            /// Sets ServerDomain <br/>
+            /// Default: "tt.omtrdc.net"
             /// </summary>
             /// <param name="serverDomain">ServerDomain</param>
             /// <returns><see cref="Builder"/> instance</returns>
@@ -319,7 +320,8 @@ namespace Adobe.Target.Client
             }
 
             /// <summary>
-            /// Sets Timeout (defaults to 100000 ms)
+            /// Sets Timeout (in milliseconds) <br/>
+            /// Default: 100000 ms
             /// </summary>
             /// <param name="timeout">Timeout</param>
             /// <returns><see cref="Builder"/> instance</returns>
@@ -363,7 +365,8 @@ namespace Adobe.Target.Client
             }
 
             /// <summary>
-            /// Sets Decisioning Method
+            /// Sets Decisioning Method <br/>
+            /// Default: ServerSide
             /// </summary>
             /// <param name="decisioningMethod">Decisioning Method</param>
             /// <returns><see cref="Builder"/> instance</returns>
@@ -396,7 +399,8 @@ namespace Adobe.Target.Client
             }
 
             /// <summary>
-            /// Sets OnDevice Environment
+            /// Sets OnDevice Environment <br/>
+            /// Default: "production"
             /// </summary>
             /// <param name="environment">OnDevice Environment</param>
             /// <returns><see cref="Builder"/> instance</returns>
@@ -407,7 +411,8 @@ namespace Adobe.Target.Client
             }
 
             /// <summary>
-            /// Sets OnDevice Configuration Hostname
+            /// Sets OnDevice Configuration Hostname <br/>
+            /// Default: "assets.adobetarget.com"
             /// </summary>
             /// <param name="hostname">OnDevice Configuration Hostname</param>
             /// <returns><see cref="Builder"/> instance</returns>
@@ -429,7 +434,8 @@ namespace Adobe.Target.Client
             }
 
             /// <summary>
-            /// Sets OnDevice Decisioning Polling Interval Seconds
+            /// Sets the number of seconds between OnDevice rule update requests <br/>
+            /// Default: 300
             /// </summary>
             /// <param name="pollingSeconds">OnDevice Decisioning Polling Interval Seconds</param>
             /// <returns><see cref="Builder"/> instance</returns>

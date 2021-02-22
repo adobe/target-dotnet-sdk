@@ -22,32 +22,17 @@ namespace Adobe.Target.Client.Extension
     {
         internal static void LogRequest(this ILogger logger, TargetDeliveryRequest request)
         {
-            if (logger == null || !logger.IsEnabled(LogLevel.Debug))
-            {
-                return;
-            }
-
-            logger.LogDebug(Messages.LogTargetServiceRequest, request.SessionId, request.DeliveryRequest.ToJson());
+            logger?.LogDebug(Messages.LogTargetServiceRequest, request.SessionId, request.DeliveryRequest.ToJson());
         }
 
         internal static void LogResponse(this ILogger logger, DeliveryResponse response)
         {
-            if (logger == null || !logger.IsEnabled(LogLevel.Debug))
-            {
-                return;
-            }
-
-            logger.LogDebug(Messages.LogTargetServiceResponse, response.ToJson());
+            logger?.LogDebug(Messages.LogTargetServiceResponse, response.ToJson());
         }
 
-        internal static void LogException(this ILogger logger, string message, Exception exception)
+        internal static void LogException(this ILogger logger, Exception exception)
         {
-            if (logger == null)
-            {
-                return;
-            }
-
-            logger.LogError(exception, message);
+            logger?.LogError(exception, exception.Message);
         }
     }
 }

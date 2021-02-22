@@ -15,25 +15,40 @@ namespace Adobe.Target.Client.Model.OnDevice
 
     internal sealed class OnDeviceDecisioningRuleSet
     {
-        internal string Version { get; set; }
+        [JsonConstructor]
+        internal OnDeviceDecisioningRuleSet(string version, string globalMbox, bool geoTargetingEnabled, IReadOnlyList<string> remoteMboxes, IReadOnlyList<string> remoteViews, IReadOnlyList<string> localMboxes, IReadOnlyList<string> localViews, IReadOnlyList<string> responseTokens, OnDeviceDecisioningRules rules, IReadOnlyDictionary<string, object> meta)
+        {
+            this.Version = version;
+            this.GlobalMbox = globalMbox;
+            this.GeoTargetingEnabled = geoTargetingEnabled;
+            this.RemoteMboxes = remoteMboxes;
+            this.RemoteViews = remoteViews;
+            this.LocalMboxes = localMboxes;
+            this.LocalViews = localViews;
+            this.ResponseTokens = responseTokens;
+            this.Rules = rules;
+            this.Meta = meta;
+        }
 
-        internal string GlobalMbox { get; set; }
+        internal string Version { get; }
 
-        internal bool GeoTargetingEnabled { get; set; }
+        internal string GlobalMbox { get; }
 
-        internal IReadOnlyList<string> RemoteMboxes { get; set; }
+        internal bool GeoTargetingEnabled { get; }
 
-        internal IReadOnlyList<string> RemoteViews { get; set; }
+        internal IReadOnlyList<string> RemoteMboxes { get; }
 
-        internal IReadOnlyList<string> LocalMboxes { get; set; }
+        internal IReadOnlyList<string> RemoteViews { get; }
 
-        internal IReadOnlyList<string> LocalViews { get; set; }
+        internal IReadOnlyList<string> LocalMboxes { get; }
 
-        internal IReadOnlyList<string> ResponseTokens { get; set; }
+        internal IReadOnlyList<string> LocalViews { get; }
 
-        internal OnDeviceDecisioningRules Rules { get; set; }
+        internal IReadOnlyList<string> ResponseTokens { get; }
 
-        internal IReadOnlyDictionary<string, object> Meta { get; set; }
+        internal OnDeviceDecisioningRules Rules { get; }
+
+        internal IReadOnlyDictionary<string, object> Meta { get; }
 
         public override string ToString() => JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
     }

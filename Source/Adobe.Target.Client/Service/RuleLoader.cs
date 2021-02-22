@@ -48,14 +48,17 @@ namespace Adobe.Target.Client.Service
 
         private readonly TargetClientConfig clientConfig;
         private readonly ILogger? logger;
+        private readonly IOnDeviceDecisioningHandler? handler;
         private Timer? timer;
         private volatile OnDeviceDecisioningRuleSet? latestRules;
         private string? lastETag;
+        private bool succeeded;
 
         internal RuleLoader(TargetClientConfig clientConfig)
         {
             this.clientConfig = clientConfig;
             this.logger = this.clientConfig.Logger;
+            this.handler = this.clientConfig.OnDeviceDecisioningHandler;
             this.SetLocalRules();
             this.ScheduleTimer(0);
         }
@@ -68,7 +71,18 @@ namespace Adobe.Target.Client.Service
                 return;
             }
 
-            // TODO: parse and set local artifact
+            if (!this.DeserializeRules(artifactPayload, out var deserialized))
+            {
+                return;
+            }
+
+            Interlocked.Exchange(ref this.latestRules, deserialized);
+
+            if (!this.succeeded)
+            {
+                this.succeeded = true;
+                this.handler?.OnDeviceDecisioningReady();
+            }
         }
 
         private async Task LoadRulesAsync()
@@ -97,7 +111,7 @@ namespace Adobe.Target.Client.Service
 
             this.ProcessResult(policyResult);
 
-            this.ScheduleTimer(2000);
+            this.ScheduleTimer(this.clientConfig.OnDeviceDecisioningPollingIntSecs * 1000);
         }
 
         private IRestRequest GetRequest()
@@ -117,7 +131,7 @@ namespace Adobe.Target.Client.Service
         {
             if (policyResult.Outcome == OutcomeType.Failure)
             {
-                this.logger.LogException(Messages.RuleLoadingFailed, policyResult.FinalException);
+                this.LogArtifactException(Messages.RuleLoadingFailed, policyResult.FinalException.Message);
                 return;
             }
 
@@ -135,7 +149,15 @@ namespace Adobe.Target.Client.Service
                 return;
             }
 
+            this.handler?.ArtifactDownloadSucceeded(result.Content);
+
             Interlocked.Exchange(ref this.latestRules, deserialized);
+
+            if (!this.succeeded)
+            {
+                this.succeeded = true;
+                this.handler?.OnDeviceDecisioningReady();
+            }
         }
 
         private void SetLastEtag(IRestResponse response)
@@ -160,12 +182,27 @@ namespace Adobe.Target.Client.Service
             }
             catch (Exception e)
             {
-                this.logger.LogException(Messages.RuleDeserializationFailed, e);
+                this.LogArtifactException(Messages.RuleDeserializationFailed, e.Message);
                 deserialized = null;
                 return false;
             }
 
+            if (deserialized.Version == null || !deserialized.Version.StartsWith(MajorVersion + '.'))
+            {
+                this.LogArtifactException(
+                    Messages.RuleDeserializationFailed,
+                    Messages.UnknownArtifactVersion + deserialized.Version);
+                return false;
+            }
+
             return true;
+        }
+
+        private void LogArtifactException(string message, string exceptionMessage)
+        {
+            var exception = new ApplicationException(message + exceptionMessage);
+            this.logger.LogException(exception);
+            this.handler?.ArtifactDownloadFailed(exception);
         }
 
         private void ScheduleTimer(int startDelay)

@@ -15,17 +15,28 @@ namespace Adobe.Target.Client.Model.OnDevice
 
     internal sealed class OnDeviceDecisioningRule
     {
-        internal string RuleKey { get; set; }
+        [JsonConstructor]
+        internal OnDeviceDecisioningRule(string ruleKey, string activityId, IReadOnlyList<string> propertyTokens, object condition, IReadOnlyDictionary<string, object> consequence, IReadOnlyDictionary<string, object> meta)
+        {
+            this.RuleKey = ruleKey;
+            this.ActivityId = activityId;
+            this.PropertyTokens = propertyTokens;
+            this.Condition = condition;
+            this.Consequence = consequence;
+            this.Meta = meta;
+        }
 
-        internal string ActivityId { get; set; }
+        internal string RuleKey { get; }
 
-        internal IReadOnlyList<string> PropertyTokens { get; set; }
+        internal string ActivityId { get; }
 
-        internal object Condition { get; set; }
+        internal IReadOnlyList<string> PropertyTokens { get; }
 
-        internal IReadOnlyDictionary<string, object> Consequence { get; set; }
+        internal object Condition { get; }
 
-        internal IReadOnlyDictionary<string, object> Meta { get; set; }
+        internal IReadOnlyDictionary<string, object> Consequence { get; }
+
+        internal IReadOnlyDictionary<string, object> Meta { get; }
 
         public override string ToString() => JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
     }

@@ -15,9 +15,16 @@ namespace Adobe.Target.Client.Model.OnDevice
 
     internal sealed class OnDeviceDecisioningRules
     {
-        internal IReadOnlyDictionary<string, IReadOnlyList<OnDeviceDecisioningRule>> Mboxes { get; set; }
+        [JsonConstructor]
+        internal OnDeviceDecisioningRules(IReadOnlyDictionary<string, IReadOnlyList<OnDeviceDecisioningRule>> mboxes, IReadOnlyDictionary<string, IReadOnlyList<OnDeviceDecisioningRule>> views)
+        {
+            this.Mboxes = mboxes;
+            this.Views = views;
+        }
 
-        internal IReadOnlyDictionary<string, IReadOnlyList<OnDeviceDecisioningRule>> Views { get; set; }
+        internal IReadOnlyDictionary<string, IReadOnlyList<OnDeviceDecisioningRule>> Mboxes { get; }
+
+        internal IReadOnlyDictionary<string, IReadOnlyList<OnDeviceDecisioningRule>> Views { get; }
 
         public override string ToString() => JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
     }
