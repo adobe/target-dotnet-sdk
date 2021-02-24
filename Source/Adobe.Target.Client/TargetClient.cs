@@ -46,7 +46,7 @@ namespace Adobe.Target.Client
         public void Initialize(TargetClientConfig clientConfig)
         {
             this.targetService = new TargetService(clientConfig);
-            this.localService = new OnDeviceDecisioningService(clientConfig);
+            this.localService = new OnDeviceDecisioningService(clientConfig, this.targetService);
             this.defaultDecisioningMethod = clientConfig.DecisioningMethod;
             this.defaultPropertyToken = clientConfig.DefaultPropertyToken;
             clientConfig.Logger?.LogDebug("Initialized Target Client: " + clientConfig.OrganizationId);

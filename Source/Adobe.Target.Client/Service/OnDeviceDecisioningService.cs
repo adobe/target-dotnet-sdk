@@ -12,6 +12,7 @@ namespace Adobe.Target.Client.Service
 {
     using System;
     using System.Threading;
+    using Adobe.Target.Client.OnDevice.Collator;
 
     /// <summary>
     /// OnDevice Decisioning Service
@@ -19,15 +20,18 @@ namespace Adobe.Target.Client.Service
     internal sealed class OnDeviceDecisioningService
     {
         private readonly TargetClientConfig clientConfig;
+        private readonly TargetService targetService;
         private readonly RuleLoader ruleLoader;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OnDeviceDecisioningService"/> class.
         /// </summary>
         /// <param name="clientConfig">Client config</param>
-        internal OnDeviceDecisioningService(TargetClientConfig clientConfig)
+        /// <param name="targetService">Target Service</param>
+        internal OnDeviceDecisioningService(TargetClientConfig clientConfig, TargetService targetService)
         {
             this.clientConfig = clientConfig;
+            this.targetService = targetService;
             this.ruleLoader = new RuleLoader(clientConfig);
         }
     }
