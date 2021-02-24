@@ -35,7 +35,7 @@ namespace Adobe.Target.Client.Service
         private const string AcceptHeaderValue = "application/json";
         private const string MajorVersion = "1";
         private const string ArtifactFilename = "/rules.json";
-        private const int MaxRetries = 10;
+        private const int MaxRetries = 5;
 
         private static readonly IReadOnlyList<HttpStatusCode> HttpStatusCodesWorthRetrying = new[]
         {
@@ -46,6 +46,7 @@ namespace Adobe.Target.Client.Service
             HttpStatusCode.GatewayTimeout,
         };
 
+        private readonly int timerStartDelayMs;
         private readonly TargetClientConfig clientConfig;
         private readonly ILogger? logger;
         private readonly IOnDeviceDecisioningHandler? handler;
@@ -57,6 +58,7 @@ namespace Adobe.Target.Client.Service
         internal RuleLoader(TargetClientConfig clientConfig)
         {
             this.clientConfig = clientConfig;
+            this.timerStartDelayMs = clientConfig.OnDeviceDecisioningPollingIntSecs * 1000;
             this.logger = this.clientConfig.Logger;
             this.handler = this.clientConfig.OnDeviceDecisioningHandler;
             this.SetLocalRules();
@@ -111,20 +113,24 @@ namespace Adobe.Target.Client.Service
 
             this.ProcessResult(policyResult);
 
-            this.ScheduleTimer(this.clientConfig.OnDeviceDecisioningPollingIntSecs * 1000);
+            this.ScheduleTimer(this.timerStartDelayMs);
         }
 
         private IRestRequest GetRequest()
         {
-            var artifactPath = this.clientConfig.Client + "/" + this.clientConfig.OnDeviceEnvironment.ToLower()
-                       + "/v" + MajorVersion + ArtifactFilename;
-            var request = new RestRequest(artifactPath, Method.GET);
+            var request = new RestRequest(this.GetArtifactUrl(), Method.GET);
             if (this.lastETag != null)
             {
                 request.AddHeader(NoneMatchHeader, this.lastETag);
             }
 
             return request;
+        }
+
+        private string GetArtifactUrl()
+        {
+            return this.clientConfig.Client + "/" + this.clientConfig.OnDeviceEnvironment.ToLower()
+                + "/v" + MajorVersion + ArtifactFilename;
         }
 
         private void ProcessResult(PolicyResult<IRestResponse> policyResult)

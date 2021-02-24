@@ -16,6 +16,7 @@ namespace Adobe.Target.Client
     using Adobe.Target.Client.Service;
     using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// The main TargetClient class
@@ -48,7 +49,7 @@ namespace Adobe.Target.Client
             this.localService = new OnDeviceDecisioningService(clientConfig);
             this.defaultDecisioningMethod = clientConfig.DecisioningMethod;
             this.defaultPropertyToken = clientConfig.DefaultPropertyToken;
-            Console.WriteLine("Initialized " + clientConfig.OrganizationId);
+            clientConfig.Logger?.LogDebug("Initialized Target Client: " + clientConfig.OrganizationId);
         }
 
         /// <inheritdoc/>
