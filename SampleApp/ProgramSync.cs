@@ -2,8 +2,10 @@ namespace SampleApp
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using Adobe.Target.Client;
     using Adobe.Target.Client.Model;
+    using Adobe.Target.Client.Model.OnDevice;
     using Adobe.Target.Delivery.Model;
     using Microsoft.Extensions.Logging;
 
@@ -22,6 +24,7 @@ namespace SampleApp
 
             var targetClientConfig = new TargetClientConfig.Builder("adobetargetmobile", "B8A054D958807F770A495DD6@AdobeOrg")
                 .SetLogger(logger)
+                .SetOnDeviceDecisioningHandler(new OnDeviceDecisioningHandler())
                 .Build();
             var targetClient = TargetClient.Create(targetClientConfig);
 
@@ -51,6 +54,17 @@ namespace SampleApp
                 .Build();
 
             App.PrintCookies(logger, targetClient.SendNotifications(notificationRequest));
+
+            Thread.Sleep(10000);
+        }
+
+        private class OnDeviceDecisioningHandler : IOnDeviceDecisioningHandler
+        {
+            public void OnDeviceDecisioningReady() => Console.WriteLine("OnDeviceDecisioningReady");
+
+            public void ArtifactDownloadSucceeded(string artifactData) => Console.WriteLine("ArtifactDownloadSucceeded: " + artifactData);
+
+            public void ArtifactDownloadFailed(ApplicationException e) => Console.WriteLine("ArtifactDownloadFailed " + e.Message);
         }
     }
 }

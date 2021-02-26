@@ -12,7 +12,9 @@ namespace Adobe.Target.Client.Service
 {
     using System.Collections.Generic;
     using System.Net;
+    using System.Threading;
     using System.Threading.Tasks;
+    using Adobe.Target.Client.Extension;
     using Adobe.Target.Client.Model;
     using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Api;
@@ -24,11 +26,11 @@ namespace Adobe.Target.Client.Service
     /// <summary>
     /// Target Service
     /// </summary>
-    public sealed class TargetService
+    internal sealed class TargetService
     {
         private readonly TargetClientConfig clientConfig;
         private readonly ILogger logger;
-        private volatile DeliveryApi deliveryApi;
+        private readonly DeliveryApi deliveryApi;
         private volatile string stickyLocationHint;
         private volatile string stickyBaseUrl;
 
@@ -36,12 +38,12 @@ namespace Adobe.Target.Client.Service
         /// Initializes a new instance of the <see cref="TargetService"/> class.
         /// </summary>
         /// <param name="clientConfig">Target Client Config <see cref="TargetClientConfig"/></param>
-        public TargetService(TargetClientConfig clientConfig)
+        internal TargetService(TargetClientConfig clientConfig)
         {
             this.clientConfig = clientConfig;
             this.logger = clientConfig.Logger;
             this.stickyBaseUrl = this.clientConfig.DefaultUrl;
-            this.SetDeliveryApi();
+            this.deliveryApi = new DeliveryApi(this.GetDeliveryApiConfig(this.stickyBaseUrl));
             RetryConfiguration.RetryPolicy = clientConfig.RetryPolicy;
             RetryConfiguration.AsyncRetryPolicy = clientConfig.AsyncRetryPolicy;
         }
@@ -51,11 +53,11 @@ namespace Adobe.Target.Client.Service
         /// </summary>
         /// <param name="request">Target Delivery request</param>
         /// <returns>Target Delivery Response</returns>
-        public TargetDeliveryResponse ExecuteRequest(TargetDeliveryRequest request)
+        internal TargetDeliveryResponse ExecuteRequest(TargetDeliveryRequest request)
         {
             this.SetUrl(this.GetLocationHint(request));
             Telemetry.AddTelemetry(request.DeliveryRequest, this.clientConfig);
-            this.LogRequest(request);
+            this.logger.LogRequest(request);
             var response = this.deliveryApi.Execute(this.clientConfig.OrganizationId, request.SessionId, request.DeliveryRequest);
 
             return this.GetTargetDeliveryResponse(request, response);
@@ -66,11 +68,11 @@ namespace Adobe.Target.Client.Service
         /// </summary>
         /// <param name="request">Target Delivery request</param>
         /// <returns>Target Delivery Response</returns>
-        public Task<TargetDeliveryResponse> ExecuteRequestAsync(TargetDeliveryRequest request)
+        internal Task<TargetDeliveryResponse> ExecuteRequestAsync(TargetDeliveryRequest request)
         {
             this.SetUrl(this.GetLocationHint(request));
             Telemetry.AddTelemetry(request.DeliveryRequest, this.clientConfig);
-            this.LogRequest(request);
+            this.logger.LogRequest(request);
             var executeTask = this.deliveryApi.ExecuteAsync(this.clientConfig.OrganizationId, request.SessionId, request.DeliveryRequest);
 
             return executeTask.ContinueWith(task => this.GetTargetDeliveryResponse(request, task.Result), TaskScheduler.Default);
@@ -88,7 +90,7 @@ namespace Adobe.Target.Client.Service
         private TargetDeliveryResponse GetTargetDeliveryResponse(TargetDeliveryRequest request, DeliveryResponse response)
         {
             this.UpdateStickyLocationHint(response);
-            this.LogResponse(response);
+            this.logger.LogResponse(response);
             return new TargetDeliveryResponse(request, response, (HttpStatusCode)response.Status, null);
         }
 
@@ -99,7 +101,7 @@ namespace Adobe.Target.Client.Service
                 && deliveryResponse.Status >= (int)HttpStatusCode.OK
                 && deliveryResponse.Status < (int)HttpStatusCode.Ambiguous)
             {
-                this.stickyLocationHint = CookieUtils.LocationHintFromTntId(tntId);
+                Interlocked.Exchange(ref this.stickyLocationHint, CookieUtils.LocationHintFromTntId(tntId));
             }
         }
 
@@ -128,34 +130,14 @@ namespace Adobe.Target.Client.Service
                 return;
             }
 
-            this.stickyBaseUrl = newUrl;
-            this.SetDeliveryApi();
-        }
-
-        private void SetDeliveryApi()
-        {
-            this.deliveryApi = new DeliveryApi(this.GetDeliveryApiConfig(this.stickyBaseUrl));
+            Interlocked.Exchange(ref this.stickyBaseUrl, newUrl);
+            ((ApiClient)this.deliveryApi.Client).SetBaseUrl(this.stickyBaseUrl);
+            ((ApiClient)this.deliveryApi.AsynchronousClient).SetBaseUrl(this.stickyBaseUrl);
         }
 
         private string GetLocationHint(TargetDeliveryRequest request)
         {
             return request.LocationHint ?? this.stickyLocationHint;
-        }
-
-        private void LogRequest(TargetDeliveryRequest request)
-        {
-            if (this.logger != null && this.logger.IsEnabled(LogLevel.Debug))
-            {
-                this.logger.LogDebug(Messages.LogTargetServiceRequest, this.clientConfig.OrganizationId, request.SessionId, request.DeliveryRequest.ToJson());
-            }
-        }
-
-        private void LogResponse(DeliveryResponse response)
-        {
-            if (this.logger != null && this.logger.IsEnabled(LogLevel.Debug))
-            {
-                this.logger.LogDebug(Messages.LogTargetServiceResponse, response.ToJson());
-            }
         }
     }
 }

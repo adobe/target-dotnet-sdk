@@ -42,7 +42,7 @@ namespace Adobe.Target.Client.Model
         /// <summary>
         /// Decisioning Method
         /// </summary>
-        public DecisioningMethod? DecisioningMethod { get; }
+        public DecisioningMethod DecisioningMethod { get; }
 
         /// <summary>
         /// Session Id

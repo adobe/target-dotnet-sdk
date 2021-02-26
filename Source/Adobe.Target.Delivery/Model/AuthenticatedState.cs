@@ -49,10 +49,10 @@ namespace Adobe.Target.Delivery.Model
         Authenticated = 2,
 
         /// <summary>
-        /// Enum Loggedout for value: logged_out
+        /// Enum LoggedOut for value: logged_out
         /// </summary>
         [EnumMember(Value = "logged_out")]
-        Loggedout = 3
+        LoggedOut = 3
 
     }
 

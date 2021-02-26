@@ -38,16 +38,16 @@ namespace Adobe.Target.Delivery.Model
     public enum LoggingType
     {
         /// <summary>
-        /// Enum Serverside for value: server_side
+        /// Enum ServerSide for value: server_side
         /// </summary>
         [EnumMember(Value = "server_side")]
-        Serverside = 1,
+        ServerSide = 1,
 
         /// <summary>
-        /// Enum Clientside for value: client_side
+        /// Enum ClientSide for value: client_side
         /// </summary>
         [EnumMember(Value = "client_side")]
-        Clientside = 2
+        ClientSide = 2
 
     }
 
