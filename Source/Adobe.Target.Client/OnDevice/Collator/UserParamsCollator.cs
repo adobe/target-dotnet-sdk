@@ -47,7 +47,7 @@ namespace Adobe.Target.Client.OnDevice.Collator
 
             result.Add(UserBrowserType, GetBrowserType(info));
             result.Add(UserBrowserVersion, info.UA.Major == Parser.Other ? Unknown : info.UA.Major);
-            result.Add(UserPlatform, info.OS.Family == Parser.Other ? Unknown : info.OS.Family.ToLower());
+            result.Add(UserPlatform, info.OS.Family == Parser.Other ? Unknown : info.OS.Family.ToLowerInvariant());
 
             return result;
         }
@@ -61,10 +61,10 @@ namespace Adobe.Target.Client.OnDevice.Collator
 
             if (info.OS.Family == Ios && info.Device.Family != Parser.Other)
             {
-                return info.Device.Family.ToLower();
+                return info.Device.Family.ToLowerInvariant();
             }
 
-            return info.UA.Family.ToLower();
+            return info.UA.Family.ToLowerInvariant();
         }
     }
 }

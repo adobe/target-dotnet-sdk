@@ -39,9 +39,9 @@ namespace Adobe.Target.Client.OnDevice.Collator
         private readonly ILogger logger;
         private readonly bool referring;
 
-        public PageParamsCollator(ILogger logger = null, bool referring = false)
+        public PageParamsCollator(bool referring = false)
         {
-            this.logger = logger;
+            this.logger = TargetClient.Logger;
             this.referring = referring;
         }
 
@@ -59,16 +59,16 @@ namespace Adobe.Target.Client.OnDevice.Collator
             {
                 var parsed = new Uri(url);
                 result.Add(PageUrl, parsed.OriginalString);
-                result.Add(PageUrlLower, parsed.OriginalString.ToLower());
+                result.Add(PageUrlLower, parsed.OriginalString.ToLowerInvariant());
                 result.Add(PageDomain, parsed.Host);
-                result.Add(PageDomainLower, parsed.Host.ToLower());
+                result.Add(PageDomainLower, parsed.Host.ToLowerInvariant());
                 result.AddAll(GetDomainParts(parsed));
                 result.Add(PagePath, parsed.AbsolutePath);
-                result.Add(PagePathLower, parsed.AbsolutePath.ToLower());
+                result.Add(PagePathLower, parsed.AbsolutePath.ToLowerInvariant());
                 result.Add(PageQuery, parsed.Query);
-                result.Add(PageQueryLower, parsed.Query.ToLower());
+                result.Add(PageQueryLower, parsed.Query.ToLowerInvariant());
                 result.Add(PageFragment, parsed.Fragment);
-                result.Add(PageFragmentLower, parsed.Fragment.ToLower());
+                result.Add(PageFragmentLower, parsed.Fragment.ToLowerInvariant());
             }
             catch (UriFormatException)
             {
@@ -88,19 +88,19 @@ namespace Adobe.Target.Client.OnDevice.Collator
                     result.Add(PageSubdomain, string.Empty);
                     result.Add(PageSubdomainLower, string.Empty);
                     result.Add(PageTopLevelDomain, parts[1]);
-                    result.Add(PageTopLevelDomainLower, parts[1].ToLower());
+                    result.Add(PageTopLevelDomainLower, parts[1].ToLowerInvariant());
                     break;
                 case 3:
-                    result.Add(PageSubdomain, parts[0].ToLower() == Www ? string.Empty : parts[0]);
-                    result.Add(PageSubdomainLower, parts[0].ToLower() == Www ? string.Empty : parts[0].ToLower());
+                    result.Add(PageSubdomain, parts[0].ToLowerInvariant() == Www ? string.Empty : parts[0]);
+                    result.Add(PageSubdomainLower, parts[0].ToLowerInvariant() == Www ? string.Empty : parts[0].ToLowerInvariant());
                     result.Add(PageTopLevelDomain, parts[2]);
-                    result.Add(PageTopLevelDomainLower, parts[2].ToLower());
+                    result.Add(PageTopLevelDomainLower, parts[2].ToLowerInvariant());
                     break;
                 case 4:
-                    result.Add(PageSubdomain, parts[0].ToLower() == Www ? string.Empty : parts[0]);
-                    result.Add(PageSubdomainLower, parts[0].ToLower() == Www ? string.Empty : parts[0].ToLower());
+                    result.Add(PageSubdomain, parts[0].ToLowerInvariant() == Www ? string.Empty : parts[0]);
+                    result.Add(PageSubdomainLower, parts[0].ToLowerInvariant() == Www ? string.Empty : parts[0].ToLowerInvariant());
                     result.Add(PageTopLevelDomain, $"{parts[2]}.{parts[3]}");
-                    result.Add(PageTopLevelDomainLower, $"{parts[2].ToLower()}.{parts[3].ToLower()}");
+                    result.Add(PageTopLevelDomainLower, $"{parts[2].ToLowerInvariant()}.{parts[3].ToLowerInvariant()}");
                     break;
                 default:
                     result.Add(PageSubdomain, string.Empty);

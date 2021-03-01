@@ -29,6 +29,8 @@ namespace Adobe.Target.Client
         private DecisioningMethod defaultDecisioningMethod;
         private string defaultPropertyToken;
 
+        internal static ILogger Logger { get; private set; }
+
         /// <summary>
         /// Creates a TargetClient using provided Target configuration
         /// </summary>
@@ -49,7 +51,8 @@ namespace Adobe.Target.Client
             this.localService = new OnDeviceDecisioningService(clientConfig, this.targetService);
             this.defaultDecisioningMethod = clientConfig.DecisioningMethod;
             this.defaultPropertyToken = clientConfig.DefaultPropertyToken;
-            clientConfig.Logger?.LogDebug("Initialized Target Client: " + clientConfig.OrganizationId);
+            Logger = clientConfig.Logger;
+            Logger?.LogDebug("Initialized Target Client: " + clientConfig.OrganizationId);
         }
 
         /// <inheritdoc/>

@@ -14,6 +14,7 @@ namespace Adobe.Target.Client.Model
     using System.Net;
     using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Target Delivery Response
@@ -83,5 +84,8 @@ namespace Adobe.Target.Client.Model
 
             return cookies;
         }
+
+        /// <inheritdoc />
+        public override string ToString() => JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
     }
 }
