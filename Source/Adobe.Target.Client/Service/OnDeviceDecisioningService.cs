@@ -54,6 +54,7 @@ namespace Adobe.Target.Client.Service
         private readonly TargetClientConfig clientConfig;
         private readonly TargetService targetService;
         private readonly RuleLoader ruleLoader;
+        private readonly OnDeviceDecisioningEvaluator decisioningEvaluator;
         private readonly GeoClient geoClient;
 
         /// <summary>
@@ -66,6 +67,7 @@ namespace Adobe.Target.Client.Service
             this.clientConfig = clientConfig;
             this.targetService = targetService;
             this.ruleLoader = new RuleLoader(clientConfig);
+            this.decisioningEvaluator = new OnDeviceDecisioningEvaluator(this.ruleLoader);
             this.geoClient = new GeoClient(clientConfig);
         }
 
@@ -121,6 +123,11 @@ namespace Adobe.Target.Client.Service
             // TODO: Send notifications
             TargetClient.Logger?.LogDebug(targetResponse.ToString());
             return targetResponse;
+        }
+
+        internal OnDeviceDecisioningEvaluation EvaluateLocalExecution(TargetDeliveryRequest request)
+        {
+            return this.decisioningEvaluator.EvaluateLocalExecution(request);
         }
 
         private void HandleDetails(
