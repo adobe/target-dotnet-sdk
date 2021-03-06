@@ -17,11 +17,12 @@ namespace Adobe.Target.Client.OnDevice.Collator
 
     internal sealed class UserParamsCollator : IParamsCollator
     {
-        private const string UserBrowserType = "browserType";
-        private const string UserBrowserVersion = "browserVersion";
-        private const string UserPlatform = "platform";
+        internal const string UserBrowserType = "browserType";
+        internal const string UserBrowserVersion = "browserVersion";
+        internal const string UserPlatform = "platform";
         private const string Unknown = "unknown";
         private const string Ios = "iOS";
+        private const string Mac = "mac";
 
         private readonly Parser uaParser;
 
@@ -47,7 +48,7 @@ namespace Adobe.Target.Client.OnDevice.Collator
 
             result.Add(UserBrowserType, GetBrowserType(info));
             result.Add(UserBrowserVersion, info.UA.Major == Parser.Other ? Unknown : info.UA.Major);
-            result.Add(UserPlatform, info.OS.Family == Parser.Other ? Unknown : info.OS.Family.ToLowerInvariant());
+            result.Add(UserPlatform, GetPlatform(info));
 
             return result;
         }
@@ -65,6 +66,23 @@ namespace Adobe.Target.Client.OnDevice.Collator
             }
 
             return info.UA.Family.ToLowerInvariant();
+        }
+
+        private static string GetPlatform(ClientInfo info)
+        {
+            if (info.OS.Family == Parser.Other)
+            {
+                return Unknown;
+            }
+
+            var platform = info.OS.Family.ToLowerInvariant();
+
+            if (info.OS.Family == Ios && info.Device.Family != Parser.Other)
+            {
+                return Mac;
+            }
+
+            return platform.IndexOf(' ') == -1 ? platform : platform.Substring(0, platform.IndexOf(' '));
         }
     }
 }

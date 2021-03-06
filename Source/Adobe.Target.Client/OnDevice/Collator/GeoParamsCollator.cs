@@ -16,11 +16,11 @@ namespace Adobe.Target.Client.OnDevice.Collator
 
     internal sealed class GeoParamsCollator : IParamsCollator
     {
-        private const string GeoLatitude = "latitude";
-        private const string GeoLongitude = "longitude";
-        private const string GeoCity = "city";
-        private const string GeoRegion = "region";
-        private const string GeoCountry = "country";
+        internal const string GeoLatitude = "latitude";
+        internal const string GeoLongitude = "longitude";
+        internal const string GeoCity = "city";
+        internal const string GeoRegion = "region";
+        internal const string GeoCountry = "country";
 
         public Dictionary<string, object> CollateParams(TargetDeliveryRequest deliveryRequest = default, RequestDetails requestDetails = default)
         {

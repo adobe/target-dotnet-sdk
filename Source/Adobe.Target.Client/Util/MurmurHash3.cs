@@ -21,7 +21,12 @@ namespace Adobe.Target.Client.Util
         private const int M = 5;
         private const uint N = 0xe6546b64;
 
-        public static int HashString(string input)
+        /// <summary>
+        /// hashUnencodedChars() implementation ported from Guava
+        /// </summary>
+        /// <param name="input">Input</param>
+        /// <returns>Hashed output</returns>
+        public static int HashUnencodedChars(string input)
         {
             return unchecked((int)HashStringUnsigned(input));
         }

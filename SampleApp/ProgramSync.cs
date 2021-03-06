@@ -11,6 +11,7 @@ namespace SampleApp
 
     internal class ProgramSync
     {
+        private static TargetClient targetClient;
         public static void Main(string[] args)
         {
             Console.WriteLine("Sync app");
@@ -24,13 +25,16 @@ namespace SampleApp
 
             var targetClientConfig = new TargetClientConfig.Builder("adobetargetmobile", "B8A054D958807F770A495DD6@AdobeOrg")
                 .SetLogger(logger)
+                .SetDecisioningMethod(DecisioningMethod.OnDevice)
                 .SetOnDeviceDecisioningHandler(new OnDeviceDecisioningHandler())
                 .Build();
-            var targetClient = TargetClient.Create(targetClientConfig);
+            targetClient = TargetClient.Create(targetClientConfig);
 
-            var deliveryRequest = new TargetDeliveryRequest.Builder()
+            Thread.Sleep(3000);
+
+            /*var deliveryRequest = new TargetDeliveryRequest.Builder()
                 .SetThirdPartyId("testThirdPartyId")
-                .SetContext(new Context(ChannelType.Web))
+                .SetContext(new Context(ChannelType.Web, geo: new Geo("193.105.140.131")))
                 .SetExecute(new ExecuteRequest(null, new List<MboxRequest>
                 {
                     new MboxRequest(index:1, name: "a1-serverside-ab")
@@ -53,14 +57,26 @@ namespace SampleApp
                 })
                 .Build();
 
-            App.PrintCookies(logger, targetClient.SendNotifications(notificationRequest));
-
-            Thread.Sleep(10000);
+            App.PrintCookies(logger, targetClient.SendNotifications(notificationRequest));*/
         }
 
         private class OnDeviceDecisioningHandler : IOnDeviceDecisioningHandler
         {
-            public void OnDeviceDecisioningReady() => Console.WriteLine("OnDeviceDecisioningReady");
+            public void OnDeviceDecisioningReady()
+            {
+                Console.WriteLine("OnDeviceDecisioningReady");
+
+                var deliveryRequest = new TargetDeliveryRequest.Builder()
+                    .SetThirdPartyId("testThirdPartyId")
+                    .SetContext(new Context(ChannelType.Web, geo: new Geo("193.105.140.131")))
+                    .SetExecute(new ExecuteRequest(null, new List<MboxRequest>
+                    {
+                        new MboxRequest(index:1, name: "a1-serverside-ab")
+                    }))
+                    .Build();
+
+                var response = targetClient.GetOffers(deliveryRequest);
+            }
 
             public void ArtifactDownloadSucceeded(string artifactData) => Console.WriteLine("ArtifactDownloadSucceeded: " + artifactData);
 

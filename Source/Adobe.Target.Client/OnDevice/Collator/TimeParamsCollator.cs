@@ -13,18 +13,19 @@ namespace Adobe.Target.Client.OnDevice.Collator
     using System;
     using System.Collections.Generic;
     using Adobe.Target.Client.Model;
+    using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
 
     internal sealed class TimeParamsCollator : IParamsCollator
     {
-        private const string CurrentTimestamp = "current_timestamp";
-        private const string CurrentDay = "current_day";
-        private const string CurrentTime = "current_time";
+        internal const string CurrentTimestamp = "current_timestamp";
+        internal const string CurrentDay = "current_day";
+        internal const string CurrentTime = "current_time";
 
         public Dictionary<string, object> CollateParams(TargetDeliveryRequest deliveryRequest = default, RequestDetails requestDetails = default)
         {
             var result = new Dictionary<string, object>();
-            var dateTime = DateTime.UtcNow;
+            var dateTime = TimeProvider.Current.UtcNow;
             result.Add(CurrentTimestamp, new DateTimeOffset(dateTime).ToUnixTimeMilliseconds());
             result.Add(CurrentDay, dateTime.DayOfWeek == 0 ? 7 : (int)dateTime.DayOfWeek);
             result.Add(CurrentTime, dateTime.ToString("HHmm"));
