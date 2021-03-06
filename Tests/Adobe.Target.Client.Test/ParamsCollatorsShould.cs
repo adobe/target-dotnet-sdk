@@ -96,14 +96,16 @@ namespace Adobe.Target.Client.Test
         [Fact]
         public void CollateParams_ReturnTimeParams()
         {
+            var mockDateTime = DateTime.SpecifyKind(
+                new DateTime(2021, 3, 8, 4, 20, 1), DateTimeKind.Utc);
             var timeMock = new Mock<TimeProvider>();
             timeMock
                 .SetupGet(tp => tp.UtcNow)
-                .Returns(new DateTime(2021, 3, 8, 4, 20, 1));
+                .Returns(mockDateTime);
             TimeProvider.Current = timeMock.Object;
             var result = new TimeParamsCollator().CollateParams();
 
-            Assert.Equal(1615170001000, result[TimeParamsCollator.CurrentTimestamp]);
+            Assert.Equal(1615177201000, result[TimeParamsCollator.CurrentTimestamp]);
             Assert.Equal(1, result[TimeParamsCollator.CurrentDay]);
             Assert.Equal("0420", result[TimeParamsCollator.CurrentTime]);
             TimeProvider.ResetToDefault();
