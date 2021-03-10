@@ -12,8 +12,18 @@
 
   <ItemGroup Label="Project References">
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="UAParser" Version="3.1.46" />
     <ProjectReference Include="..\Adobe.Target.Delivery\Adobe.Target.Delivery.csproj" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Adobe.Target.Client.Test,PublicKey=002400000480000094000000060200000024000052534131000400000100010047a5f2a576d366764189b9d078f18473e5196766e18374ed2d8a6f9ee18b4a3a5b0b051dbec41a32fb9d45fedc198ace324471fdc7fee4a5689af66d74101f577c5717342c12bdb6154664904946ebeacee747bf14b284c9f8679370c1bdb165a78c89c195498588ea0257a609fa19f7077f43d9256215fb4e154de6cfd10cb7</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>DynamicProxyGenAssembly2,PublicKey=002400000480000094000000060200000024000052534131000400000100010047a5f2a576d366764189b9d078f18473e5196766e18374ed2d8a6f9ee18b4a3a5b0b051dbec41a32fb9d45fedc198ace324471fdc7fee4a5689af66d74101f577c5717342c12bdb6154664904946ebeacee747bf14b284c9f8679370c1bdb165a78c89c195498588ea0257a609fa19f7077f43d9256215fb4e154de6cfd10cb7</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>

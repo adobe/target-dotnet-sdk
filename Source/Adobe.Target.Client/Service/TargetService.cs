@@ -41,7 +41,7 @@ namespace Adobe.Target.Client.Service
         internal TargetService(TargetClientConfig clientConfig)
         {
             this.clientConfig = clientConfig;
-            this.logger = clientConfig.Logger;
+            this.logger = TargetClient.Logger;
             this.stickyBaseUrl = this.clientConfig.DefaultUrl;
             this.deliveryApi = new DeliveryApi(this.GetDeliveryApiConfig(this.stickyBaseUrl));
             RetryConfiguration.RetryPolicy = clientConfig.RetryPolicy;

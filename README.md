@@ -23,7 +23,8 @@ The Adobe Target .Net SDK uses the [Target Delivery API] to retrieve and deliver
 
 ### Prerequisites
 
-At a minimum [.NET Core SDK 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1) is required to build, test, and generate NuGet packages.
+At a minimum [.NET Core SDK 2.0](https://dotnet.microsoft.com/download/dotnet-core/2.0) is required to build, test, and generate NuGet packages.  
+Note: the SDK itself multi-targets .NET Standard 2.0 and .NET 5
 
 **macOS/Linux**
 

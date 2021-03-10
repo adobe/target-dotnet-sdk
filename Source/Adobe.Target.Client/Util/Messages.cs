@@ -21,5 +21,6 @@ namespace Adobe.Target.Client.Util
         internal const string RuleLoadingFailed = "Artifact download failed. ";
         internal const string RuleDeserializationFailed = "Artifact deserialization failed. ";
         internal const string UnknownArtifactVersion = "Unknown rules version: ";
+        internal const string MalformedAddressUrl = "Malformed URL in context address: ";
     }
 }

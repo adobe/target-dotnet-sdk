@@ -9,7 +9,7 @@
  * governing permissions and limitations under the License.
  */
 #nullable enable
-namespace Adobe.Target.Client.Service
+namespace Adobe.Target.Client.OnDevice
 {
     using System;
     using System.Collections.Generic;
@@ -59,10 +59,15 @@ namespace Adobe.Target.Client.Service
         {
             this.clientConfig = clientConfig;
             this.timerStartDelayMs = clientConfig.OnDeviceDecisioningPollingIntSecs * 1000;
-            this.logger = this.clientConfig.Logger;
+            this.logger = TargetClient.Logger;
             this.handler = this.clientConfig.OnDeviceDecisioningHandler;
             this.SetLocalRules();
             this.ScheduleTimer(0);
+        }
+
+        internal OnDeviceDecisioningRuleSet? GetLatestRules()
+        {
+            return this.latestRules;
         }
 
         private void SetLocalRules()
@@ -129,7 +134,7 @@ namespace Adobe.Target.Client.Service
 
         private string GetArtifactUrl()
         {
-            return this.clientConfig.Client + "/" + this.clientConfig.OnDeviceEnvironment.ToLower()
+            return this.clientConfig.Client + "/" + this.clientConfig.OnDeviceEnvironment.ToLowerInvariant()
                 + "/v" + MajorVersion + ArtifactFilename;
         }
 

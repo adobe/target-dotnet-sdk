@@ -33,14 +33,14 @@ namespace Adobe.Target.Client.Util
         /// </summary>
         /// <param name="targetCookie">Target cookie</param>
         /// <returns>Parsed Target cookies</returns>
-        internal static Dictionary<string, string> ParseTargetCookie(string targetCookie)
+        internal static Dictionary<string, string> ParseTargetCookie(string? targetCookie)
         {
             if (string.IsNullOrEmpty(targetCookie))
             {
                 return new Dictionary<string, string>();
             }
 
-            return targetCookie.Split(CookieValueSeparator)
+            return targetCookie!.Split(CookieValueSeparator)
                 .TakeWhile(cookie => !string.IsNullOrEmpty(cookie))
                 .Select(DeserializeInternalCookie)
                 .Where(internalCookie => internalCookie != null && internalCookie.MaxAge > GetNowInSeconds())
