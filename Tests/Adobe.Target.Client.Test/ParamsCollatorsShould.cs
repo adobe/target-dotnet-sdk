@@ -28,10 +28,6 @@ namespace Adobe.Target.Client.Test
             const string urlLower = "https://www.jora.test.co.uk:80/home/index.html?q1=v1&q2=v2#fragmentname";
             const string domain = "www.jora.test.co.uk";
             const string domainLower = "www.jora.test.co.uk";
-            const string subdomain = "jora";
-            const string subdomainLower = "jora";
-            const string topdomain = "co.uk";
-            const string topdomainLower = "co.uk";
             const string path = "/Home/Index.html";
             const string pathLower = "/home/index.html";
             const string query = "?q1=v1&Q2=V2";
@@ -47,10 +43,6 @@ namespace Adobe.Target.Client.Test
             Assert.Equal(urlLower, result[PageParamsCollator.PageUrlLower]);
             Assert.Equal(domain, result[PageParamsCollator.PageDomain]);
             Assert.Equal(domainLower, result[PageParamsCollator.PageDomainLower]);
-            Assert.Equal(subdomain, result[PageParamsCollator.PageSubdomain]);
-            Assert.Equal(subdomainLower, result[PageParamsCollator.PageSubdomainLower]);
-            Assert.Equal(topdomain, result[PageParamsCollator.PageTopLevelDomain]);
-            Assert.Equal(topdomainLower, result[PageParamsCollator.PageTopLevelDomainLower]);
             Assert.Equal(path, result[PageParamsCollator.PagePath]);
             Assert.Equal(pathLower, result[PageParamsCollator.PagePathLower]);
             Assert.Equal(query, result[PageParamsCollator.PageQuery]);

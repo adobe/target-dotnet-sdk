@@ -26,11 +26,4 @@
     </AssemblyAttribute>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Util\DomainParser\public_suffix_list.dat" />
-    <EmbeddedResource Include="Util\DomainParser\public_suffix_list.dat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-
 </Project>

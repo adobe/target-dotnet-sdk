@@ -14,7 +14,6 @@ namespace Adobe.Target.Client.OnDevice.Collator
     using System.Collections.Generic;
     using Adobe.Target.Client.Model;
     using Adobe.Target.Client.Util;
-    using Adobe.Target.Client.Util.DomainParser;
     using Adobe.Target.Delivery.Model;
     using Microsoft.Extensions.Logging;
 
@@ -37,13 +36,11 @@ namespace Adobe.Target.Client.OnDevice.Collator
         internal const string Www = "www";
 
         private readonly ILogger logger;
-        private readonly DomainParser domainParser;
         private readonly bool referring;
 
         public PageParamsCollator(bool referring = false)
         {
             this.logger = TargetClient.Logger;
-            this.domainParser = new DomainParser();
             this.referring = referring;
         }
 
@@ -60,17 +57,11 @@ namespace Adobe.Target.Client.OnDevice.Collator
             try
             {
                 var parsed = new Uri(url);
-                var domainInfo = this.domainParser.Parse(url);
-                var subdomain = GetSubDomain(domainInfo.SubDomain);
 
                 result.Add(PageUrl, parsed.OriginalString);
                 result.Add(PageUrlLower, parsed.OriginalString.ToLowerInvariant());
                 result.Add(PageDomain, parsed.Host);
                 result.Add(PageDomainLower, parsed.Host.ToLowerInvariant());
-                result.Add(PageSubdomain, subdomain);
-                result.Add(PageSubdomainLower, subdomain.ToLowerInvariant());
-                result.Add(PageTopLevelDomain, domainInfo.Tld);
-                result.Add(PageTopLevelDomainLower, domainInfo.Tld.ToLowerInvariant());
                 result.Add(PagePath, parsed.AbsolutePath);
                 result.Add(PagePathLower, parsed.AbsolutePath.ToLowerInvariant());
                 result.Add(PageQuery, parsed.Query);
