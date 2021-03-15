@@ -22,6 +22,7 @@ namespace Adobe.Target.Client.Model
     /// </summary>
     public sealed class TargetAttributes
     {
+        private const string GlobalMbox = "target-global-mbox";
         private readonly IReadOnlyDictionary<string, IReadOnlyDictionary<string, object>> content;
 
         /// <summary>
@@ -152,7 +153,7 @@ namespace Adobe.Target.Client.Model
                 return null;
             }
 
-            var globalMbox = deliveryResponse.Locations.GlobalMbox;
+            var globalMbox = deliveryResponse.Locations?.GlobalMbox ?? GlobalMbox;
             var prefetchResponse = deliveryResponse.Response.Prefetch;
             var executeResponse = deliveryResponse.Response.Execute;
             var result = new Dictionary<string, Dictionary<string, object>>();

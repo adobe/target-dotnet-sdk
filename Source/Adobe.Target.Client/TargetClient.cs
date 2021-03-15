@@ -10,7 +10,6 @@
  */
 namespace Adobe.Target.Client
 {
-    using System;
     using System.Threading.Tasks;
     using Adobe.Target.Client.Model;
     using Adobe.Target.Client.Service;
