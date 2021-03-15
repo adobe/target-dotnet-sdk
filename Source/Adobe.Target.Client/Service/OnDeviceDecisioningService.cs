@@ -11,6 +11,7 @@
 #pragma warning disable VSTHRD002
 namespace Adobe.Target.Client.Service
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
@@ -20,6 +21,7 @@ namespace Adobe.Target.Client.Service
     using Adobe.Target.Client.Model.OnDevice;
     using Adobe.Target.Client.OnDevice;
     using Adobe.Target.Client.OnDevice.Collator;
+    using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
     using Microsoft.Extensions.Logging;
 
@@ -28,21 +30,21 @@ namespace Adobe.Target.Client.Service
     /// </summary>
     internal sealed class OnDeviceDecisioningService
     {
+        internal const string ContextKeyGeo = "geo";
         private const string ContextKeyUser = "user";
-        private const string ContextKeyGeo = "geo";
         private const string ContextKeyPage = "page";
         private const string ContextKeyReferring = "referring";
         private const string ContextKeyCustom = "mbox";
 
         private static readonly IReadOnlyDictionary<string, IParamsCollator> RequestParamsCollators =
-            new Dictionary<string, IParamsCollator>()
+            new Dictionary<string, IParamsCollator>
             {
                 { ContextKeyUser, new UserParamsCollator() },
                 { ContextKeyGeo, new GeoParamsCollator() },
             };
 
         private static readonly IReadOnlyDictionary<string, IParamsCollator> DetailsParamsCollators =
-            new Dictionary<string, IParamsCollator>()
+            new Dictionary<string, IParamsCollator>
             {
                 { ContextKeyPage, new PageParamsCollator() },
                 { ContextKeyReferring, new PageParamsCollator(true) },
@@ -54,7 +56,9 @@ namespace Adobe.Target.Client.Service
         private readonly TargetClientConfig clientConfig;
         private readonly TargetService targetService;
         private readonly RuleLoader ruleLoader;
-        private readonly OnDeviceDecisioningEvaluator decisioningEvaluator;
+        private readonly ClusterLocator clusterLocator;
+        private readonly DecisioningEvaluator decisioningEvaluator;
+        private readonly DecisioningDetailsExecutor decisionHandler;
         private readonly GeoClient geoClient;
 
         /// <summary>
@@ -67,7 +71,9 @@ namespace Adobe.Target.Client.Service
             this.clientConfig = clientConfig;
             this.targetService = targetService;
             this.ruleLoader = new RuleLoader(clientConfig);
-            this.decisioningEvaluator = new OnDeviceDecisioningEvaluator(this.ruleLoader);
+            this.clusterLocator = new ClusterLocator(clientConfig, targetService);
+            this.decisioningEvaluator = new DecisioningEvaluator(this.ruleLoader);
+            this.decisionHandler = new DecisioningDetailsExecutor(clientConfig);
             this.geoClient = new GeoClient(clientConfig);
         }
 
@@ -85,7 +91,7 @@ namespace Adobe.Target.Client.Service
                     deliveryRequest,
                     deliveryResponse,
                     HttpStatusCode.ServiceUnavailable,
-                    "Local-decisioning rules not available");
+                    Messages.RulesetUnavailable);
             }
 
             var requestContext = new Dictionary<string, object>(TimeParamsCollator.CollateParams());
@@ -125,6 +131,11 @@ namespace Adobe.Target.Client.Service
             return targetResponse;
         }
 
+        internal Task<TargetDeliveryResponse> ExecuteRequestAsync(TargetDeliveryRequest deliveryRequest)
+        {
+            throw new NotImplementedException();
+        }
+
         internal OnDeviceDecisioningEvaluation EvaluateLocalExecution(TargetDeliveryRequest request)
         {
             return this.decisioningEvaluator.EvaluateLocalExecution(request);
@@ -132,7 +143,7 @@ namespace Adobe.Target.Client.Service
 
         private void HandleDetails(
             IList<RequestDetailsUnion> detailsList,
-            Dictionary<string, object> requestContext,
+            IDictionary<string, object> requestContext,
             TargetDeliveryRequest deliveryRequest,
             string visitorId,
             ISet<string> responseTokens,
@@ -143,10 +154,19 @@ namespace Adobe.Target.Client.Service
         {
             foreach (var details in detailsList)
             {
-                var detailsContext =
-                    this.CollateParams(DetailsParamsCollators, deliveryRequest, details.GetRequestDetails());
+                var detailsContext = new Dictionary<string, object>(requestContext);
+                detailsContext.AddAll(this.CollateParams(DetailsParamsCollators, deliveryRequest, details.GetRequestDetails()));
 
-                // TODO: call decision handler
+                this.decisionHandler.ExecuteDetails(
+                    deliveryRequest,
+                    detailsContext,
+                    visitorId,
+                    responseTokens,
+                    ruleSet,
+                    details,
+                    prefetchResponse,
+                    executeResponse,
+                    notifications);
             }
         }
 
@@ -168,15 +188,9 @@ namespace Adobe.Target.Client.Service
             }
 
             vid = this.GenerateTntId();
-            if (visitorId == null)
-            {
-                visitorId = new VisitorId();
-                visitorId.TntId = vid;
-            }
-            else
-            {
-                visitorId.TntId = vid;
-            }
+
+            visitorId ??= new VisitorId();
+            visitorId.TntId = vid;
 
             targetResponse.Response.Id = visitorId;
 
@@ -185,14 +199,31 @@ namespace Adobe.Target.Client.Service
 
         private string GenerateTntId()
         {
-            // TODO: Implement
-            return null;
+            var tntId = Guid.NewGuid().ToString();
+            var locationHint = this.clusterLocator.GetLocationHint();
+
+            return locationHint == null ? tntId : $"{tntId}.{locationHint}_0";
         }
 
         private TargetDeliveryResponse BuildDeliveryResponse(TargetDeliveryRequest deliveryRequest)
         {
-            // TODO: Implement
-            return new TargetDeliveryResponse(deliveryRequest, new DeliveryResponse(), HttpStatusCode.Accepted);
+            var localEvaluation = this.EvaluateLocalExecution(deliveryRequest);
+            var status = localEvaluation.AllLocal ? HttpStatusCode.OK : HttpStatusCode.PartialContent;
+            var deliveryResponse = new DeliveryResponse(
+                (int)status,
+                deliveryRequest.DeliveryRequest.RequestId,
+                deliveryRequest.DeliveryRequest.Id,
+                this.clientConfig.Client);
+            deliveryResponse.Prefetch = new PrefetchResponse();
+            deliveryResponse.Execute = new ExecuteResponse();
+            var locations = new Locations(localEvaluation.RemoteMboxes, localEvaluation.RemoteViews, localEvaluation.GlobalMbox);
+
+            return new TargetDeliveryResponse(
+                deliveryRequest,
+                deliveryResponse,
+                status,
+                localEvaluation.AllLocal ? Messages.OnDeviceResponse : localEvaluation.Reason,
+                locations);
         }
 
         private IList<RequestDetailsUnion> GetExecuteDetails(DeliveryRequest deliveryRequest)

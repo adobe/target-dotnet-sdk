@@ -24,5 +24,30 @@ namespace Adobe.Target.Client.Test
             hashed = MurmurHash3.HashUnencodedChars("targettesting.125880.4c038b35f1b1453d80a3e7da8208c617.campaign");
             Assert.Equal(-683299703, hashed);
         }
+
+        [Fact]
+        public void AllocationUtils_CalculateAllocation()
+        {
+            var result = AllocationUtils.CalculateAllocation(
+                "someClientId",
+                "123456",
+                "ecid123",
+                "salty");
+            Assert.Equal(29.06, result);
+
+            result = AllocationUtils.CalculateAllocation(
+                "someClientId",
+                "123456",
+                "tntId123",
+                "salty");
+            Assert.Equal(21.94, result);
+
+            result = AllocationUtils.CalculateAllocation(
+                "someClientId",
+                "123456",
+                "tntId123.28_0",
+                "salty");
+            Assert.Equal(21.94, result);
+        }
     }
 }

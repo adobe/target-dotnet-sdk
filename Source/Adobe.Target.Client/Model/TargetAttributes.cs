@@ -22,7 +22,6 @@ namespace Adobe.Target.Client.Model
     /// </summary>
     public sealed class TargetAttributes
     {
-        private const string GlobalMbox = "target-global-mbox";
         private readonly IReadOnlyDictionary<string, IReadOnlyDictionary<string, object>> content;
 
         /// <summary>
@@ -153,21 +152,26 @@ namespace Adobe.Target.Client.Model
                 return null;
             }
 
+            var globalMbox = deliveryResponse.Locations.GlobalMbox;
             var prefetchResponse = deliveryResponse.Response.Prefetch;
             var executeResponse = deliveryResponse.Response.Execute;
             var result = new Dictionary<string, Dictionary<string, object>>();
 
-            result = ProcessResponse(result, prefetchResponse?.PageLoad, prefetchResponse?.Mboxes);
-            result = ProcessResponse(result, executeResponse?.PageLoad, executeResponse?.Mboxes);
+            result = ProcessResponse(result, prefetchResponse?.PageLoad, prefetchResponse?.Mboxes, globalMbox);
+            result = ProcessResponse(result, executeResponse?.PageLoad, executeResponse?.Mboxes, globalMbox);
 
             return result.ToDictionary(pair => pair.Key, pair => (IReadOnlyDictionary<string, object>)pair.Value);
         }
 
-        private static Dictionary<string, Dictionary<string, object>> ProcessResponse(Dictionary<string, Dictionary<string, object>> accumulator, PageLoadResponse pageLoad, List<PrefetchMboxResponse> mboxes)
+        private static Dictionary<string, Dictionary<string, object>> ProcessResponse(
+            Dictionary<string, Dictionary<string, object>> accumulator,
+            PageLoadResponse pageLoad,
+            List<PrefetchMboxResponse> mboxes,
+            string globalMbox)
         {
             if (pageLoad != null)
             {
-                accumulator = AddOptions(accumulator, pageLoad.Options, GlobalMbox);
+                accumulator = AddOptions(accumulator, pageLoad.Options, globalMbox);
             }
 
             if (mboxes == null || mboxes.Count == 0)
@@ -189,11 +193,15 @@ namespace Adobe.Target.Client.Model
             return accumulator;
         }
 
-        private static Dictionary<string, Dictionary<string, object>> ProcessResponse(Dictionary<string, Dictionary<string, object>> accumulator, PageLoadResponse pageLoad, List<MboxResponse> mboxes)
+        private static Dictionary<string, Dictionary<string, object>> ProcessResponse(
+            Dictionary<string, Dictionary<string, object>> accumulator,
+            PageLoadResponse pageLoad,
+            List<MboxResponse> mboxes,
+            string globalMbox)
         {
             if (pageLoad != null)
             {
-                accumulator = AddOptions(accumulator, pageLoad.Options, GlobalMbox);
+                accumulator = AddOptions(accumulator, pageLoad.Options, globalMbox);
             }
 
             if (mboxes == null || mboxes.Count == 0)

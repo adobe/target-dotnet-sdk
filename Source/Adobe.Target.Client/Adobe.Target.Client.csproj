@@ -11,6 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup Label="Project References">
+    <PackageReference Include="JsonLogic.Net" Version="1.1.9" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="UAParser" Version="3.1.46" />
     <ProjectReference Include="..\Adobe.Target.Delivery\Adobe.Target.Delivery.csproj" />

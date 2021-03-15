@@ -59,13 +59,13 @@ namespace Adobe.Target.Client.Model.OnDevice
             };
         }
 
-        internal T Match<T>(Func<RequestDetails, T> f, Func<MboxRequest, T> g, Func<ViewRequest, T> h)
+        internal T Match<T>(Func<RequestDetails, T> pageLoadFunc, Func<MboxRequest, T> mboxFunc, Func<ViewRequest, T> viewFunc)
         {
             return this.tag switch
             {
-                0 => f(this.requestDetails),
-                1 => g(this.mboxRequest),
-                2 => h(this.viewRequest),
+                0 => pageLoadFunc(this.requestDetails),
+                1 => mboxFunc(this.mboxRequest),
+                2 => viewFunc(this.viewRequest),
                 _ => throw new ApplicationException("Unrecognized tag value: " + this.tag)
             };
         }

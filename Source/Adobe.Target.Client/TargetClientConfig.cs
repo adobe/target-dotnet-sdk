@@ -52,7 +52,6 @@ namespace Adobe.Target.Client
             this.OnDeviceConfigHostname = builder.OnDeviceConfigHostname;
             this.OnDeviceDecisioningPollingIntSecs = builder.OnDeviceDecisioningPollingIntSecs;
             this.OnDeviceArtifactPayload = builder.OnDeviceArtifactPayload;
-            this.OnDeviceAllMatchingRulesMboxes = builder.OnDeviceAllMatchingRulesMboxes;
         }
 
         /// <summary>
@@ -149,11 +148,6 @@ namespace Adobe.Target.Client
         /// OnDevice Artifact Payload
         /// </summary>
         public string OnDeviceArtifactPayload { get; }
-
-        /// <summary>
-        /// Mboxes for which rule evaluation will always be skipped
-        /// </summary>
-        public ISet<string> OnDeviceAllMatchingRulesMboxes { get; }
 
         private static void ValidateConfig(Builder builder)
         {
@@ -268,11 +262,6 @@ namespace Adobe.Target.Client
             /// OnDevice Artifact Payload
             /// </summary>
             internal string OnDeviceArtifactPayload { get; private set; }
-
-            /// <summary>
-            /// Mboxes for which rule evaluation will always be skipped
-            /// </summary>
-            internal ISet<string> OnDeviceAllMatchingRulesMboxes { get; private set; }
 
             /// <summary>
             /// Sets ServerDomain <br/>
@@ -442,18 +431,6 @@ namespace Adobe.Target.Client
             public Builder SetOnDeviceDecisioningPollingIntSecs(int pollingSeconds)
             {
                 this.OnDeviceDecisioningPollingIntSecs = pollingSeconds;
-                return this;
-            }
-
-            /// <summary>
-            /// Sets OnDevice All Matching Rules Mboxes
-            /// Mboxes for which rule evaluation will always be skipped
-            /// </summary>
-            /// <param name="mboxes">OnDevice Decisioning All Matching Rules Mboxes</param>
-            /// <returns><see cref="Builder"/> instance</returns>
-            public Builder SetOnDeviceAllMatchingRulesMboxes(ISet<string> mboxes)
-            {
-                this.OnDeviceAllMatchingRulesMboxes = mboxes;
                 return this;
             }
 
