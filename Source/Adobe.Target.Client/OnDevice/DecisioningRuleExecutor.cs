@@ -44,6 +44,7 @@ namespace Adobe.Target.Client.OnDevice
             OnDeviceDecisioningRule rule,
             ISet<string> responseTokens)
         {
+            localContext.Remove(Allocation);
             localContext.Add(Allocation, this.ComputeAllocation(visitorId, rule));
             var matched = this.EvaluateRule((JObject)rule.Condition, localContext.ToExpandoObject());
             if (!matched)
@@ -136,7 +137,8 @@ namespace Adobe.Target.Client.OnDevice
                 return consequence;
             }
 
-            var option = optionsList[0]; // TODO: why not all of them as in Node.js?
+            var option = optionsList[0];
+            option.ResponseTokens ??= new Dictionary<string, object>();
             var responseTokens = option.ResponseTokens;
             responseTokens.Add(ResponseTokenDecisioningMethod, OnDevice);
             responseTokens.AddAll(GetGeoResponseTokens(localContext, responseTokenKeys));

@@ -26,6 +26,7 @@ namespace Adobe.Target.Client.OnDevice
     using Newtonsoft.Json;
     using Polly;
     using RestSharp;
+    using Action = System.Action;
 
     internal sealed class RuleLoader
     {
@@ -49,7 +50,6 @@ namespace Adobe.Target.Client.OnDevice
         private readonly int timerStartDelayMs;
         private readonly TargetClientConfig clientConfig;
         private readonly ILogger? logger;
-        private readonly IOnDeviceDecisioningHandler? handler;
         private Timer? timer;
         private volatile OnDeviceDecisioningRuleSet? latestRules;
         private string? lastETag;
@@ -60,7 +60,6 @@ namespace Adobe.Target.Client.OnDevice
             this.clientConfig = clientConfig;
             this.timerStartDelayMs = clientConfig.OnDeviceDecisioningPollingIntSecs * 1000;
             this.logger = TargetClient.Logger;
-            this.handler = this.clientConfig.OnDeviceDecisioningHandler;
             this.SetLocalRules();
             this.ScheduleTimer(0);
         }
@@ -68,6 +67,20 @@ namespace Adobe.Target.Client.OnDevice
         internal OnDeviceDecisioningRuleSet? GetLatestRules()
         {
             return this.latestRules;
+        }
+
+        private static void RunOnDeviceDecisioningDelegate(Action? onDeviceDecisioningDelegate)
+        {
+            if (onDeviceDecisioningDelegate == null)
+            {
+                return;
+            }
+
+            _ = Task.Factory.StartNew(
+                onDeviceDecisioningDelegate,
+                CancellationToken.None,
+                TaskCreationOptions.None,
+                TaskScheduler.Default);
         }
 
         private void SetLocalRules()
@@ -88,7 +101,7 @@ namespace Adobe.Target.Client.OnDevice
             if (!this.succeeded)
             {
                 this.succeeded = true;
-                this.handler?.OnDeviceDecisioningReady();
+                RunOnDeviceDecisioningDelegate(this.clientConfig.OnDeviceDecisioningReady);
             }
         }
 
@@ -160,14 +173,17 @@ namespace Adobe.Target.Client.OnDevice
                 return;
             }
 
-            this.handler?.ArtifactDownloadSucceeded(result.Content);
+            if (this.clientConfig.ArtifactDownloadSucceeded != null)
+            {
+                RunOnDeviceDecisioningDelegate(() => this.clientConfig.ArtifactDownloadSucceeded(result.Content));
+            }
 
             Interlocked.Exchange(ref this.latestRules, deserialized);
 
             if (!this.succeeded)
             {
                 this.succeeded = true;
-                this.handler?.OnDeviceDecisioningReady();
+                RunOnDeviceDecisioningDelegate(this.clientConfig.OnDeviceDecisioningReady);
             }
         }
 
@@ -213,7 +229,12 @@ namespace Adobe.Target.Client.OnDevice
         {
             var exception = new ApplicationException(message + exceptionMessage);
             this.logger.LogException(exception);
-            this.handler?.ArtifactDownloadFailed(exception);
+            if (this.clientConfig.ArtifactDownloadFailed == null)
+            {
+                return;
+            }
+
+            RunOnDeviceDecisioningDelegate(() => this.clientConfig.ArtifactDownloadFailed(exception));
         }
 
         private void ScheduleTimer(int startDelay)

@@ -51,7 +51,7 @@ namespace Adobe.Target.Client.Service
                 { ContextKeyCustom, new CustomParamsCollator() },
             };
 
-        private static readonly TimeParamsCollator TimeParamsCollator = new TimeParamsCollator();
+        private static readonly TimeParamsCollator TimeParamsCollator = new ();
 
         private readonly TargetClientConfig clientConfig;
         private readonly TargetService targetService;
