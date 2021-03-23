@@ -120,119 +120,139 @@ namespace Adobe.Target.Client.OnDevice
             }
 
             return details.Match(
-                _ =>
+                _ => HandlePageLoad(prefetchResponse, executeResponse, consequenceOptions, consequenceMetrics),
+                mboxRequest => HandleMboxRequest(prefetchResponse, executeResponse, mboxRequest, consequenceOptions, consequenceMetrics),
+                _ => HandleViewRequest(prefetchResponse, consequenceName, consequenceOptions, consequenceMetrics));
+        }
+
+        private static bool HandleViewRequest(
+            PrefetchResponse prefetchResponse,
+            string consequenceName,
+            List<Option> consequenceOptions,
+            List<Metric> consequenceMetrics)
+        {
+            if (prefetchResponse == null)
+            {
+                return false;
+            }
+
+            var responseView = new View(consequenceName, null, consequenceOptions, consequenceMetrics);
+            var views = prefetchResponse.Views;
+            if (views == null)
+            {
+                views = new List<View>();
+                prefetchResponse.Views = views;
+            }
+
+            var foundView = views.Find(view => view.Name == responseView.Name);
+            if (foundView == null)
+            {
+                views.Add(responseView);
+                return true;
+            }
+
+            if (responseView.Options != null)
+            {
+                foundView.Options ??= new List<Option>();
+                foundView.Options.AddRange(responseView.Options);
+            }
+
+            if (responseView.Metrics != null)
+            {
+                foundView.Metrics ??= new List<Metric>();
+                foundView.Metrics.AddRange(responseView.Metrics);
+            }
+
+            return true;
+        }
+
+        private static bool HandleMboxRequest(
+            PrefetchResponse prefetchResponse,
+            ExecuteResponse executeResponse,
+            MboxRequest mboxRequest,
+            List<Option> consequenceOptions,
+            List<Metric> consequenceMetrics)
+        {
+            if (prefetchResponse != null)
+            {
+                var prefetchMboxResponse =
+                    new PrefetchMboxResponse(mboxRequest.Index, mboxRequest.Name, consequenceOptions, consequenceMetrics);
+                prefetchResponse.Mboxes ??= new List<PrefetchMboxResponse>();
+                prefetchResponse.Mboxes.Add(prefetchMboxResponse);
+                return true;
+            }
+
+            if (executeResponse == null)
+            {
+                return false;
+            }
+
+            var mboxResponse =
+                new MboxResponse(mboxRequest.Index, mboxRequest.Name, metrics: consequenceMetrics)
                 {
-                    PageLoadResponse pageLoad = null;
-                    if (prefetchResponse != null)
-                    {
-                        prefetchResponse.PageLoad ??= new PageLoadResponse();
-                        pageLoad = prefetchResponse.PageLoad;
-                    }
-                    else if (executeResponse != null)
-                    {
-                        executeResponse.PageLoad ??= new PageLoadResponse();
-                        pageLoad = executeResponse.PageLoad;
-                    }
-
-                    if (pageLoad == null)
-                    {
-                        return false;
-                    }
-
-                    if (consequenceOptions != null)
-                    {
-                        foreach (var option in consequenceOptions)
-                        {
-                            if (executeResponse != null)
+                    Options = consequenceOptions?.Select(
+                            option =>
                             {
                                 option.EventToken = null;
-                            }
+                                return option;
+                            })
+                        .ToList(),
+                };
+            executeResponse.Mboxes ??= new List<MboxResponse>();
+            executeResponse.Mboxes.Add(mboxResponse);
+            return true;
+        }
 
-                            pageLoad.Options ??= new List<Option>();
-                            pageLoad.Options.Add(option);
-                        }
-                    }
+        private static bool HandlePageLoad(
+            PrefetchResponse prefetchResponse,
+            ExecuteResponse executeResponse,
+            IList<Option> consequenceOptions,
+            IList<Metric> consequenceMetrics)
+        {
+            PageLoadResponse pageLoad = null;
+            if (prefetchResponse != null)
+            {
+                prefetchResponse.PageLoad ??= new PageLoadResponse();
+                pageLoad = prefetchResponse.PageLoad;
+            }
+            else if (executeResponse != null)
+            {
+                executeResponse.PageLoad ??= new PageLoadResponse();
+                pageLoad = executeResponse.PageLoad;
+            }
 
-                    if (consequenceMetrics == null)
-                    {
-                        return true;
-                    }
+            if (pageLoad == null)
+            {
+                return false;
+            }
 
-                    foreach (var metric in consequenceMetrics
-                        .Where(metric => pageLoad.Metrics == null || !pageLoad.Metrics.Contains(metric)))
-                    {
-                        pageLoad.Metrics ??= new List<Metric>();
-                        pageLoad.Metrics.Add(metric);
-                    }
-
-                    return true;
-                },
-                mboxRequest =>
+            if (consequenceOptions != null)
+            {
+                foreach (var option in consequenceOptions)
                 {
-                    if (prefetchResponse != null)
+                    if (executeResponse != null)
                     {
-                        var prefetchMboxResponse = new PrefetchMboxResponse(mboxRequest.Index, mboxRequest.Name, consequenceOptions, consequenceMetrics);
-                        prefetchResponse.Mboxes ??= new List<PrefetchMboxResponse>();
-                        prefetchResponse.Mboxes.Add(prefetchMboxResponse);
-                        return true;
+                        option.EventToken = null;
                     }
 
-                    if (executeResponse == null)
-                    {
-                        return false;
-                    }
+                    pageLoad.Options ??= new List<Option>();
+                    pageLoad.Options.Add(option);
+                }
+            }
 
-                    var mboxResponse =
-                        new MboxResponse(mboxRequest.Index, mboxRequest.Name, metrics: consequenceMetrics)
-                        {
-                            Options = consequenceOptions?.Select(
-                                    option =>
-                                    {
-                                        option.EventToken = null;
-                                        return option;
-                                    })
-                                .ToList(),
-                        };
-                    executeResponse.Mboxes ??= new List<MboxResponse>();
-                    executeResponse.Mboxes.Add(mboxResponse);
-                    return true;
-                },
-                _ =>
-                {
-                    if (prefetchResponse == null)
-                    {
-                        return false;
-                    }
+            if (consequenceMetrics == null)
+            {
+                return true;
+            }
 
-                    var responseView = new View(consequenceName, null, consequenceOptions, consequenceMetrics);
-                    var views = prefetchResponse.Views;
-                    if (views == null)
-                    {
-                        views = new List<View>();
-                        prefetchResponse.Views = views;
-                    }
+            foreach (var metric in consequenceMetrics
+                .Where(metric => pageLoad.Metrics == null || !pageLoad.Metrics.Contains(metric)))
+            {
+                pageLoad.Metrics ??= new List<Metric>();
+                pageLoad.Metrics.Add(metric);
+            }
 
-                    var foundView = views.Find(view => view.Name == responseView.Name);
-                    if (foundView == null)
-                    {
-                        views.Add(responseView);
-                        return true;
-                    }
-
-                    if (responseView.Options != null)
-                    {
-                        foundView.Options ??= new List<Option>();
-                        foundView.Options.AddRange(responseView.Options);
-                    }
-
-                    if (responseView.Metrics != null)
-                    {
-                        foundView.Metrics ??= new List<Metric>();
-                        foundView.Metrics.AddRange(responseView.Metrics);
-                    }
-
-                    return true;
-                });
+            return true;
         }
 
         private static Notification CreateNotification(RequestDetailsUnion details, List<Option> options, string globalMbox)
@@ -266,38 +286,46 @@ namespace Adobe.Target.Client.OnDevice
         private static void UnhandledResponse(RequestDetailsUnion details, PrefetchResponse prefetchResponse, ExecuteResponse executeResponse)
         {
             _ = details.Match<object>(
-                _ =>
-                {
-                    var response = new PageLoadResponse();
-                    if (prefetchResponse != null)
-                    {
-                        prefetchResponse.PageLoad = response;
-                        return null;
-                    }
+                _ => UnhandledPageLoadResponse(prefetchResponse, executeResponse),
+                mboxRequest => UnhandledMboxResponse(prefetchResponse, executeResponse, mboxRequest),
+                _ => UnhandledViewResponse(prefetchResponse));
+        }
 
-                    executeResponse.PageLoad = response;
-                    return null;
-                }, mboxRequest =>
-                {
-                    if (prefetchResponse != null)
-                    {
-                        var prefetchMboxResponse = new PrefetchMboxResponse(mboxRequest.Index, mboxRequest.Name);
-                        prefetchResponse.Mboxes ??= new List<PrefetchMboxResponse>();
-                        prefetchResponse.Mboxes.Add(prefetchMboxResponse);
-                        return null;
-                    }
+        private static object UnhandledViewResponse(PrefetchResponse prefetchResponse)
+        {
+            var view = new View();
+            prefetchResponse.Views ??= new List<View>();
+            prefetchResponse.Views.Add(view);
+            return null;
+        }
 
-                    var response = new MboxResponse(mboxRequest.Index, mboxRequest.Name);
-                    executeResponse.Mboxes ??= new List<MboxResponse>();
-                    executeResponse.Mboxes.Add(response);
-                    return null;
-                }, viewRequest =>
-                {
-                    var view = new View();
-                    prefetchResponse.Views ??= new List<View>();
-                    prefetchResponse.Views.Add(view);
-                    return null;
-                });
+        private static object UnhandledMboxResponse(PrefetchResponse prefetchResponse, ExecuteResponse executeResponse, MboxRequest mboxRequest)
+        {
+            if (prefetchResponse != null)
+            {
+                var prefetchMboxResponse = new PrefetchMboxResponse(mboxRequest.Index, mboxRequest.Name);
+                prefetchResponse.Mboxes ??= new List<PrefetchMboxResponse>();
+                prefetchResponse.Mboxes.Add(prefetchMboxResponse);
+                return null;
+            }
+
+            var response = new MboxResponse(mboxRequest.Index, mboxRequest.Name);
+            executeResponse.Mboxes ??= new List<MboxResponse>();
+            executeResponse.Mboxes.Add(response);
+            return null;
+        }
+
+        private static object UnhandledPageLoadResponse(PrefetchResponse prefetchResponse, ExecuteResponse executeResponse)
+        {
+            var response = new PageLoadResponse();
+            if (prefetchResponse != null)
+            {
+                prefetchResponse.PageLoad = response;
+                return null;
+            }
+
+            executeResponse.PageLoad = response;
+            return null;
         }
 
         private static bool PropertyTokenMismatch(IReadOnlyList<string> rulePropertyTokens, string propertyToken)
@@ -313,11 +341,29 @@ namespace Adobe.Target.Client.OnDevice
         private static IReadOnlyList<OnDeviceDecisioningRule> GetDetailsRules(RequestDetailsUnion details, OnDeviceDecisioningRuleSet ruleSet)
         {
             return details.Match(
-                _ => ruleSet.Rules.Mboxes.TryGetValue(ruleSet.GlobalMbox, out var result) ? result : null,
-                mboxRequest => ruleSet.Rules.Mboxes.TryGetValue(mboxRequest.Name, out var result) ? result : null,
-                viewRequest => string.IsNullOrEmpty(viewRequest.Name)
-                    ? ruleSet.Rules.Views.Values.SelectMany(list => list).ToList()
-                    : ruleSet.Rules.Mboxes.TryGetValue(viewRequest.Name, out var result) ? result : null);
+                _ => GetPageLoadRules(ruleSet),
+                mboxRequest => GetMboxRules(ruleSet, mboxRequest),
+                viewRequest => GetViewRules(ruleSet, viewRequest));
+        }
+
+        private static IReadOnlyList<OnDeviceDecisioningRule> GetViewRules(OnDeviceDecisioningRuleSet ruleSet, ViewRequest viewRequest)
+        {
+            if (string.IsNullOrEmpty(viewRequest.Name))
+            {
+                return ruleSet.Rules.Views.Values.SelectMany(list => list).ToList();
+            }
+
+            return ruleSet.Rules.Views.TryGetValue(viewRequest.Name, out var result) ? result : null;
+        }
+
+        private static IReadOnlyList<OnDeviceDecisioningRule> GetMboxRules(OnDeviceDecisioningRuleSet ruleSet, MboxRequest mboxRequest)
+        {
+            return ruleSet.Rules.Mboxes.TryGetValue(mboxRequest.Name, out var result) ? result : null;
+        }
+
+        private static IReadOnlyList<OnDeviceDecisioningRule> GetPageLoadRules(OnDeviceDecisioningRuleSet ruleSet)
+        {
+            return ruleSet.Rules.Mboxes.TryGetValue(ruleSet.GlobalMbox, out var result) ? result : null;
         }
     }
 }

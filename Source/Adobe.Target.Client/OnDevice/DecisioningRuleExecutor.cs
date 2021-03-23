@@ -65,9 +65,7 @@ namespace Adobe.Target.Client.OnDevice
 
             foreach (var geo in (Dictionary<string, object>)geoContext)
             {
-                var tokenKey = geo.Key == GeoParamsCollator.GeoRegion
-                    ? $"{OnDeviceDecisioningService.ContextKeyGeo}.{State}"
-                    : $"{OnDeviceDecisioningService.ContextKeyGeo}.{geo.Key}";
+                var tokenKey = GetGeoTokenKey(geo);
 
                 if (responseTokenKeys.Contains(tokenKey))
                 {
@@ -77,6 +75,11 @@ namespace Adobe.Target.Client.OnDevice
 
             return result;
         }
+
+        private static string GetGeoTokenKey(KeyValuePair<string, object> geo) =>
+            geo.Key == GeoParamsCollator.GeoRegion
+                ? $"{OnDeviceDecisioningService.ContextKeyGeo}.{State}"
+                : $"{OnDeviceDecisioningService.ContextKeyGeo}.{geo.Key}";
 
         private static IDictionary<string, object> GetMetaResponseTokens(OnDeviceDecisioningRule rule, ISet<string> responseTokenKeys)
         {

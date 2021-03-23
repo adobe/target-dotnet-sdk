@@ -43,21 +43,21 @@ namespace Adobe.Target.Client.OnDevice
 
             var remoteMboxes = this.ComputeRemoteMboxes(request, ruleSet);
             var remoteViews = this.ComputeRemoteViews(request, ruleSet);
-            var haveRemoteMboxes = remoteMboxes.Count != 0;
-            var haveRemoteViews = remoteViews.Count != 0;
+            var hasRemoteMboxes = remoteMboxes.Count != 0;
+            var hasRemoteViews = remoteViews.Count != 0;
 
-            if (!haveRemoteMboxes && !haveRemoteViews)
+            if (!hasRemoteMboxes && !hasRemoteViews)
             {
                 return new OnDeviceDecisioningEvaluation(true, globalMbox: ruleSet.GlobalMbox);
             }
 
             var reason = new StringBuilder(RemoteActivities);
-            if (haveRemoteMboxes)
+            if (hasRemoteMboxes)
             {
                 reason.Append(Mboxes).Append(string.Join(",", remoteMboxes)).Append(' ');
             }
 
-            if (haveRemoteViews)
+            if (hasRemoteViews)
             {
                 reason.Append(Views).Append(string.Join(",", remoteViews));
             }
@@ -66,8 +66,8 @@ namespace Adobe.Target.Client.OnDevice
                 false,
                 reason.ToString(),
                 ruleSet.GlobalMbox,
-                haveRemoteMboxes ? remoteMboxes : default,
-                haveRemoteViews ? remoteViews : default);
+                hasRemoteMboxes ? remoteMboxes : default,
+                hasRemoteViews ? remoteViews : default);
         }
 
         private IReadOnlyList<string> ComputeRemoteMboxes(TargetDeliveryRequest request, OnDeviceDecisioningRuleSet ruleSet)
