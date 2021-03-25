@@ -10,7 +10,6 @@
  */
 namespace Adobe.Target.Client
 {
-    using System;
     using System.Threading.Tasks;
     using Adobe.Target.Client.Model;
     using Adobe.Target.Client.Service;
@@ -82,9 +81,10 @@ namespace Adobe.Target.Client
             var decisioning = request.DecisioningMethod != default ? request.DecisioningMethod : this.defaultDecisioningMethod;
             this.UpdatePropertyToken(request);
 
-            if (decisioning != DecisioningMethod.ServerSide)
+            if (decisioning == DecisioningMethod.OnDevice
+                || (decisioning == DecisioningMethod.Hybrid && this.localService.EvaluateLocalExecution(request).AllLocal))
             {
-                throw new NotImplementedException();
+                return this.localService.ExecuteRequestAsync(request);
             }
 
             return this.targetService.ExecuteRequestAsync(request);

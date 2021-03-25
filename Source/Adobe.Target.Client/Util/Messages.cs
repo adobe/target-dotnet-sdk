@@ -22,5 +22,8 @@ namespace Adobe.Target.Client.Util
         internal const string RuleDeserializationFailed = "Artifact deserialization failed. ";
         internal const string UnknownArtifactVersion = "Unknown rules version: ";
         internal const string MalformedAddressUrl = "Malformed URL in context address: ";
+        internal const string RequestNonNull = "Delivery request cannot be null";
+        internal const string RulesetUnavailable = "On-Device Decisioning rule set not yet available";
+        internal const string OnDeviceResponse = "On-Device Decisioning response";
     }
 }

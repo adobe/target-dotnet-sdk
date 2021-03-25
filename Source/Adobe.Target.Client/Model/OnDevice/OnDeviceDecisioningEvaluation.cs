@@ -18,8 +18,8 @@ namespace Adobe.Target.Client.Model.OnDevice
             bool allLocal,
             string reason = default,
             string globalMbox = default,
-            IList<string> remoteMboxes = default,
-            IList<string> remoteViews = default)
+            IReadOnlyList<string> remoteMboxes = default,
+            IReadOnlyList<string> remoteViews = default)
         {
             this.AllLocal = allLocal;
             this.Reason = reason;
@@ -34,8 +34,8 @@ namespace Adobe.Target.Client.Model.OnDevice
 
         internal string GlobalMbox { get; }
 
-        internal IList<string> RemoteMboxes { get; }
+        internal IReadOnlyList<string> RemoteMboxes { get; }
 
-        internal IList<string> RemoteViews { get; }
+        internal IReadOnlyList<string> RemoteViews { get; }
     }
 }

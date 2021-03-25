@@ -91,7 +91,7 @@ namespace Adobe.Target.Client.Service
         {
             this.UpdateStickyLocationHint(response);
             this.logger.LogResponse(response);
-            return new TargetDeliveryResponse(request, response, (HttpStatusCode)response.Status, null);
+            return new TargetDeliveryResponse(request, response, (HttpStatusCode)response.Status);
         }
 
         private void UpdateStickyLocationHint(DeliveryResponse deliveryResponse)

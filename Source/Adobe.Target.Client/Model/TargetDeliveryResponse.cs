@@ -28,12 +28,19 @@ namespace Adobe.Target.Client.Model
         /// <param name="response">Response</param>
         /// <param name="status">Status</param>
         /// <param name="message">Message</param>
-        public TargetDeliveryResponse(TargetDeliveryRequest request, DeliveryResponse response, HttpStatusCode status, string message = "")
+        /// <param name="locations">Locations</param>
+        public TargetDeliveryResponse(
+            TargetDeliveryRequest request,
+            DeliveryResponse response,
+            HttpStatusCode status,
+            string message = "",
+            Locations locations = default)
         {
             this.Request = request;
             this.Response = response;
             this.Status = status;
             this.Message = message;
+            this.Locations = locations;
         }
 
         /// <summary>
@@ -55,6 +62,11 @@ namespace Adobe.Target.Client.Model
         /// Message
         /// </summary>
         public string Message { get; }
+
+        /// <summary>
+        /// Locations, i.e. mboxes and views
+        /// </summary>
+        public Locations Locations { get; }
 
         /// <summary>
         /// Gets Target cookies

@@ -11,6 +11,7 @@
 namespace Adobe.Target.Client.Extension
 {
     using System.Collections.Generic;
+    using System.Dynamic;
 
     internal static class DictionaryExtension
     {
@@ -40,6 +41,18 @@ namespace Adobe.Target.Client.Extension
 
                 to.Add(entry.Key, entry.Value);
             }
+        }
+
+        internal static object ToExpandoObject(this IDictionary<string, object> dictionary)
+        {
+            dynamic expandoObject = new ExpandoObject();
+            var expandoCollection = (ICollection<KeyValuePair<string, object>>)expandoObject;
+            foreach (var keyValuePair in dictionary)
+            {
+                expandoCollection.Add(keyValuePair);
+            }
+
+            return expandoObject;
         }
     }
 }

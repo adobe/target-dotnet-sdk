@@ -11,13 +11,13 @@
 namespace Adobe.Target.Client
 {
     using System;
-    using System.Collections.Generic;
     using System.Net;
-    using Adobe.Target.Client.Model.OnDevice;
+    using System.Threading.Tasks;
     using Adobe.Target.Delivery.Model;
     using Microsoft.Extensions.Logging;
     using Polly;
     using RestSharp;
+    using Action = System.Action;
 
     /// <summary>
     /// Target ClientConfig
@@ -47,13 +47,19 @@ namespace Adobe.Target.Client
             this.AsyncRetryPolicy = builder.AsyncRetryPolicy;
             this.DecisioningMethod = builder.DecisioningMethod;
             this.TelemetryEnabled = builder.TelemetryEnabled;
-            this.OnDeviceDecisioningHandler = builder.OnDeviceDecisioningHandler;
+            this.OnDeviceDecisioningReady = builder.OnDeviceDecisioningReady;
+            this.ArtifactDownloadSucceeded = builder.ArtifactDownloadSucceeded;
+            this.ArtifactDownloadFailed = builder.ArtifactDownloadFailed;
             this.OnDeviceEnvironment = builder.OnDeviceEnvironment;
             this.OnDeviceConfigHostname = builder.OnDeviceConfigHostname;
             this.OnDeviceDecisioningPollingIntSecs = builder.OnDeviceDecisioningPollingIntSecs;
             this.OnDeviceArtifactPayload = builder.OnDeviceArtifactPayload;
-            this.OnDeviceAllMatchingRulesMboxes = builder.OnDeviceAllMatchingRulesMboxes;
         }
+
+        /// <summary>
+        /// OnDeviceDecisioningReady delegate
+        /// </summary>
+        public delegate void OnDeviceDecisioningOtherDelegate();
 
         /// <summary>
         /// Client
@@ -126,9 +132,19 @@ namespace Adobe.Target.Client
         public bool TelemetryEnabled { get; }
 
         /// <summary>
-        /// OnDeviceDecisioning Event Handler
+        /// OnDeviceDecisioning Ready Delegate
         /// </summary>
-        public IOnDeviceDecisioningHandler OnDeviceDecisioningHandler { get; }
+        public Action OnDeviceDecisioningReady { get; }
+
+        /// <summary>
+        /// Artifact Download Succeeded Delegate
+        /// </summary>
+        public Action<string> ArtifactDownloadSucceeded { get; }
+
+        /// <summary>
+        /// Artifact Download Failed Delegate
+        /// </summary>
+        public Action<Exception> ArtifactDownloadFailed { get; }
 
         /// <summary>
         /// OnDevice Environment
@@ -149,11 +165,6 @@ namespace Adobe.Target.Client
         /// OnDevice Artifact Payload
         /// </summary>
         public string OnDeviceArtifactPayload { get; }
-
-        /// <summary>
-        /// Mboxes for which rule evaluation will always be skipped
-        /// </summary>
-        public ISet<string> OnDeviceAllMatchingRulesMboxes { get; }
 
         private static void ValidateConfig(Builder builder)
         {
@@ -245,9 +256,19 @@ namespace Adobe.Target.Client
             internal bool TelemetryEnabled { get; private set; } = true;
 
             /// <summary>
-            /// OnDeviceDecisioning Event Handler
+            /// OnDeviceDecisioning Ready delegate
             /// </summary>
-            internal IOnDeviceDecisioningHandler OnDeviceDecisioningHandler { get; private set; }
+            internal Action OnDeviceDecisioningReady { get; private set; }
+
+            /// <summary>
+            /// Artifact Download Succeeded delegate
+            /// </summary>
+            internal Action<string> ArtifactDownloadSucceeded { get; private set; }
+
+            /// <summary>
+            /// Artifact Download Failed delegate
+            /// </summary>
+            internal Action<Exception> ArtifactDownloadFailed { get; private set; }
 
             /// <summary>
             /// OnDevice Environment
@@ -268,11 +289,6 @@ namespace Adobe.Target.Client
             /// OnDevice Artifact Payload
             /// </summary>
             internal string OnDeviceArtifactPayload { get; private set; }
-
-            /// <summary>
-            /// Mboxes for which rule evaluation will always be skipped
-            /// </summary>
-            internal ISet<string> OnDeviceAllMatchingRulesMboxes { get; private set; }
 
             /// <summary>
             /// Sets ServerDomain <br/>
@@ -388,13 +404,39 @@ namespace Adobe.Target.Client
             }
 
             /// <summary>
-            /// Sets OnDeviceDecisioning Event Handler
+            /// Sets OnDeviceDecisioning Ready delegate
+            /// This is called once when on-device execution is ready <br/>
+            /// Note: Each callback delegate runs on a dedicated Task on <see cref="TaskScheduler.Default"/> scheduler
             /// </summary>
-            /// <param name="handler">OnDeviceDecisioning event handler</param>
+            /// <param name="delegate">OnDeviceDecisioning Ready delegate</param>
             /// <returns><see cref="Builder"/> instance</returns>
-            public Builder SetOnDeviceDecisioningHandler(IOnDeviceDecisioningHandler handler)
+            public Builder SetOnDeviceDecisioningReady(Action @delegate)
             {
-                this.OnDeviceDecisioningHandler = handler;
+                this.OnDeviceDecisioningReady = @delegate;
+                return this;
+            }
+
+            /// <summary>
+            /// Sets Artifact Download Succeeded delegate <br/>
+            /// Note: Each callback delegate runs on a dedicated Task on <see cref="TaskScheduler.Default"/> scheduler
+            /// </summary>
+            /// <param name="delegate">Artifact Download Succeeded delegate</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetArtifactDownloadSucceeded(Action<string> @delegate)
+            {
+                this.ArtifactDownloadSucceeded = @delegate;
+                return this;
+            }
+
+            /// <summary>
+            /// Sets Artifact Download Failed delegate <br/>
+            /// Note: Each callback delegate runs on a dedicated Task on <see cref="TaskScheduler.Default"/> scheduler
+            /// </summary>
+            /// <param name="delegate">Artifact Download Failed delegate</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetArtifactDownloadFailed(Action<Exception> @delegate)
+            {
+                this.ArtifactDownloadFailed = @delegate;
                 return this;
             }
 
@@ -442,18 +484,6 @@ namespace Adobe.Target.Client
             public Builder SetOnDeviceDecisioningPollingIntSecs(int pollingSeconds)
             {
                 this.OnDeviceDecisioningPollingIntSecs = pollingSeconds;
-                return this;
-            }
-
-            /// <summary>
-            /// Sets OnDevice All Matching Rules Mboxes
-            /// Mboxes for which rule evaluation will always be skipped
-            /// </summary>
-            /// <param name="mboxes">OnDevice Decisioning All Matching Rules Mboxes</param>
-            /// <returns><see cref="Builder"/> instance</returns>
-            public Builder SetOnDeviceAllMatchingRulesMboxes(ISet<string> mboxes)
-            {
-                this.OnDeviceAllMatchingRulesMboxes = mboxes;
                 return this;
             }
 

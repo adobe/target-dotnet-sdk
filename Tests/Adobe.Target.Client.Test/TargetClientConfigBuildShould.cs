@@ -14,9 +14,9 @@ namespace Adobe.Target.Client.Test
     using Adobe.Target.Client;
     using Delivery.Model;
     using Microsoft.Extensions.Logging;
-    using Model.OnDevice;
     using Moq;
     using Xunit;
+    using Action = System.Action;
 
     public class ClientConfigBuildShould
     {
@@ -31,7 +31,7 @@ namespace Adobe.Target.Client.Test
         {
             var testWebProxy = new Mock<WebProxy>().Object;
             var testLogger = new Mock<ILogger>().Object;
-            var testOnDeviceDecisioningHandler = new Mock<IOnDeviceDecisioningHandler>().Object;
+            var readyDelegate = new Mock<Action>().Object;
 
             var targetClientConfig = new TargetClientConfig.Builder(testClientId, testOrgId)
                 .SetServerDomain(testDomain)
@@ -41,7 +41,7 @@ namespace Adobe.Target.Client.Test
                 .SetTimeout(testTimeout)
                 .SetProxy(testWebProxy)
                 .SetDecisioningMethod(DecisioningMethod.OnDevice)
-                .SetOnDeviceDecisioningHandler(testOnDeviceDecisioningHandler)
+                .SetOnDeviceDecisioningReady(readyDelegate)
                 .SetTelemetryEnabled(false)
                 .Build();
 
@@ -53,7 +53,7 @@ namespace Adobe.Target.Client.Test
             Assert.Equal(testTimeout, targetClientConfig.Timeout);
             Assert.Equal(testWebProxy, targetClientConfig.Proxy);
             Assert.Equal(DecisioningMethod.OnDevice, targetClientConfig.DecisioningMethod);
-            Assert.Equal(testOnDeviceDecisioningHandler, targetClientConfig.OnDeviceDecisioningHandler);
+            Assert.Equal(readyDelegate, targetClientConfig.OnDeviceDecisioningReady);
             Assert.False(targetClientConfig.TelemetryEnabled);
         }
     }
