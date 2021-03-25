@@ -32,51 +32,6 @@ namespace SampleApp
             targetClient = TargetClient.Create(targetClientConfig);
 
             Thread.Sleep(3000);
-
-            /*lock (decisioningReadyLock)
-            {
-                Monitor.Wait(decisioningReadyLock, 10000);
-            }
-
-            Console.WriteLine("ODD ready");
-
-            var deliveryRequest = new TargetDeliveryRequest.Builder()
-                .SetThirdPartyId("testThirdPartyId")
-                .SetContext(new Context(ChannelType.Web, geo: new Geo("193.105.140.131")))
-                .SetExecute(new ExecuteRequest(new RequestDetails(), new List<MboxRequest>
-                {
-                    new MboxRequest(index:1, name: "a1-mobile-tstsree")
-                }))
-                .Build();
-
-            var response = targetClient.GetOffers(deliveryRequest);*/
-
-            /*var deliveryRequest = new TargetDeliveryRequest.Builder()
-                .SetThirdPartyId("testThirdPartyId")
-                .SetContext(new Context(ChannelType.Web, geo: new Geo("193.105.140.131")))
-                .SetExecute(new ExecuteRequest(null, new List<MboxRequest>
-                {
-                    new MboxRequest(index:1, name: "a1-serverside-ab")
-                }))
-                .Build();
-
-            var response = targetClient.GetOffers(deliveryRequest);
-
-            App.PrintCookies(logger, response);
-
-            var notificationRequest = new TargetDeliveryRequest.Builder()
-                .SetSessionId(response.Request.SessionId)
-                .SetTntId(response.Response?.Id?.TntId)
-                .SetThirdPartyId("testThirdPartyId")
-                .SetContext(new Context(ChannelType.Web))
-                .SetNotifications(new List<Notification>()
-                {
-                    { new(id:"notificationId1", type: MetricType.Display, timestamp: DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
-                        tokens: new List<string>())}
-                })
-                .Build();
-
-            App.PrintCookies(logger, targetClient.SendNotifications(notificationRequest));*/
         }
 
         private static void DecisioningReady()
