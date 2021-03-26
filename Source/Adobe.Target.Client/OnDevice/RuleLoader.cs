@@ -69,7 +69,7 @@ namespace Adobe.Target.Client.OnDevice
             return this.latestRules;
         }
 
-        private static void RunOnDeviceDecisioningDelegate(Action? onDeviceDecisioningDelegate)
+        private void RunOnDeviceDecisioningDelegate(Action? onDeviceDecisioningDelegate)
         {
             if (onDeviceDecisioningDelegate == null)
             {
@@ -79,8 +79,18 @@ namespace Adobe.Target.Client.OnDevice
             _ = Task.Factory.StartNew(
                 onDeviceDecisioningDelegate,
                 CancellationToken.None,
-                TaskCreationOptions.None,
-                TaskScheduler.Default);
+                TaskCreationOptions.LongRunning | TaskCreationOptions.DenyChildAttach,
+                TaskScheduler.Default)
+                .ContinueWith(
+                    continuation =>
+                    {
+                        if (continuation.Exception != null)
+                        {
+                            this.logger?.LogException(continuation.Exception);
+                        }
+                    }, CancellationToken.None,
+                    TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously,
+                    TaskScheduler.Default);
         }
 
         private void SetLocalRules()
@@ -101,7 +111,7 @@ namespace Adobe.Target.Client.OnDevice
             if (!this.succeeded)
             {
                 this.succeeded = true;
-                RunOnDeviceDecisioningDelegate(this.clientConfig.OnDeviceDecisioningReady);
+                this.RunOnDeviceDecisioningDelegate(this.clientConfig.OnDeviceDecisioningReady);
             }
         }
 
@@ -175,7 +185,7 @@ namespace Adobe.Target.Client.OnDevice
 
             if (this.clientConfig.ArtifactDownloadSucceeded != null)
             {
-                RunOnDeviceDecisioningDelegate(() => this.clientConfig.ArtifactDownloadSucceeded(result.Content));
+                this.RunOnDeviceDecisioningDelegate(() => this.clientConfig.ArtifactDownloadSucceeded(result.Content));
             }
 
             Interlocked.Exchange(ref this.latestRules, deserialized);
@@ -183,7 +193,7 @@ namespace Adobe.Target.Client.OnDevice
             if (!this.succeeded)
             {
                 this.succeeded = true;
-                RunOnDeviceDecisioningDelegate(this.clientConfig.OnDeviceDecisioningReady);
+                this.RunOnDeviceDecisioningDelegate(this.clientConfig.OnDeviceDecisioningReady);
             }
         }
 
@@ -234,7 +244,7 @@ namespace Adobe.Target.Client.OnDevice
                 return;
             }
 
-            RunOnDeviceDecisioningDelegate(() => this.clientConfig.ArtifactDownloadFailed(exception));
+            this.RunOnDeviceDecisioningDelegate(() => this.clientConfig.ArtifactDownloadFailed(exception));
         }
 
         private void ScheduleTimer(int startDelay)

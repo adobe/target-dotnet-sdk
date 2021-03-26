@@ -46,11 +46,11 @@ namespace Adobe.Target.Client
         /// <inheritdoc />
         public void Initialize(TargetClientConfig clientConfig)
         {
+            Logger = clientConfig.Logger;
             this.targetService = new TargetService(clientConfig);
             this.localService = new OnDeviceDecisioningService(clientConfig, this.targetService);
             this.defaultDecisioningMethod = clientConfig.DecisioningMethod;
             this.defaultPropertyToken = clientConfig.DefaultPropertyToken;
-            Logger = clientConfig.Logger;
             Logger?.LogDebug("Initialized Target Client: " + clientConfig.OrganizationId);
         }
 
@@ -60,7 +60,7 @@ namespace Adobe.Target.Client
             Validators.ValidateClientInit(this.targetService);
             Validators.ValidateGetOffers(request);
 
-            var decisioning = request.DecisioningMethod != default ? request.DecisioningMethod : this.defaultDecisioningMethod;
+            var decisioning = request.DecisioningMethod != default(DecisioningMethod) ? request.DecisioningMethod : this.defaultDecisioningMethod;
             this.UpdatePropertyToken(request);
 
             if (decisioning == DecisioningMethod.OnDevice

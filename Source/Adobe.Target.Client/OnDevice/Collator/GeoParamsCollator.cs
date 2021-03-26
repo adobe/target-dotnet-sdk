@@ -28,33 +28,25 @@ namespace Adobe.Target.Client.OnDevice.Collator
             var geo = deliveryRequest?.DeliveryRequest?.Context?.Geo;
             if (geo == null)
             {
-                return result;
+                return GetBlankGeoParams(result);
             }
 
-            if (geo.Latitude != 0)
-            {
-                result.Add(GeoLatitude, geo.Latitude);
-            }
+            result.Add(GeoLatitude, geo.Latitude);
+            result.Add(GeoLongitude, geo.Longitude);
+            result.Add(GeoCity, string.IsNullOrEmpty(geo.City) ? string.Empty : geo.City.Replace(" ", string.Empty).ToUpperInvariant());
+            result.Add(GeoRegion, string.IsNullOrEmpty(geo.StateCode) ? string.Empty : geo.StateCode.ToUpperInvariant());
+            result.Add(GeoCountry, string.IsNullOrEmpty(geo.CountryCode) ? string.Empty : geo.CountryCode.ToUpperInvariant());
 
-            if (geo.Longitude != 0)
-            {
-                result.Add(GeoLongitude, geo.Longitude);
-            }
+            return result;
+        }
 
-            if (!string.IsNullOrEmpty(geo.City))
-            {
-                result.Add(GeoCity, geo.City.Replace(" ", string.Empty).ToUpperInvariant());
-            }
-
-            if (!string.IsNullOrEmpty(geo.StateCode))
-            {
-                result.Add(GeoRegion, geo.StateCode.ToUpperInvariant());
-            }
-
-            if (!string.IsNullOrEmpty(geo.CountryCode))
-            {
-                result.Add(GeoCountry, geo.CountryCode.ToUpperInvariant());
-            }
+        private static Dictionary<string, object> GetBlankGeoParams(Dictionary<string, object> result)
+        {
+            result.Add(GeoLatitude, 0f);
+            result.Add(GeoLongitude, 0f);
+            result.Add(GeoCity, string.Empty);
+            result.Add(GeoRegion, string.Empty);
+            result.Add(GeoCountry, string.Empty);
 
             return result;
         }

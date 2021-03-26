@@ -54,13 +54,13 @@ namespace Adobe.Target.Client.OnDevice.Collator
             var url = this.referring ? address?.ReferringUrl : address?.Url;
             if (string.IsNullOrEmpty(url))
             {
-                return result;
+                return GetBlankPageParams(result);
             }
 
             try
             {
                 var parsed = new Uri(url);
-                var domainInfo = this.domainParser.Parse(url);
+                var domainInfo = this.GetDomainInfo(parsed.Host);
                 var subdomain = GetSubDomain(domainInfo.SubDomain);
 
                 result.Add(PageUrl, parsed.OriginalString);
@@ -86,6 +86,26 @@ namespace Adobe.Target.Client.OnDevice.Collator
             return result;
         }
 
+        private static Dictionary<string, object> GetBlankPageParams(Dictionary<string, object> result)
+        {
+            result.Add(PageUrl, string.Empty);
+            result.Add(PageUrlLower, string.Empty);
+            result.Add(PageDomain, string.Empty);
+            result.Add(PageDomainLower, string.Empty);
+            result.Add(PageSubdomain, string.Empty);
+            result.Add(PageSubdomainLower, string.Empty);
+            result.Add(PageTopLevelDomain, string.Empty);
+            result.Add(PageTopLevelDomainLower, string.Empty);
+            result.Add(PagePath, string.Empty);
+            result.Add(PagePathLower, string.Empty);
+            result.Add(PageQuery, string.Empty);
+            result.Add(PageQueryLower, string.Empty);
+            result.Add(PageFragment, string.Empty);
+            result.Add(PageFragmentLower, string.Empty);
+
+            return result;
+        }
+
         private static string GetSubDomain(string subdomain)
         {
             if (subdomain.ToLowerInvariant().Equals(Www))
@@ -99,6 +119,18 @@ namespace Adobe.Target.Client.OnDevice.Collator
             }
 
             return subdomain;
+        }
+
+        private DomainInfo GetDomainInfo(string host)
+        {
+            try
+            {
+                return this.domainParser.Parse(host);
+            }
+            catch (ParseException)
+            {
+                return new DomainInfo { Domain = host, SubDomain = string.Empty, Tld = string.Empty };
+            }
         }
     }
 }
