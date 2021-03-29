@@ -13,6 +13,7 @@ namespace Adobe.Target.Client.Service
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
@@ -79,6 +80,9 @@ namespace Adobe.Target.Client.Service
 
         internal TargetDeliveryResponse ExecuteRequest(TargetDeliveryRequest deliveryRequest)
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             var ruleSet = this.ruleLoader.GetLatestRules();
             if (ruleSet == null)
             {
@@ -113,7 +117,7 @@ namespace Adobe.Target.Client.Service
                 targetResponse.Response.Prefetch);
 
             var executeDetails = this.GetExecuteDetails(deliveryRequest.DeliveryRequest);
-            IList<Notification> notifications = new List<Notification>();
+            var notifications = new List<Notification>();
 
             this.HandleDetails(
                 executeDetails,
@@ -126,14 +130,19 @@ namespace Adobe.Target.Client.Service
                 targetResponse.Response.Execute,
                 notifications);
 
-            // TODO: Send notifications
+            stopwatch.Stop();
+            var elapsedMilliseconds = (int)stopwatch.ElapsedMilliseconds;
+            var telemetry = deliveryRequest.GetTelemetryEntry(this.clientConfig, elapsedMilliseconds);
+
+            this.SendNotifications(deliveryRequest, targetResponse, notifications, telemetry);
+
             TargetClient.Logger?.LogDebug(targetResponse.ToString());
             return targetResponse;
         }
 
         internal Task<TargetDeliveryResponse> ExecuteRequestAsync(TargetDeliveryRequest deliveryRequest)
         {
-            throw new NotImplementedException();
+            return Task.Run(() => this.ExecuteRequest(deliveryRequest));
         }
 
         internal OnDeviceDecisioningEvaluation EvaluateLocalExecution(TargetDeliveryRequest request)
@@ -168,6 +177,36 @@ namespace Adobe.Target.Client.Service
                     executeResponse,
                     notifications);
             }
+        }
+
+        private void SendNotifications(TargetDeliveryRequest request, TargetDeliveryResponse targetResponse, List<Notification> notifications, TelemetryEntry telemetryEntry)
+        {
+            if (notifications.Count == 0 && telemetryEntry == null)
+            {
+                return;
+            }
+
+            var deliveryRequest = request.DeliveryRequest;
+            var locationHint = request.LocationHint ?? this.clusterLocator.GetLocationHint();
+            var telemetry = telemetryEntry != null ? new Telemetry(new List<TelemetryEntry> { telemetryEntry }) : null;
+
+            var notificationRequest = new TargetDeliveryRequest.Builder()
+                .SetLocationHint(locationHint)
+                .SetSessionId(request.SessionId)
+                .SetDecisioningMethod(DecisioningMethod.ServerSide)
+                .SetImpressionId(Guid.NewGuid().ToString())
+                .SetId(deliveryRequest.Id ?? targetResponse.Response.Id)
+                .SetExperienceCloud(deliveryRequest.ExperienceCloud)
+                .SetContext(deliveryRequest.Context)
+                .SetEnvironmentId(deliveryRequest.EnvironmentId)
+                .SetQaMode(deliveryRequest.QaMode)
+                .SetProperty(deliveryRequest.Property)
+                .SetNotifications(notifications)
+                .SetTelemetry(telemetry)
+                .SetTrace(deliveryRequest.Trace)
+                .Build();
+
+            _ = Task.Run(() => _ = this.targetService.ExecuteRequest(notificationRequest));
         }
 
         private string GetOrCreateVisitorId(TargetDeliveryRequest deliveryRequest, TargetDeliveryResponse targetResponse)

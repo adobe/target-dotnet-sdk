@@ -15,7 +15,6 @@ namespace Adobe.Target.Client.Model
     using System.Net;
     using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
-    using Telemetry = Adobe.Target.Delivery.Model.Telemetry;
 
     /// <summary>
     /// Target Delivery request
@@ -42,7 +41,7 @@ namespace Adobe.Target.Client.Model
         /// <summary>
         /// Decisioning Method
         /// </summary>
-        public DecisioningMethod DecisioningMethod { get; }
+        public DecisioningMethod? DecisioningMethod { get; }
 
         /// <summary>
         /// Session Id

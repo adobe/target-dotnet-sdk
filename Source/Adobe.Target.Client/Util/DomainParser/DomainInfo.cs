@@ -67,19 +67,19 @@ namespace Adobe.Target.Client.Util.DomainParser
         /// Domain Name without the TLD<para />
         /// e.g. microsoft, google
         /// </summary>
-        public string Domain { get; private set; }
+        public string Domain { get; set; }
 
         /// <summary>
         /// The TLD<para />
         /// e.g. com, net, de, co.uk
         /// </summary>
-        public string Tld { get; private set; }
+        public string Tld { get; set; }
 
         /// <summary>
         /// The Sub Domain<para />
         /// e.g. www, mail
         /// </summary>
-        public string SubDomain { get; private set; }
+        public string SubDomain { get; set; }
 
         /// <summary>
         /// The Registrable Domain<para />

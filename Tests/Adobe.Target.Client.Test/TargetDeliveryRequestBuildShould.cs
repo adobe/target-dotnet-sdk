@@ -18,7 +18,6 @@ namespace Adobe.Target.Client.Test
     using Moq;
     using Util;
     using Xunit;
-    using Telemetry = Delivery.Model.Telemetry;
 
     public class TargetDeliveryRequestBuildShould
     {
