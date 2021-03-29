@@ -132,7 +132,7 @@ namespace Adobe.Target.Client.Service
 
             stopwatch.Stop();
             var elapsedMilliseconds = (int)stopwatch.ElapsedMilliseconds;
-            var telemetry = TelemetryUtils.GetTelemetryEntry(deliveryRequest, this.clientConfig, elapsedMilliseconds);
+            var telemetry = deliveryRequest.GetTelemetryEntry(this.clientConfig, elapsedMilliseconds);
 
             this.SendNotifications(deliveryRequest, targetResponse, notifications, telemetry);
 

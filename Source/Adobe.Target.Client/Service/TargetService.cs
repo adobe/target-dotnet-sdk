@@ -55,7 +55,7 @@ namespace Adobe.Target.Client.Service
         internal TargetDeliveryResponse ExecuteRequest(TargetDeliveryRequest request)
         {
             this.SetUrl(this.GetLocationHint(request));
-            TelemetryUtils.AddTelemetry(request, this.clientConfig);
+            request.AddTelemetry(this.clientConfig);
             this.logger.LogRequest(request);
             var response = this.deliveryApi.Execute(this.clientConfig.OrganizationId, request.SessionId, request.DeliveryRequest);
 
@@ -70,7 +70,7 @@ namespace Adobe.Target.Client.Service
         internal Task<TargetDeliveryResponse> ExecuteRequestAsync(TargetDeliveryRequest request)
         {
             this.SetUrl(this.GetLocationHint(request));
-            TelemetryUtils.AddTelemetry(request, this.clientConfig);
+            request.AddTelemetry(this.clientConfig);
             this.logger.LogRequest(request);
             var executeTask = this.deliveryApi.ExecuteAsync(this.clientConfig.OrganizationId, request.SessionId, request.DeliveryRequest);
 

@@ -8,18 +8,18 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-namespace Adobe.Target.Client.Util
+namespace Adobe.Target.Client.Extension
 {
     using System;
     using System.Collections.Generic;
     using Adobe.Target.Client.Model;
     using Adobe.Target.Delivery.Model;
 
-    internal static class TelemetryUtils
+    internal static class DeliveryRequestExtension
     {
-        internal static void AddTelemetry(TargetDeliveryRequest request, TargetClientConfig config, int execution = 0)
+        internal static void AddTelemetry(this TargetDeliveryRequest request, TargetClientConfig config, int execution = 0)
         {
-            var telemetryEntry = GetTelemetryEntry(request, config, execution);
+            var telemetryEntry = request.GetTelemetryEntry(config, execution);
             if (telemetryEntry == null)
             {
                 return;
@@ -30,7 +30,7 @@ namespace Adobe.Target.Client.Util
             deliveryRequest.Telemetry.Entries.Add(telemetryEntry);
         }
 
-        internal static TelemetryEntry GetTelemetryEntry(TargetDeliveryRequest request, TargetClientConfig config, int execution = 0)
+        internal static TelemetryEntry GetTelemetryEntry(this TargetDeliveryRequest request, TargetClientConfig config, int execution = 0)
         {
             if (!config.TelemetryEnabled)
             {
