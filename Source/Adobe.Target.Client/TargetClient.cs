@@ -78,7 +78,7 @@ namespace Adobe.Target.Client
             Validators.ValidateClientInit(this.targetService);
             Validators.ValidateGetOffers(request);
 
-            var decisioning = request.DecisioningMethod != default ? request.DecisioningMethod : this.defaultDecisioningMethod;
+            var decisioning = request.DecisioningMethod != default(DecisioningMethod) ? request.DecisioningMethod : this.defaultDecisioningMethod;
             this.UpdatePropertyToken(request);
 
             if (decisioning == DecisioningMethod.OnDevice
