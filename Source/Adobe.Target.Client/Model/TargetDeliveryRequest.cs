@@ -464,7 +464,10 @@ namespace Adobe.Target.Client.Model
                 this.CreateAndSetVisitor(visitorCookie);
                 var visitorValues = this.Visitor.GetVisitorValues();
                 visitorValues.TryGetValue(TargetConstants.MarketingCloudVisitorId, out var mcid);
-                this.MarketingCloudVisitorId = mcid?.Value ?? this.MarketingCloudVisitorId;
+                if (!string.IsNullOrEmpty(mcid?.Value))
+                {
+                    this.MarketingCloudVisitorId = mcid.Value;
+                }
             }
 
             private void CreateAndSetVisitor(string visitorCookie)
