@@ -40,6 +40,26 @@ namespace Adobe.Target.Client.Util
         /// </summary>
         public const string DeviceIdCookieName = "PC";
 
+        /// <summary>
+        /// Marketing Cloud Visitor Id Visitor field
+        /// </summary>
+        public const string MarketingCloudVisitorId = "MCMID";
+
+        /// <summary>
+        /// AAM Location Hint Visitor field
+        /// </summary>
+        public const string AamLocationHint = "MCAAMLH";
+
+        /// <summary>
+        /// AAM Blob Visitor field
+        /// </summary>
+        public const string AamBlob = "MCAAMB";
+
+        /// <summary>
+        /// Default Consumer Id for Visitor SDID generation
+        /// </summary>
+        public const string DefaultSdidConsumerId = "target-global-mbox";
+
         internal const string SdkNameHeader = "X-EXC-SDK";
         internal const string SdkNameValue = "AdobeTargetNet";
         internal const string SdkVersionHeader = "X-EXC-SDK-Version";
