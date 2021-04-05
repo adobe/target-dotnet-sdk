@@ -21,6 +21,15 @@ namespace Adobe.Target.Client.Test
 
     public class ParamsCollatorsShould
     {
+        private const string testClientId = "testClientId";
+        private const string testOrgId = "testOrgId";
+
+        public ParamsCollatorsShould()
+        {
+            var targetClientConfig = new TargetClientConfig.Builder(testClientId, testOrgId).Build();
+            _ = TargetClient.Create(targetClientConfig);
+        }
+
         [Fact]
         public void CollateParams_ReturnPageParams()
         {

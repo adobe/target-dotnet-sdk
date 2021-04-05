@@ -21,6 +21,8 @@ namespace Adobe.Target.Client.Test
 
     public class TargetDeliveryRequestBuildShould
     {
+        private const string testClientId = "testClientId";
+        private const string testOrgId = "testOrgId";
         private const string tntId = "19b5c629-606d-44c0-977d-9a101f84c24c.37_0";
         private const string marketingCloudVisitorId = "testMarketingCloudVisitorId";
         private const string thirdPartyId = "testThirdPartyId";
@@ -30,6 +32,12 @@ namespace Adobe.Target.Client.Test
         private const string sessionId = "19b5c629-606d-44c0-977d-9a101f84c24c";
         private const string mboxCookieFormat = "session#19b5c629-606d-44c0-977d-9a101f84c24c#{0}|PC#19b5c629-606d-44c0-977d-9a101f84c24c.37_0#{0}|";
         private const string clusterCookie = "31";
+
+        public TargetDeliveryRequestBuildShould()
+        {
+            var targetClientConfig = new TargetClientConfig.Builder(testClientId, testOrgId).Build();
+            _ = TargetClient.Create(targetClientConfig);
+        }
 
         [Fact]
         public void Build_ReturnDeliveryRequest()

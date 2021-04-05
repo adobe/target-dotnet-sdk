@@ -463,7 +463,8 @@ namespace Adobe.Target.Client.Model
 
                 this.CreateAndSetVisitor(visitorCookie);
                 var visitorValues = this.Visitor.GetVisitorValues();
-                this.MarketingCloudVisitorId = visitorValues[TargetConstants.MarketingCloudVisitorId]?.Value;
+                visitorValues.TryGetValue(TargetConstants.MarketingCloudVisitorId, out var mcid);
+                this.MarketingCloudVisitorId = mcid?.Value ?? this.MarketingCloudVisitorId;
             }
 
             private void CreateAndSetVisitor(string visitorCookie)
@@ -534,8 +535,8 @@ namespace Adobe.Target.Client.Model
                 }
 
                 var visitorValues = this.Visitor.GetVisitorValues();
-                var locationHintEntry = visitorValues[TargetConstants.AamLocationHint];
-                var blobEntry = visitorValues[TargetConstants.AamBlob];
+                visitorValues.TryGetValue(TargetConstants.AamLocationHint, out var locationHintEntry);
+                visitorValues.TryGetValue(TargetConstants.AamBlob, out var blobEntry);
 
                 if (locationHintEntry == null || blobEntry == null)
                 {
