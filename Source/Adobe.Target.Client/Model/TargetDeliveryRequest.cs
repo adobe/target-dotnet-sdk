@@ -14,7 +14,7 @@ namespace Adobe.Target.Client.Model
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
-    using Adobe.ExperienceCloud.Id;
+    using Adobe.ExperienceCloud.Ecid;
     using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
 
@@ -541,12 +541,12 @@ namespace Adobe.Target.Client.Model
                 visitorValues.TryGetValue(TargetConstants.AamLocationHint, out var locationHintEntry);
                 visitorValues.TryGetValue(TargetConstants.AamBlob, out var blobEntry);
 
-                if (locationHintEntry == null || blobEntry == null)
+                if (locationHintEntry == null || !int.TryParse(locationHintEntry.Value, out var locationHint)
+                                              || blobEntry == null)
                 {
                     return;
                 }
 
-                var locationHint = int.Parse(locationHintEntry.Value);
                 var blob = blobEntry.Value;
                 this.ExperienceCloud.AudienceManager = new AudienceManager(locationHint, blob);
             }

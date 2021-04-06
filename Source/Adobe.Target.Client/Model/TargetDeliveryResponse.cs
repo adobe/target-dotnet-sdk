@@ -12,7 +12,7 @@ namespace Adobe.Target.Client.Model
 {
     using System.Collections.Generic;
     using System.Net;
-    using Adobe.ExperienceCloud.Id;
+    using Adobe.ExperienceCloud.Ecid;
     using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
     using Newtonsoft.Json;

@@ -11,7 +11,7 @@
 namespace Adobe.Target.Client.Util
 {
     using System;
-    using Adobe.ExperienceCloud.Id;
+    using Adobe.ExperienceCloud.Ecid;
 
     internal sealed class VisitorProvider
     {
