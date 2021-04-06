@@ -11,11 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup Label="Project References">
+    <PackageReference Include="Adobe.ExperienceCloud.Ecid" Version="1.0.0" />
+    <PackageReference Include="Adobe.Target.Delivery" Version="0.0.0-preview.0.14" />
     <PackageReference Include="JsonLogic.Net" Version="1.1.9" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="UAParser" Version="3.1.46" />
-    <ProjectReference Include="..\Adobe.Target.Delivery\Adobe.Target.Delivery.csproj" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
   </ItemGroup>
 

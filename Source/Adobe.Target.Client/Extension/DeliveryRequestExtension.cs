@@ -37,7 +37,8 @@ namespace Adobe.Target.Client.Extension
                 return null;
             }
 
-            var decisioningMethod = request.DecisioningMethod ?? config.DecisioningMethod;
+            var decisioningMethod = request.DecisioningMethod != default(DecisioningMethod)
+                ? request.DecisioningMethod : config.DecisioningMethod;
 
             return new TelemetryEntry(
                 request.DeliveryRequest.RequestId,

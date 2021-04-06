@@ -193,6 +193,7 @@ namespace Adobe.Target.Client.Service
             var notificationRequest = new TargetDeliveryRequest.Builder()
                 .SetLocationHint(locationHint)
                 .SetSessionId(request.SessionId)
+                .SetVisitor(request.Visitor)
                 .SetDecisioningMethod(DecisioningMethod.ServerSide)
                 .SetImpressionId(Guid.NewGuid().ToString())
                 .SetId(deliveryRequest.Id ?? targetResponse.Response.Id)

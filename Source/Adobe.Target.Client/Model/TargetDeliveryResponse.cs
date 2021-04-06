@@ -12,6 +12,7 @@ namespace Adobe.Target.Client.Model
 {
     using System.Collections.Generic;
     using System.Net;
+    using Adobe.ExperienceCloud.Ecid;
     using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
     using Newtonsoft.Json;
@@ -67,6 +68,22 @@ namespace Adobe.Target.Client.Model
         /// Locations, i.e. mboxes and views
         /// </summary>
         public Locations Locations { get; }
+
+        /// <summary>
+        /// Visitor State
+        /// </summary>
+        public IDictionary<string, VisitorState> VisitorState
+        {
+            get
+            {
+                if (this.Request.Visitor == null)
+                {
+                    return new Dictionary<string, VisitorState>();
+                }
+
+                return this.Request.Visitor.GetState();
+            }
+        }
 
         /// <summary>
         /// Gets Target cookies

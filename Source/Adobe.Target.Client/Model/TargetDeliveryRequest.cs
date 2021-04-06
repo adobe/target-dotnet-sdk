@@ -12,7 +12,9 @@ namespace Adobe.Target.Client.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
+    using Adobe.ExperienceCloud.Ecid;
     using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
 
@@ -31,6 +33,7 @@ namespace Adobe.Target.Client.Model
             this.DecisioningMethod = builder.DecisioningMethod;
             this.SessionId = builder.SessionId;
             this.LocationHint = builder.LocationHint;
+            this.Visitor = builder.Visitor;
         }
 
         /// <summary>
@@ -52,6 +55,11 @@ namespace Adobe.Target.Client.Model
         /// Location Hint
         /// </summary>
         public string LocationHint { get; }
+
+        /// <summary>
+        /// Visitor instance
+        /// </summary>
+        public Visitor Visitor { get; }
 
         /// <summary>
         /// TargetDeliveryRequest Builder
@@ -91,6 +99,16 @@ namespace Adobe.Target.Client.Model
             internal string LocationHint { get; private set; }
 
             /// <summary>
+            /// Visitor
+            /// </summary>
+            internal Visitor Visitor { get; private set; }
+
+            /// <summary>
+            /// Experience Cloud
+            /// </summary>
+            internal ExperienceCloud ExperienceCloud { get; private set; }
+
+            /// <summary>
             /// Tracking Server
             /// </summary>
             internal string TrackingServer { get; set; }
@@ -124,6 +142,11 @@ namespace Adobe.Target.Client.Model
             /// Marketing Cloud Visitor Id
             /// </summary>
             private string MarketingCloudVisitorId { get; set; }
+
+            /// <summary>
+            /// Visitor Customer Ids
+            /// </summary>
+            private IDictionary<string, CustomerState> VisitorCustomerIds { get; set; }
 
             /// <summary>
             /// Target Customer Ids
@@ -274,6 +297,17 @@ namespace Adobe.Target.Client.Model
             }
 
             /// <summary>
+            /// Sets Visitor instance
+            /// </summary>
+            /// <param name="visitor">Visitor</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetVisitor(Visitor visitor)
+            {
+                this.Visitor = visitor;
+                return this;
+            }
+
+            /// <summary>
             /// Sets Id
             /// </summary>
             /// <param name="id">Id</param>
@@ -291,7 +325,7 @@ namespace Adobe.Target.Client.Model
             /// <returns><see cref="Builder"/> instance</returns>
             public Builder SetExperienceCloud(ExperienceCloud experienceCloud)
             {
-                this.DeliveryRequest.ExperienceCloud = experienceCloud;
+                this.ExperienceCloud = experienceCloud;
                 return this;
             }
 
@@ -356,6 +390,17 @@ namespace Adobe.Target.Client.Model
             }
 
             /// <summary>
+            /// Sets Visitor Customer Ids
+            /// </summary>
+            /// <param name="customerIds">Visitor Customer Ids</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetVisitorCustomerIds(IDictionary<string, CustomerState> customerIds)
+            {
+                this.VisitorCustomerIds = customerIds;
+                return this;
+            }
+
+            /// <summary>
             /// Sets Target Customer Ids
             /// </summary>
             /// <param name="customerIds">Target Customer Ids</param>
@@ -395,7 +440,9 @@ namespace Adobe.Target.Client.Model
             public TargetDeliveryRequest Build()
             {
                 this.SetTargetValues();
+                this.SetVisitorValues();
                 this.CreateVisitorId();
+                this.SetExperienceCloudValues();
                 this.SetRequestId();
                 return new TargetDeliveryRequest(this);
             }
@@ -406,7 +453,32 @@ namespace Adobe.Target.Client.Model
                 var targetCookies = CookieUtils.ParseTargetCookie(targetCookie);
                 this.SetSessionId(targetCookies);
                 this.SetTntId(targetCookies);
+                this.SetCustomerIds();
                 this.SetEdgeCluster();
+            }
+
+            private void SetVisitorValues()
+            {
+                var visitorCookie = this.Cookies[VisitorProvider.Instance.VisitorCookieName]?.Value;
+
+                this.CreateAndSetVisitor(visitorCookie);
+                var visitorValues = this.Visitor.GetVisitorValues();
+                visitorValues.TryGetValue(TargetConstants.MarketingCloudVisitorId, out var mcid);
+                if (!string.IsNullOrEmpty(mcid?.Value))
+                {
+                    this.MarketingCloudVisitorId = mcid.Value;
+                }
+            }
+
+            private void CreateAndSetVisitor(string visitorCookie)
+            {
+                if (this.Visitor != null)
+                {
+                    return;
+                }
+
+                this.Visitor = VisitorProvider.Instance.CreateVisitor(visitorCookie);
+                this.Visitor.SetCustomerIds(this.VisitorCustomerIds);
             }
 
             private void CreateVisitorId()
@@ -425,6 +497,58 @@ namespace Adobe.Target.Client.Model
                 var visitorId = new VisitorId(this.TntId, this.ThirdPartyId, this.MarketingCloudVisitorId, this.TargetCustomerIds);
 
                 this.DeliveryRequest.Id = visitorId;
+            }
+
+            private void SetExperienceCloudValues()
+            {
+                if (this.Visitor == null)
+                {
+                    return;
+                }
+
+                this.ExperienceCloud ??= new ExperienceCloud();
+                this.CreateAndSetAudienceManager();
+                this.CreateAndSetAnalyticsValues();
+                this.DeliveryRequest.ExperienceCloud = this.ExperienceCloud;
+            }
+
+            private void CreateAndSetAnalyticsValues()
+            {
+                if (this.ExperienceCloud.Analytics != null)
+                {
+                    return;
+                }
+
+                var analyticsRequest = new AnalyticsRequest()
+                {
+                    TrackingServer = this.TrackingServer,
+                    TrackingServerSecure = this.TrackingServerSecure,
+                    Logging = LoggingType.ServerSide,
+                    SupplementalDataId = this.Visitor.GetSupplementalDataId(TargetConstants.DefaultSdidConsumerId),
+                };
+
+                this.ExperienceCloud.Analytics = analyticsRequest;
+            }
+
+            private void CreateAndSetAudienceManager()
+            {
+                if (this.ExperienceCloud.AudienceManager != null)
+                {
+                    return;
+                }
+
+                var visitorValues = this.Visitor.GetVisitorValues();
+                visitorValues.TryGetValue(TargetConstants.AamLocationHint, out var locationHintEntry);
+                visitorValues.TryGetValue(TargetConstants.AamBlob, out var blobEntry);
+
+                if (locationHintEntry == null || !int.TryParse(locationHintEntry.Value, out var locationHint)
+                                              || blobEntry == null)
+                {
+                    return;
+                }
+
+                var blob = blobEntry.Value;
+                this.ExperienceCloud.AudienceManager = new AudienceManager(locationHint, blob);
             }
 
             private void SetRequestId()
@@ -464,6 +588,28 @@ namespace Adobe.Target.Client.Model
                 {
                     this.TntId = cookieId;
                 }
+            }
+
+            private void SetCustomerIds()
+            {
+                if (this.VisitorCustomerIds == null || !this.VisitorCustomerIds.Any())
+                {
+                    return;
+                }
+
+                var customerIds = (from entry in this.VisitorCustomerIds
+                    let customerState = entry.Value
+                    select new CustomerId(customerState.Id, entry.Key)
+                    {
+                        AuthenticatedState = customerState.AuthState switch
+                        {
+                            Visitor.AuthState.Authenticated => AuthenticatedState.Authenticated,
+                            Visitor.AuthState.LoggedOut => AuthenticatedState.LoggedOut,
+                            _ => AuthenticatedState.Unknown
+                        },
+                    }).ToList();
+
+                this.TargetCustomerIds = customerIds;
             }
 
             private void SetEdgeCluster()
