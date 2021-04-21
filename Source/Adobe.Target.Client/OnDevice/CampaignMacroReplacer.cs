@@ -17,10 +17,10 @@ namespace Adobe.Target.Client.OnDevice
     using Adobe.Target.Client.Model.OnDevice;
     using Adobe.Target.Delivery.Model;
     using Newtonsoft.Json.Linq;
+    using Action = Adobe.Target.Delivery.Model.Action;
 
     internal sealed class CampaignMacroReplacer
     {
-        private const string Content = "content";
         private const string Name = "name";
         private const string Index = "index";
         private const string MacroPatternRegexString = @"\$\{([a-zA-Z0-9_.]*?)\}";
@@ -84,6 +84,11 @@ namespace Adobe.Target.Client.OnDevice
 
         private static string SanitizedMacroKey(string macroKey)
         {
+            if (macroKey == "mbox.name")
+            {
+                macroKey = "location.name";
+            }
+
             foreach (var replacement in MacroNameReplacements)
             {
                 macroKey = macroKey.Replace(replacement.Key, replacement.Value);
@@ -103,7 +108,7 @@ namespace Adobe.Target.Client.OnDevice
             return string.Join(".", keySegments);
         }
 
-        private bool GetActionsContent(object actionsObject, out IList<IDictionary<string, object>> result)
+        private bool GetActionsContent(object actionsObject, out IList<Action> result)
         {
             if (actionsObject is not JArray actionsContent)
             {
@@ -111,7 +116,7 @@ namespace Adobe.Target.Client.OnDevice
                 return false;
             }
 
-            var actions = actionsContent.ToObject<IList<IDictionary<string, object>>>();
+            var actions = actionsContent.ToObject<IList<Action>>();
             if (actions == null)
             {
                 result = null;
@@ -120,9 +125,9 @@ namespace Adobe.Target.Client.OnDevice
 
             foreach (var action in actions)
             {
-                if (action[Content] is string actionContent)
+                if (action.Content is string actionContent)
                 {
-                    action[Content] = this.AddCampaignMacroValues(actionContent);
+                    action.Content = this.AddCampaignMacroValues(actionContent);
                 }
             }
 
@@ -134,8 +139,9 @@ namespace Adobe.Target.Client.OnDevice
         {
             return MacroPatternRegex.Replace(content, match =>
             {
-                var macroKey = SanitizedMacroKey(match.Value);
-                return this.GetMacroValue(macroKey, "${" + match.Value + "}");
+                var matchValue = match.Groups[1].Value;
+                var macroKey = SanitizedMacroKey(matchValue);
+                return this.GetMacroValue(macroKey, "${" + matchValue + "}");
             });
         }
 

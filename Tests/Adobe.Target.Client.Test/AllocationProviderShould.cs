@@ -10,7 +10,7 @@
  */
 namespace Adobe.Target.Client.Test
 {
-    using Util;
+    using Client.Util;
     using Xunit;
 
     public class AllocationProviderShould
@@ -47,7 +47,7 @@ namespace Adobe.Target.Client.Test
                 "123456",
                 "tntId123.28_0",
                 "salty");
-            Assert.Equal(21.94, result);
+            Assert.Equal(32.94, result);
         }
     }
 }

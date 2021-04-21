@@ -16,7 +16,7 @@ namespace Adobe.Target.Client.Test
     using Delivery.Model;
     using Model;
     using Moq;
-    using Util;
+    using Client.Util;
     using Xunit;
 
     public class TargetDeliveryRequestBuildShould

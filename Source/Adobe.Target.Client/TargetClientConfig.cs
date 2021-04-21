@@ -54,6 +54,7 @@ namespace Adobe.Target.Client
             this.OnDeviceConfigHostname = builder.OnDeviceConfigHostname;
             this.OnDeviceDecisioningPollingIntSecs = builder.OnDeviceDecisioningPollingIntSecs;
             this.OnDeviceArtifactPayload = builder.OnDeviceArtifactPayload;
+            this.LocalArtifactOnly = builder.LocalArtifactOnly;
         }
 
         /// <summary>
@@ -165,6 +166,12 @@ namespace Adobe.Target.Client
         /// OnDevice Artifact Payload
         /// </summary>
         public string OnDeviceArtifactPayload { get; }
+
+        /// <summary>
+        /// When true, Target SDK won't attempt to update the locally set artifact <br/>
+        /// Used together with <see cref="OnDeviceArtifactPayload"/>
+        /// </summary>
+        public bool LocalArtifactOnly { get; }
 
         private static void ValidateConfig(Builder builder)
         {
@@ -289,6 +296,8 @@ namespace Adobe.Target.Client
             /// OnDevice Artifact Payload
             /// </summary>
             internal string OnDeviceArtifactPayload { get; private set; }
+
+            internal bool LocalArtifactOnly { get; private set; }
 
             /// <summary>
             /// Sets ServerDomain <br/>
@@ -494,6 +503,12 @@ namespace Adobe.Target.Client
             public TargetClientConfig Build()
             {
                 return new (this);
+            }
+
+            internal Builder SetLocalArtifactOnly(bool localOnly)
+            {
+                this.LocalArtifactOnly = localOnly;
+                return this;
             }
         }
     }

@@ -23,7 +23,7 @@ namespace Adobe.Target.Client.OnDevice
     {
         private volatile string? locationHint;
 
-        internal ClusterLocator(TargetClientConfig clientConfig, TargetService targetService)
+        internal ClusterLocator(TargetClientConfig clientConfig, ITargetService targetService)
         {
             if (clientConfig.DecisioningMethod == DecisioningMethod.ServerSide)
             {
@@ -38,12 +38,12 @@ namespace Adobe.Target.Client.OnDevice
             return this.locationHint;
         }
 
-        private void FetchLocation(TargetService targetService)
+        private void FetchLocation(ITargetService targetService)
         {
             _ = this.FetchLocationAsync(targetService);
         }
 
-        private async Task FetchLocationAsync(TargetService targetService)
+        private async Task FetchLocationAsync(ITargetService targetService)
         {
             var request = new TargetDeliveryRequest.Builder()
                 .SetContext(new Context(ChannelType.Web))

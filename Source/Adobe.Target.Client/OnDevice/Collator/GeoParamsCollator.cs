@@ -11,6 +11,7 @@
 namespace Adobe.Target.Client.OnDevice.Collator
 {
     using System.Collections.Generic;
+    using Adobe.Target.Client.Extension;
     using Adobe.Target.Client.Model;
     using Adobe.Target.Delivery.Model;
 
@@ -22,13 +23,23 @@ namespace Adobe.Target.Client.OnDevice.Collator
         internal const string GeoRegion = "region";
         internal const string GeoCountry = "country";
 
+        internal static readonly IDictionary<string, object> DefaultGeoParams = new Dictionary<string, object>
+        {
+            { GeoLatitude, 0f },
+            { GeoLongitude, 0f },
+            { GeoCity, string.Empty },
+            { GeoRegion, string.Empty },
+            { GeoCountry, string.Empty },
+        };
+
         public Dictionary<string, object> CollateParams(TargetDeliveryRequest deliveryRequest = default, RequestDetails requestDetails = default)
         {
             var result = new Dictionary<string, object>();
             var geo = deliveryRequest?.DeliveryRequest?.Context?.Geo;
             if (geo == null)
             {
-                return GetBlankGeoParams(result);
+                result.AddAll(DefaultGeoParams);
+                return result;
             }
 
             result.Add(GeoLatitude, geo.Latitude);
@@ -36,17 +47,6 @@ namespace Adobe.Target.Client.OnDevice.Collator
             result.Add(GeoCity, string.IsNullOrEmpty(geo.City) ? string.Empty : geo.City.Replace(" ", string.Empty).ToUpperInvariant());
             result.Add(GeoRegion, string.IsNullOrEmpty(geo.StateCode) ? string.Empty : geo.StateCode.ToUpperInvariant());
             result.Add(GeoCountry, string.IsNullOrEmpty(geo.CountryCode) ? string.Empty : geo.CountryCode.ToUpperInvariant());
-
-            return result;
-        }
-
-        private static Dictionary<string, object> GetBlankGeoParams(Dictionary<string, object> result)
-        {
-            result.Add(GeoLatitude, 0f);
-            result.Add(GeoLongitude, 0f);
-            result.Add(GeoCity, string.Empty);
-            result.Add(GeoRegion, string.Empty);
-            result.Add(GeoCountry, string.Empty);
 
             return result;
         }

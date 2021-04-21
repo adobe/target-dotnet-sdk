@@ -24,12 +24,6 @@ namespace Adobe.Target.Client.Util
 
         private static string GetDeviceId(string clientId, string activityId, string visitorId, string salt)
         {
-            var index = visitorId.IndexOf('.');
-            if (index > 0)
-            {
-                visitorId = visitorId.Substring(0, index);
-            }
-
             return $"{clientId}.{activityId}.{visitorId}.{salt}";
         }
 

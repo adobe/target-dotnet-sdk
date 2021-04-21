@@ -14,4 +14,18 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Artifacts" />
+    <Folder Include="Models" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(ProjectDir)Artifacts\**" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(ProjectDir)Models\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="6.0.0-alpha0002" />
+  </ItemGroup>
+
 </Project>

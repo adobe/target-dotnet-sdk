@@ -10,7 +10,9 @@
  */
 namespace Adobe.Target.Client.Service
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
@@ -21,11 +23,13 @@ namespace Adobe.Target.Client.Service
     using Adobe.Target.Delivery.Client;
     using Adobe.Target.Delivery.Model;
     using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json.Linq;
+    using Action = Adobe.Target.Delivery.Model.Action;
 
     /// <summary>
     /// Target Service
     /// </summary>
-    internal sealed class TargetService
+    internal sealed class TargetService : ITargetService
     {
         private readonly TargetClientConfig clientConfig;
         private readonly ILogger logger;
@@ -47,12 +51,7 @@ namespace Adobe.Target.Client.Service
             RetryConfiguration.AsyncRetryPolicy = clientConfig.AsyncRetryPolicy;
         }
 
-        /// <summary>
-        /// Execute sync Delivery request
-        /// </summary>
-        /// <param name="request">Target Delivery request</param>
-        /// <returns>Target Delivery Response</returns>
-        internal TargetDeliveryResponse ExecuteRequest(TargetDeliveryRequest request)
+        public TargetDeliveryResponse ExecuteRequest(TargetDeliveryRequest request)
         {
             this.SetUrl(this.GetLocationHint(request));
             request.AddTelemetry(this.clientConfig);
@@ -62,12 +61,7 @@ namespace Adobe.Target.Client.Service
             return this.GetTargetDeliveryResponse(request, response);
         }
 
-        /// <summary>
-        /// Execute async Delivery request
-        /// </summary>
-        /// <param name="request">Target Delivery request</param>
-        /// <returns>Target Delivery Response</returns>
-        internal Task<TargetDeliveryResponse> ExecuteRequestAsync(TargetDeliveryRequest request)
+        public Task<TargetDeliveryResponse> ExecuteRequestAsync(TargetDeliveryRequest request)
         {
             this.SetUrl(this.GetLocationHint(request));
             request.AddTelemetry(this.clientConfig);
@@ -75,6 +69,34 @@ namespace Adobe.Target.Client.Service
             var executeTask = this.deliveryApi.ExecuteAsync(this.clientConfig.OrganizationId, request.SessionId, request.DeliveryRequest);
 
             return executeTask.ContinueWith(task => this.GetTargetDeliveryResponse(request, task.Result), TaskScheduler.Default);
+        }
+
+        internal static DeliveryResponse ConvertResponseOptions(DeliveryResponse deliveryResponse)
+        {
+            var allOptions = new List<List<Option>>
+            {
+                deliveryResponse.Execute?.PageLoad?.Options, deliveryResponse.Prefetch?.PageLoad?.Options,
+            };
+            allOptions.AddRange(deliveryResponse.Execute?.Mboxes?.Select(response => response.Options) ?? Array.Empty<List<Option>>());
+            allOptions.AddRange(deliveryResponse.Prefetch?.Mboxes?.Select(response => response.Options) ?? Array.Empty<List<Option>>());
+            allOptions.AddRange(deliveryResponse.Prefetch?.Views?.Select(response => response.Options) ?? Array.Empty<List<Option>>());
+
+            allOptions.ForEach(ConvertOptionsContent);
+
+            return deliveryResponse;
+        }
+
+        private static void ConvertOptionsContent(IEnumerable<Option> options)
+        {
+            if (options == null)
+            {
+                return;
+            }
+
+            foreach (var option in options.Where(option => option.Type == OptionType.Actions))
+            {
+                option.Content = ((JArray)option.Content).ToObject<IList<Action>>();
+            }
         }
 
         private static IDictionary<string, string> GetHeaders()
@@ -90,7 +112,7 @@ namespace Adobe.Target.Client.Service
         {
             this.UpdateStickyLocationHint(response);
             this.logger.LogResponse(response);
-            return new TargetDeliveryResponse(request, response, (HttpStatusCode)response.Status);
+            return new TargetDeliveryResponse(request, ConvertResponseOptions(response), (HttpStatusCode)response.Status);
         }
 
         private void UpdateStickyLocationHint(DeliveryResponse deliveryResponse)
