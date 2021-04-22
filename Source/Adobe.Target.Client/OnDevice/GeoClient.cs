@@ -15,7 +15,7 @@ namespace Adobe.Target.Client.OnDevice
     using Adobe.Target.Delivery.Model;
     using RestSharp;
 
-    internal sealed class GeoClient
+    internal sealed class GeoClient : IGeoClient
     {
         private const string GeoPath = "/v1/geo";
         private const string GeoIpHeader = "x-forwarded-for";
@@ -36,7 +36,7 @@ namespace Adobe.Target.Client.OnDevice
             };
         }
 
-        internal async Task<Geo> LookupGeoAsync(Geo geo)
+        public async Task<Geo> LookupGeoAsync(Geo geo)
         {
             if (!this.ValidateGeo(geo))
             {

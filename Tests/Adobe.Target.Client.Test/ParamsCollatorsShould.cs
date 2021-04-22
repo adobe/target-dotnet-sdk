@@ -16,7 +16,7 @@ namespace Adobe.Target.Client.Test
     using Model;
     using Moq;
     using OnDevice.Collator;
-    using Util;
+    using Client.Util;
     using Xunit;
 
     public class ParamsCollatorsShould

@@ -29,7 +29,7 @@ namespace Adobe.Target.Client.Service
     /// <summary>
     /// OnDevice Decisioning Service
     /// </summary>
-    internal sealed class OnDeviceDecisioningService
+    internal sealed class OnDeviceDecisioningService : ITargetService
     {
         internal const string ContextKeyGeo = "geo";
         private const string ContextKeyUser = "user";
@@ -55,19 +55,20 @@ namespace Adobe.Target.Client.Service
         private static readonly TimeParamsCollator TimeParamsCollator = new ();
 
         private readonly TargetClientConfig clientConfig;
-        private readonly TargetService targetService;
+        private readonly ITargetService targetService;
         private readonly RuleLoader ruleLoader;
         private readonly ClusterLocator clusterLocator;
         private readonly DecisioningEvaluator decisioningEvaluator;
         private readonly DecisioningDetailsExecutor decisionHandler;
-        private readonly GeoClient geoClient;
+        private readonly IGeoClient geoClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OnDeviceDecisioningService"/> class.
         /// </summary>
         /// <param name="clientConfig">Client config</param>
         /// <param name="targetService">Target Service</param>
-        internal OnDeviceDecisioningService(TargetClientConfig clientConfig, TargetService targetService)
+        /// <param name="geoClient">Optional Geo client</param>
+        internal OnDeviceDecisioningService(TargetClientConfig clientConfig, ITargetService targetService, IGeoClient geoClient = null)
         {
             this.clientConfig = clientConfig;
             this.targetService = targetService;
@@ -75,10 +76,10 @@ namespace Adobe.Target.Client.Service
             this.clusterLocator = new ClusterLocator(clientConfig, targetService);
             this.decisioningEvaluator = new DecisioningEvaluator(this.ruleLoader);
             this.decisionHandler = new DecisioningDetailsExecutor(clientConfig);
-            this.geoClient = new GeoClient(clientConfig);
+            this.geoClient = geoClient ?? new GeoClient(clientConfig);
         }
 
-        internal TargetDeliveryResponse ExecuteRequest(TargetDeliveryRequest deliveryRequest)
+        public TargetDeliveryResponse ExecuteRequest(TargetDeliveryRequest deliveryRequest)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -140,7 +141,7 @@ namespace Adobe.Target.Client.Service
             return targetResponse;
         }
 
-        internal Task<TargetDeliveryResponse> ExecuteRequestAsync(TargetDeliveryRequest deliveryRequest)
+        public Task<TargetDeliveryResponse> ExecuteRequestAsync(TargetDeliveryRequest deliveryRequest)
         {
             return Task.Run(() => this.ExecuteRequest(deliveryRequest));
         }
@@ -148,6 +149,17 @@ namespace Adobe.Target.Client.Service
         internal OnDeviceDecisioningEvaluation EvaluateLocalExecution(TargetDeliveryRequest request)
         {
             return this.decisioningEvaluator.EvaluateLocalExecution(request);
+        }
+
+        private static string RemoveLocationHint(string tntId)
+        {
+            if (string.IsNullOrEmpty(tntId))
+            {
+                return tntId;
+            }
+
+            var index = tntId.IndexOf('.');
+            return index <= 0 ? tntId : tntId.Substring(0, index);
         }
 
         private void HandleDetails(
@@ -216,25 +228,25 @@ namespace Adobe.Target.Client.Service
             var visitorId = deliveryRequest.DeliveryRequest.Id;
             if (visitorId != null)
             {
-                vid = new string[] { visitorId.MarketingCloudVisitorId, visitorId.TntId, visitorId.ThirdPartyId }
+                vid = new[] { visitorId.MarketingCloudVisitorId, RemoveLocationHint(visitorId.TntId), visitorId.ThirdPartyId }
                     .FirstOrDefault(s => !string.IsNullOrEmpty(s));
             }
 
-            vid ??= targetResponse.Response.Id?.TntId;
+            vid ??= RemoveLocationHint(targetResponse.Response.Id?.TntId);
 
             if (vid != null)
             {
                 return vid;
             }
 
-            vid = this.GenerateTntId();
+            var newTntId = this.GenerateTntId();
 
             visitorId ??= new VisitorId();
-            visitorId.TntId = vid;
+            visitorId.TntId = newTntId;
 
             targetResponse.Response.Id = visitorId;
 
-            return vid;
+            return RemoveLocationHint(newTntId);
         }
 
         private string GenerateTntId()
@@ -275,9 +287,9 @@ namespace Adobe.Target.Client.Service
                 return result;
             }
 
-            if (execute.Mboxes?.Count != 0)
+            if (execute.Mboxes is { Count: > 0 })
             {
-                result.AddRange(execute.Mboxes!.Select(mbox => new RequestDetailsUnion(mbox)));
+                result.AddRange(execute.Mboxes.Select(mbox => new RequestDetailsUnion(mbox)));
             }
 
             if (execute.PageLoad != null)
@@ -297,14 +309,14 @@ namespace Adobe.Target.Client.Service
                 return result;
             }
 
-            if (prefetch.Mboxes?.Count != 0)
+            if (prefetch.Mboxes is { Count: > 0 })
             {
-                result.AddRange(prefetch.Mboxes!.Select(mbox => new RequestDetailsUnion(mbox)));
+                result.AddRange(prefetch.Mboxes.Select(mbox => new RequestDetailsUnion(mbox)));
             }
 
-            if (prefetch.Views?.Count != 0)
+            if (prefetch.Views is { Count: > 0 })
             {
-                result.AddRange(prefetch.Mboxes!.Select(mbox => new RequestDetailsUnion(mbox)));
+                result.AddRange(prefetch.Views.Select(view => new RequestDetailsUnion(view)));
             }
 
             if (prefetch.PageLoad != null)

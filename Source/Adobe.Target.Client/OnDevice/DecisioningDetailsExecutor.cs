@@ -15,6 +15,7 @@ namespace Adobe.Target.Client.OnDevice
     using System.Linq;
     using Adobe.Target.Client.Model;
     using Adobe.Target.Client.Model.OnDevice;
+    using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
     using Newtonsoft.Json.Linq;
 
@@ -77,7 +78,7 @@ namespace Adobe.Target.Client.OnDevice
 
                 if (details.Match(
                     _ => false,
-                    mboxRequest => true,
+                    _ => true,
                     _ => false))
                 {
                     break;
@@ -196,6 +197,7 @@ namespace Adobe.Target.Client.OnDevice
                                 option.EventToken = null;
                                 return option;
                             })
+                        .Where(option => option.Type != null || option.Content != null)
                         .ToList(),
                 };
             executeResponse.Mboxes ??= new List<MboxResponse>();
@@ -235,6 +237,11 @@ namespace Adobe.Target.Client.OnDevice
                         option.EventToken = null;
                     }
 
+                    if (option.Type == null && option.Content == null && option.EventToken == null)
+                    {
+                        continue;
+                    }
+
                     pageLoad.Options ??= new List<Option>();
                     pageLoad.Options.Add(option);
                 }
@@ -259,7 +266,8 @@ namespace Adobe.Target.Client.OnDevice
         {
             var id = Guid.NewGuid().ToString();
             var impressionId = Guid.NewGuid().ToString();
-            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            var dateTime = TimeProvider.Current.UtcNow;
+            var timestamp = new DateTimeOffset(dateTime).ToUnixTimeMilliseconds();
             var tokens = options == null ? new List<string>() : options.Select(option => option.EventToken).ToList();
             var notification = new Notification(id: id, type: MetricType.Display, impressionId: impressionId, timestamp: timestamp, tokens: tokens);
             return details.Match(
@@ -280,7 +288,7 @@ namespace Adobe.Target.Client.OnDevice
 
         private static List<Metric> GetMetrics(object metricsObject)
         {
-            return metricsObject is not JObject metricsJObject ? null : metricsJObject.ToObject<List<Metric>>();
+            return metricsObject is not JArray metricsArray || metricsArray.Count == 0 ? null : metricsArray.ToObject<List<Metric>>();
         }
 
         private static void UnhandledResponse(RequestDetailsUnion details, PrefetchResponse prefetchResponse, ExecuteResponse executeResponse)
@@ -330,9 +338,14 @@ namespace Adobe.Target.Client.OnDevice
 
         private static bool PropertyTokenMismatch(IReadOnlyList<string> rulePropertyTokens, string propertyToken)
         {
-            if (string.IsNullOrEmpty(propertyToken) || rulePropertyTokens == null || rulePropertyTokens.Count == 0)
+            if (rulePropertyTokens == null || rulePropertyTokens.Count == 0)
             {
                 return false;
+            }
+
+            if (string.IsNullOrEmpty(propertyToken))
+            {
+                return true;
             }
 
             return !rulePropertyTokens.Contains(propertyToken);

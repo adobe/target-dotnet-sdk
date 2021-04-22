@@ -46,7 +46,8 @@ namespace Adobe.Target.Client.OnDevice
         {
             localContext.Remove(Allocation);
             localContext.Add(Allocation, this.ComputeAllocation(visitorId, rule));
-            var matched = this.EvaluateRule((JObject)rule.Condition, localContext.ToExpandoObject());
+
+            var matched = this.EvaluateRule(rule.Condition, localContext.ToExpandoObject());
             if (!matched)
             {
                 return null;
@@ -67,7 +68,7 @@ namespace Adobe.Target.Client.OnDevice
             {
                 var tokenKey = GetGeoTokenKey(geo);
 
-                if (responseTokenKeys.Contains(tokenKey))
+                if (responseTokenKeys.Contains(tokenKey) && geo.Value != GeoParamsCollator.DefaultGeoParams[geo.Key])
                 {
                     result.Add(tokenKey, geo.Value);
                 }

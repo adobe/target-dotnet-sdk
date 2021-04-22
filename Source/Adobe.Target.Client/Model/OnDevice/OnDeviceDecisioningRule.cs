@@ -12,11 +12,12 @@ namespace Adobe.Target.Client.Model.OnDevice
 {
     using System.Collections.Generic;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     internal sealed class OnDeviceDecisioningRule
     {
         [JsonConstructor]
-        internal OnDeviceDecisioningRule(string ruleKey, string activityId, IReadOnlyList<string> propertyTokens, object condition, IReadOnlyDictionary<string, object> consequence, IReadOnlyDictionary<string, object> meta)
+        internal OnDeviceDecisioningRule(string ruleKey, string activityId, IReadOnlyList<string> propertyTokens, JToken condition, IReadOnlyDictionary<string, object> consequence, IReadOnlyDictionary<string, object> meta)
         {
             this.RuleKey = ruleKey;
             this.ActivityId = activityId;
@@ -32,7 +33,7 @@ namespace Adobe.Target.Client.Model.OnDevice
 
         internal IReadOnlyList<string> PropertyTokens { get; }
 
-        internal object Condition { get; }
+        internal JToken Condition { get; }
 
         internal IReadOnlyDictionary<string, object> Consequence { get; }
 

@@ -61,6 +61,11 @@ namespace Adobe.Target.Client.OnDevice
             this.timerStartDelayMs = clientConfig.OnDeviceDecisioningPollingIntSecs * 1000;
             this.logger = TargetClient.Logger;
             this.SetLocalRules();
+            if (clientConfig.LocalArtifactOnly)
+            {
+                return;
+            }
+
             this.ScheduleTimer(0);
         }
 
