@@ -20,6 +20,6 @@ namespace Adobe.Target.Client.Util
 
         public static TimeProvider Instance { get; } = new DefaultTimeProvider();
 
-        public override DateTime UtcNow => DateTime.Now;
+        public override DateTime UtcNow => DateTime.UtcNow;
     }
 }

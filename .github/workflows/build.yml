@@ -48,6 +48,7 @@ jobs:
     - name: 'Upload Codecov Coverage'
       uses: codecov/codecov-action@v1
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         directory: ./Artefacts/coverage
     - name: 'Dotnet Cake Pack'
       run: dotnet cake --target=Pack
