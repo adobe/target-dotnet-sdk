@@ -47,11 +47,11 @@ namespace Adobe.Target.Client.Test
             }
         }
 
-        [Fact(Skip = "Run when needed")]
+        [Fact]
         public void RunSingleIntegrationTest()
         {
-            const string suiteName = "TEST_SUITE_TELEMETRY";
-            const string testName = "doesnt_send";
+            const string suiteName = "TEST_SUITE_TIMEFRAME";
+            const string testName = "date_range_1";
 
             var suite = (IDictionary<string, object>) this.fixture.Tests[suiteName];
             var test = ((IDictionary<string, object>) suite["test"])[testName];
@@ -102,6 +102,7 @@ namespace Adobe.Target.Client.Test
                 _ = notificationRequest.Should().BeEquivalentTo(expectedNotification, IntegrationTestUtils.RootRequestEquivalenceOptions);
             }
 
+            Thread.Sleep(300);
             TimeProvider.ResetToDefault();
         }
 
