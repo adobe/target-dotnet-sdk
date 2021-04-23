@@ -26,8 +26,10 @@ namespace Adobe.Target.Client.OnDevice.Collator
         {
             var result = new Dictionary<string, object>();
             var dateTime = TimeProvider.Current.UtcNow;
-            result.Add(CurrentTimestamp, new DateTimeOffset(dateTime).ToUnixTimeMilliseconds());
-            result.Add(CurrentDay, dateTime.DayOfWeek == 0 ? 7 : (int)dateTime.DayOfWeek);
+            var currentTimeStamp = new DateTimeOffset(dateTime).ToUnixTimeMilliseconds();
+            var currentDay = dateTime.DayOfWeek == 0 ? 7 : (int)dateTime.DayOfWeek;
+            result.Add(CurrentTimestamp, currentTimeStamp);
+            result.Add(CurrentDay, currentDay);
             result.Add(CurrentTime, dateTime.ToString("HHmm"));
             return result;
         }
