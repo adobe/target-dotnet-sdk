@@ -151,7 +151,7 @@ namespace Adobe.Target.Client.Test.Util
             var timeMock = new Mock<TimeProvider>();
             timeMock
                 .SetupGet(tp => tp.UtcNow)
-                .Returns(mockDateTime);
+                .Returns(mockDateTime.ToUniversalTime());
             TimeProvider.Current = timeMock.Object;
         }
 

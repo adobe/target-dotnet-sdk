@@ -19,6 +19,7 @@ namespace Adobe.Target.Client.Test
     using Client.Util;
     using Xunit;
 
+    [Collection("Datetime-mocked Collection")]
     public class ParamsCollatorsShould
     {
         private const string testClientId = "testClientId";
@@ -110,7 +111,7 @@ namespace Adobe.Target.Client.Test
             var timeMock = new Mock<TimeProvider>();
             timeMock
                 .SetupGet(tp => tp.UtcNow)
-                .Returns(mockDateTime);
+                .Returns(mockDateTime.ToUniversalTime());
             TimeProvider.Current = timeMock.Object;
             var result = new TimeParamsCollator().CollateParams();
 

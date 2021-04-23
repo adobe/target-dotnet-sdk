@@ -84,7 +84,7 @@ namespace Adobe.Target.Client.OnDevice
 
         private static string SanitizedMacroKey(string macroKey)
         {
-            if (macroKey == "mbox.name")
+            if (macroKey is "mbox.name" or "view.name")
             {
                 macroKey = "location.name";
             }
