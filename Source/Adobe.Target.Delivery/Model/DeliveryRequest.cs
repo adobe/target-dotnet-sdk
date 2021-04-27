@@ -55,7 +55,8 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="telemetry">telemetry.</param>
         /// <param name="notifications">Notifications for the displayed content, clicked selectors, and/or visited views or mboxes..</param>
         /// <param name="qaMode">qaMode.</param>
-        public DeliveryRequest(string requestId = default(string), string impressionId = default(string), VisitorId id = default(VisitorId), long environmentId = default(long), Property property = default(Property), Trace trace = default(Trace), Context context = default(Context), ExperienceCloud experienceCloud = default(ExperienceCloud), ExecuteRequest execute = default(ExecuteRequest), PrefetchRequest prefetch = default(PrefetchRequest), Telemetry telemetry = default(Telemetry), List<Notification> notifications = default(List<Notification>), QAMode qaMode = default(QAMode))
+        /// <param name="preview">preview.</param>
+        public DeliveryRequest(string requestId = default(string), string impressionId = default(string), VisitorId id = default(VisitorId), long environmentId = default(long), Property property = default(Property), Trace trace = default(Trace), Context context = default(Context), ExperienceCloud experienceCloud = default(ExperienceCloud), ExecuteRequest execute = default(ExecuteRequest), PrefetchRequest prefetch = default(PrefetchRequest), Telemetry telemetry = default(Telemetry), List<Notification> notifications = default(List<Notification>), QAMode qaMode = default(QAMode), Preview preview = default(Preview))
         {
             // to ensure "context" is required (not null)
             this.Context = context ?? throw new ArgumentNullException("context is a required property for DeliveryRequest and cannot be null");
@@ -71,6 +72,7 @@ namespace Adobe.Target.Delivery.Model
             this.Telemetry = telemetry;
             this.Notifications = notifications;
             this.QaMode = qaMode;
+            this.Preview = preview;
         }
 
         /// <summary>
@@ -156,6 +158,12 @@ namespace Adobe.Target.Delivery.Model
         public QAMode QaMode { get; set; }
 
         /// <summary>
+        /// Gets or Sets Preview
+        /// </summary>
+        [DataMember(Name = "preview", EmitDefaultValue = false)]
+        public Preview Preview { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -176,6 +184,7 @@ namespace Adobe.Target.Delivery.Model
             sb.Append("  Telemetry: ").Append(Telemetry).Append("\n");
             sb.Append("  Notifications: ").Append(Notifications).Append("\n");
             sb.Append("  QaMode: ").Append(QaMode).Append("\n");
+            sb.Append("  Preview: ").Append(Preview).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -274,6 +283,11 @@ namespace Adobe.Target.Delivery.Model
                     this.QaMode == input.QaMode ||
                     (this.QaMode != null &&
                     this.QaMode.Equals(input.QaMode))
+                ) && 
+                (
+                    this.Preview == input.Preview ||
+                    (this.Preview != null &&
+                    this.Preview.Equals(input.Preview))
                 );
         }
 
@@ -311,6 +325,8 @@ namespace Adobe.Target.Delivery.Model
                     hashCode = hashCode * 59 + this.Notifications.GetHashCode();
                 if (this.QaMode != null)
                     hashCode = hashCode * 59 + this.QaMode.GetHashCode();
+                if (this.Preview != null)
+                    hashCode = hashCode * 59 + this.Preview.GetHashCode();
                 return hashCode;
             }
         }

@@ -46,6 +46,7 @@ namespace Adobe.Target.Client.OnDevice
         private async Task FetchLocationAsync(ITargetService targetService)
         {
             var request = new TargetDeliveryRequest.Builder()
+                .SetDecisioningMethod(DecisioningMethod.ServerSide)
                 .SetContext(new Context(ChannelType.Web))
                 .Build();
 

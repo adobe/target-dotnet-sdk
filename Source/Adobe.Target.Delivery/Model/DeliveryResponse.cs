@@ -44,7 +44,8 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="edgeHost">Cluster host name that served the response. Ideally, all subsequent requests should be made to that host..</param>
         /// <param name="execute">execute.</param>
         /// <param name="prefetch">prefetch.</param>
-        public DeliveryResponse(int status = default(int), string requestId = default(string), VisitorId id = default(VisitorId), string _client = default(string), string edgeHost = default(string), ExecuteResponse execute = default(ExecuteResponse), PrefetchResponse prefetch = default(PrefetchResponse))
+        /// <param name="notifications">notifications.</param>
+        public DeliveryResponse(int status = default(int), string requestId = default(string), VisitorId id = default(VisitorId), string _client = default(string), string edgeHost = default(string), ExecuteResponse execute = default(ExecuteResponse), PrefetchResponse prefetch = default(PrefetchResponse), NotificationResponse notifications = default(NotificationResponse))
         {
             this.Status = status;
             this.RequestId = requestId;
@@ -53,6 +54,7 @@ namespace Adobe.Target.Delivery.Model
             this.EdgeHost = edgeHost;
             this.Execute = execute;
             this.Prefetch = prefetch;
+            this.Notifications = notifications;
         }
 
         /// <summary>
@@ -101,6 +103,12 @@ namespace Adobe.Target.Delivery.Model
         public PrefetchResponse Prefetch { get; set; }
 
         /// <summary>
+        /// Gets or Sets Notifications
+        /// </summary>
+        [DataMember(Name = "notifications", EmitDefaultValue = false)]
+        public NotificationResponse Notifications { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -115,6 +123,7 @@ namespace Adobe.Target.Delivery.Model
             sb.Append("  EdgeHost: ").Append(EdgeHost).Append("\n");
             sb.Append("  Execute: ").Append(Execute).Append("\n");
             sb.Append("  Prefetch: ").Append(Prefetch).Append("\n");
+            sb.Append("  Notifications: ").Append(Notifications).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -182,6 +191,11 @@ namespace Adobe.Target.Delivery.Model
                     this.Prefetch == input.Prefetch ||
                     (this.Prefetch != null &&
                     this.Prefetch.Equals(input.Prefetch))
+                ) && 
+                (
+                    this.Notifications == input.Notifications ||
+                    (this.Notifications != null &&
+                    this.Notifications.Equals(input.Notifications))
                 );
         }
 
@@ -207,6 +221,8 @@ namespace Adobe.Target.Delivery.Model
                     hashCode = hashCode * 59 + this.Execute.GetHashCode();
                 if (this.Prefetch != null)
                     hashCode = hashCode * 59 + this.Prefetch.GetHashCode();
+                if (this.Notifications != null)
+                    hashCode = hashCode * 59 + this.Notifications.GetHashCode();
                 return hashCode;
             }
         }

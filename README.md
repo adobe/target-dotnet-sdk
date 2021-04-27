@@ -38,6 +38,15 @@ On Windows, we recommend installing [the latest Visual Studio 2019](https://www.
 
 To get started with Target Node.js SDK, just add it as a dependency by [installing from NuGet](https://www.nuget.org/packages/Adobe.Target.Client).
 
+### Super Simple to Use
+
+Please take a look at [our documentation](https://adobetarget-sdks.gitbook.io/docs/sdk-reference-guides/dotnet-sdk) to learn how to use the .NET SDK.
+
+### Sample Apps
+
+There's a couple of sample apps showing sample sync/async Target SDK usage under [SampleApp project](SampleApp).  
+To switch between sync and async sample apps, just modify `StartupObject` property in [SampleApp project file](SampleApp/SampleApp.csproj) accordingly.
+
 ### Build
 
 To build everything and generate NuGet packages, run [dotnet Cake](https://cakebuild.net/) CLI commands. Binaries and NuGet packages will be dropped in an *Artefacts* directory at the repo root.
@@ -58,16 +67,9 @@ Each project can also be built individually directly through the CLI or your edi
 
 We publish NuGet packages to [nuget.org](https://www.nuget.org/packages/Adobe.Target.Client) for each release.
 
-### Using nugets built locally in your project
-
-```bash
-# Add Adobe.Target.Client nuget package
-dotnet add package Adobe.Target.Client -s <RepoRoot>/Artefacts
-```
-
 ### Contributing
 
-Contributions are welcomed! Read the [Contributing Guide](./.github/CONTRIBUTING.md) for more information.
+Contributions are welcome! Read the [Contributing Guide](./.github/CONTRIBUTING.md) for more information.
 
 ### Licensing
 

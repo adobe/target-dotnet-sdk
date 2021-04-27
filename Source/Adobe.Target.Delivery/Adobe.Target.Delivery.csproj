@@ -6,7 +6,7 @@
 
     <PropertyGroup Label="Package">
         <Product>Adobe.Target.Delivery</Product>
-        <Description>Target .NET Delivery API</Description>
+        <Description>Target .NET Delivery API - https://developers.adobetarget.com/api/delivery-api/</Description>
         <PackageTags>adobe;target;target-delivery;target-delivery-api</PackageTags>
     </PropertyGroup>
 
