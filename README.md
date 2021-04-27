@@ -13,6 +13,8 @@ The Adobe Target .Net SDK uses the [Target Delivery API] to retrieve and deliver
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
+    - [Super Simple To Use](#super-simple-to-use)
+    - [Sample Apps](#sample-apps)
     - [Build](#build)
   - [Releases](#releases)
     - [Using nugets built locally in your project](#using-nugets-built-locally-in-your-project)
@@ -36,7 +38,7 @@ On Windows, we recommend installing [the latest Visual Studio 2019](https://www.
 
 ### Installation  
 
-To get started with Target Node.js SDK, just add it as a dependency by [installing from NuGet](https://www.nuget.org/packages/Adobe.Target.Client).
+To get started with Target .NET SDK, just add it as a dependency by [installing from NuGet](https://www.nuget.org/packages/Adobe.Target.Client).
 
 ### Super Simple to Use
 
