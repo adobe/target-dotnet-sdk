@@ -6,13 +6,13 @@
 
   <PropertyGroup Label="Package">
     <Product>Adobe.Target.Client</Product>
-    <Description>Target .NET SDK</Description>
+    <Description>Adobe Target .NET SDK - https://adobetarget-sdks.gitbook.io/docs/sdk-reference-guides/dotnet-sdk</Description>
     <PackageTags>adobe;target;target-sdk;target-client</PackageTags>
   </PropertyGroup>
 
   <ItemGroup Label="Project References">
     <PackageReference Include="Adobe.ExperienceCloud.Ecid" Version="1.0.0" />
-    <PackageReference Include="Adobe.Target.Delivery" Version="0.0.0-preview.0.14" />
+    <PackageReference Include="Adobe.Target.Delivery" Version="0.0.0-preview.0.17" />
     <PackageReference Include="JsonLogic.Net" Version="1.1.9" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />

@@ -11,6 +11,7 @@ namespace SampleApp
     internal class ProgramSync
     {
         private static TargetClient targetClient;
+        private static ILogger<ProgramSync> logger;
         public static void Main(string[] args)
         {
             Console.WriteLine("Sync app");
@@ -20,7 +21,9 @@ namespace SampleApp
                 builder.AddSimpleConsole(options => options.TimestampFormat = "hh:mm:ss ");
                 builder.SetMinimumLevel(LogLevel.Debug);
             });
-            var logger = loggerFactory.CreateLogger<ProgramSync>();
+            logger = loggerFactory.CreateLogger<ProgramSync>();
+
+            // Initialize the SDK
 
             var targetClientConfig = new TargetClientConfig.Builder("adobetargetmobile", "B8A054D958807F770A495DD6@AdobeOrg")
                 .SetLogger(logger)
@@ -31,6 +34,40 @@ namespace SampleApp
                 .Build();
             targetClient = TargetClient.Create(targetClientConfig);
 
+            // sample server-side GetOffers call
+
+            var deliveryRequest = new TargetDeliveryRequest.Builder()
+                .SetDecisioningMethod(DecisioningMethod.ServerSide)
+                .SetThirdPartyId("testThirdPartyId")
+                .SetContext(new Context(ChannelType.Web))
+                .SetExecute(new ExecuteRequest(null, new List<MboxRequest>
+                {
+                    new MboxRequest(index:1, name: "a1-serverside-ab")
+                }))
+                .Build();
+
+            var response = targetClient.GetOffers(deliveryRequest);
+
+            App.PrintCookies(logger, response);
+
+            // sample SendNotifications call
+
+            var notificationRequest = new TargetDeliveryRequest.Builder()
+                .SetDecisioningMethod(DecisioningMethod.ServerSide)
+                .SetSessionId(response.Request.SessionId)
+                .SetTntId(response.Response?.Id?.TntId)
+                .SetThirdPartyId("testThirdPartyId")
+                .SetContext(new Context(ChannelType.Web))
+                .SetNotifications(new List<Notification>()
+                {
+                    { new(id:"notificationId1", type: MetricType.Display, timestamp: DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
+                        tokens: new List<string>())}
+                })
+                .Build();
+
+            var notificationResponse = targetClient.SendNotifications(notificationRequest);
+            App.PrintCookies(logger, notificationResponse);
+
             Thread.Sleep(3000);
         }
 
@@ -38,8 +75,9 @@ namespace SampleApp
         {
             Console.WriteLine("OnDeviceDecisioningReady");
 
+            // sample on-device GetOffers call
+
             var deliveryRequest = new TargetDeliveryRequest.Builder()
-                .SetThirdPartyId("testThirdPartyId")
                 .SetContext(new Context(ChannelType.Web, geo: new Geo("193.105.140.131")))
                 .SetExecute(new ExecuteRequest(new RequestDetails(), new List<MboxRequest>
                 {
@@ -48,6 +86,7 @@ namespace SampleApp
                 .Build();
 
             var response = targetClient.GetOffers(deliveryRequest);
+            App.PrintCookies(logger, response);
         }
     }
 }

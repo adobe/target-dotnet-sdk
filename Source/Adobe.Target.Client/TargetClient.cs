@@ -47,11 +47,11 @@ namespace Adobe.Target.Client
         public void Initialize(TargetClientConfig clientConfig)
         {
             Logger = clientConfig.Logger;
+            VisitorProvider.Initialize(clientConfig.OrganizationId);
             this.targetService = new TargetService(clientConfig);
             this.localService = new OnDeviceDecisioningService(clientConfig, this.targetService);
             this.defaultDecisioningMethod = clientConfig.DecisioningMethod;
             this.defaultPropertyToken = clientConfig.DefaultPropertyToken;
-            VisitorProvider.Initialize(clientConfig.OrganizationId);
             Logger?.LogDebug("Initialized Target Client: " + clientConfig.OrganizationId);
         }
 

@@ -33,15 +33,23 @@ namespace SampleApp
         public async Task RunAsync(string[] args)
         {
             Console.WriteLine("Async app");
-            this.logger.LogInformation("Starting ...");
+
+            // Initialize the SDK
 
             var targetClientConfig = new TargetClientConfig.Builder("adobetargetmobile", "B8A054D958807F770A495DD6@AdobeOrg")
                 .SetLogger(this.logger)
+                .SetDecisioningMethod(DecisioningMethod.OnDevice)
+                .SetOnDeviceDecisioningReady(this.DecisioningReady)
+                .SetArtifactDownloadSucceeded(artifact => Console.WriteLine("ArtifactDownloadSucceeded: " + artifact))
+                .SetArtifactDownloadFailed(exception => Console.WriteLine("ArtifactDownloadFailed " + exception.Message))
                 .Build();
 
             this.targetClient.Initialize(targetClientConfig);
 
+            // sample server-side GetOffers call
+
             var deliveryRequest = new TargetDeliveryRequest.Builder()
+                .SetDecisioningMethod(DecisioningMethod.ServerSide)
                 .SetThirdPartyId("testThirdPartyId")
                 .SetContext(new Context(ChannelType.Web))
                 .SetExecute(new ExecuteRequest(null, new List<MboxRequest>
@@ -54,7 +62,10 @@ namespace SampleApp
 
             App.PrintCookies(this.logger, response);
 
+            // sample SendNotifications call
+
             var notificationRequest = new TargetDeliveryRequest.Builder()
+                .SetDecisioningMethod(DecisioningMethod.ServerSide)
                 .SetSessionId(response.Request.SessionId)
                 .SetTntId(response.Response?.Id?.TntId)
                 .SetThirdPartyId("testThirdPartyId")
@@ -68,8 +79,6 @@ namespace SampleApp
 
             App.PrintCookies(this.logger, await this.targetClient.SendNotificationsAsync(notificationRequest));
 
-            this.logger.LogInformation("Done");
-
             await Task.CompletedTask;
         }
 
@@ -77,6 +86,28 @@ namespace SampleApp
         {
             logger.LogInformation("Mbox cookie: " + response.GetCookies()[TargetConstants.MboxCookieName].Value);
             logger.LogInformation("Cluster cookie: " + response.GetCookies()[TargetConstants.ClusterCookieName].Value);
+        }
+
+        private void DecisioningReady()
+        {
+            Console.WriteLine("OnDeviceDecisioningReady");
+            _ = this.GetOnDeviceOffersAsync();
+        }
+
+        private async Task GetOnDeviceOffersAsync()
+        {
+            // sample on-device GetOffers call
+
+            var deliveryRequest = new TargetDeliveryRequest.Builder()
+                .SetContext(new Context(ChannelType.Web, geo: new Geo("193.105.140.131")))
+                .SetExecute(new ExecuteRequest(new RequestDetails(), new List<MboxRequest>
+                {
+                    new(index:1, name: "a1-mobile-tstsree")
+                }))
+                .Build();
+
+            var response = await targetClient.GetOffersAsync(deliveryRequest);
+            App.PrintCookies(this.logger, response);
         }
     }
 }
