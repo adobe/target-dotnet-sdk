@@ -30,27 +30,43 @@ namespace Adobe.Target.Client
         /// </summary>
         /// <param name="request">Target Delivery Request</param>
         /// <returns>Target Delivery Response</returns>
-        public TargetDeliveryResponse GetOffers(TargetDeliveryRequest request);
+        TargetDeliveryResponse GetOffers(TargetDeliveryRequest request);
 
         /// <summary>
         /// Get Offers Async
         /// </summary>
         /// <param name="request">Target Delivery Request</param>
         /// <returns>Target Delivery Response Task</returns>
-        public Task<TargetDeliveryResponse> GetOffersAsync(TargetDeliveryRequest request);
+        Task<TargetDeliveryResponse> GetOffersAsync(TargetDeliveryRequest request);
 
         /// <summary>
         /// Send Notifications
         /// </summary>
         /// <param name="request">Target Delivery Request</param>
         /// <returns>Target Delivery Response</returns>
-        public TargetDeliveryResponse SendNotifications(TargetDeliveryRequest request);
+        TargetDeliveryResponse SendNotifications(TargetDeliveryRequest request);
 
         /// <summary>
         /// Get Offers Async
         /// </summary>
         /// <param name="request">Target Delivery Request</param>
         /// <returns>Target Delivery Response Task</returns>
-        public Task<TargetDeliveryResponse> SendNotificationsAsync(TargetDeliveryRequest request);
+        Task<TargetDeliveryResponse> SendNotificationsAsync(TargetDeliveryRequest request);
+
+        /// <summary>
+        /// Makes a getOffers() call and converts all returned JSON offers into Attributes
+        /// </summary>
+        /// <param name="request">optional TargetDeliveryRequest used to set specific request fields. If null, one will be generated</param>
+        /// <param name="mboxes">Mbox names for attribute retrieval</param>
+        /// <returns>Requested Target attributes</returns>
+        TargetAttributes GetAttributes(TargetDeliveryRequest request, params string[] mboxes);
+
+        /// <summary>
+        /// Makes a getOffers() call and converts all returned JSON offers into Attributes
+        /// </summary>
+        /// <param name="request">optional TargetDeliveryRequest used to set specific request fields. If null, one will be generated</param>
+        /// <param name="mboxes">Mbox names for attribute retrieval</param>
+        /// <returns>Task returning requested Target attributes</returns>
+        Task<TargetAttributes> GetAttributesAsync(TargetDeliveryRequest request, params string[] mboxes);
     }
 }

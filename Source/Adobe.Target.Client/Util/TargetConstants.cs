@@ -18,7 +18,7 @@ namespace Adobe.Target.Client.Util
         /// <summary>
         /// SDK Version
         /// </summary>
-        public const string SdkVersion = "1.0.0";
+        public const string SdkVersion = "1.0.1";
 
         /// <summary>
         /// Mbox cookie name

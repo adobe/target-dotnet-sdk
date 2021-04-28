@@ -8,6 +8,7 @@
     <Product>Adobe.Target.Client</Product>
     <Description>Adobe Target .NET SDK - https://adobetarget-sdks.gitbook.io/docs/sdk-reference-guides/dotnet-sdk</Description>
     <PackageTags>adobe;target;target-sdk;target-client</PackageTags>
+    <MinVerTagPrefix>client-</MinVerTagPrefix>
   </PropertyGroup>
 
   <ItemGroup Label="Project References">

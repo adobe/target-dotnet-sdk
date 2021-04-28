@@ -10,6 +10,8 @@
  */
 namespace Adobe.Target.Client
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Adobe.Target.Client.Model;
     using Adobe.Target.Client.Service;
@@ -105,6 +107,69 @@ namespace Adobe.Target.Client
             Validators.ValidateClientInit(this.targetService);
             Validators.ValidateSendNotifications(request);
             return this.targetService.ExecuteRequestAsync(request);
+        }
+
+        /// <inheritdoc />
+        public TargetAttributes GetAttributes(TargetDeliveryRequest request, params string[] mboxes)
+        {
+            var response = this.GetOffers(AddMBoxesToRequest(request, mboxes));
+            return new TargetAttributes(response);
+        }
+
+        /// <inheritdoc />
+        public async Task<TargetAttributes> GetAttributesAsync(TargetDeliveryRequest request, params string[] mboxes)
+        {
+            var response = await this.GetOffersAsync(AddMBoxesToRequest(request, mboxes));
+            return new TargetAttributes(response);
+        }
+
+        private static TargetDeliveryRequest AddMBoxesToRequest(TargetDeliveryRequest request, params string[] mboxes)
+        {
+            if (request?.DeliveryRequest == null)
+            {
+                request = new TargetDeliveryRequest.Builder()
+                    .SetDecisioningMethod(DecisioningMethod.Hybrid)
+                    .SetContext(new Context(ChannelType.Web))
+                    .Build();
+            }
+
+            if (mboxes == null || mboxes.Length == 0)
+            {
+                return request;
+            }
+
+            var existingMboxNames = new HashSet<string>();
+            var index = 0;
+
+            var deliveryRequest = request.DeliveryRequest;
+            var prefetchMboxes = deliveryRequest.Prefetch?.Mboxes ?? new List<MboxRequest>();
+            existingMboxNames.UnionWith(prefetchMboxes.Select(mbox => mbox.Name));
+
+            var executeMboxes = deliveryRequest.Execute?.Mboxes ?? new List<MboxRequest>();
+            executeMboxes.ForEach(mbox =>
+            {
+                if (mbox.Index >= index)
+                {
+                    index = mbox.Index + 1;
+                }
+
+                existingMboxNames.Add(mbox.Name);
+            });
+
+            deliveryRequest.Execute ??= new ExecuteRequest();
+            deliveryRequest.Execute.Mboxes ??= new List<MboxRequest>();
+
+            foreach (var mbox in mboxes)
+            {
+                if (existingMboxNames.Contains(mbox))
+                {
+                    continue;
+                }
+
+                deliveryRequest.Execute.Mboxes.Add(new MboxRequest(name: mbox, index: index++));
+            }
+
+            return request;
         }
 
         private void UpdatePropertyToken(TargetDeliveryRequest request)
