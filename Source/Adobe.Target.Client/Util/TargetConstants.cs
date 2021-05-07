@@ -10,16 +10,13 @@
  */
 namespace Adobe.Target.Client.Util
 {
+    using System.Reflection;
+
     /// <summary>
     /// Target Constants
     /// </summary>
     public static class TargetConstants
     {
-        /// <summary>
-        /// SDK Version
-        /// </summary>
-        public const string SdkVersion = "1.0.2";
-
         /// <summary>
         /// Mbox cookie name
         /// </summary>
@@ -60,9 +57,19 @@ namespace Adobe.Target.Client.Util
         /// </summary>
         public const string DefaultSdidConsumerId = "target-global-mbox";
 
+        /// <summary>
+        /// SDK Version
+        /// </summary>
+        public static readonly string SdkVersion = Assembly.GetEntryAssembly()
+            !.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+            !.InformationalVersion;
+
         internal const string SdkNameHeader = "X-EXC-SDK";
+
         internal const string SdkNameValue = "AdobeTargetNet";
+
         internal const string SdkVersionHeader = "X-EXC-SDK-Version";
+
         internal static readonly string SdkUserAgent = $"{SdkNameValue}/{SdkVersion}";
     }
 }
