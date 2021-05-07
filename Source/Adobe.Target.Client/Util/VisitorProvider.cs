@@ -15,13 +15,14 @@ namespace Adobe.Target.Client.Util
 
     internal sealed class VisitorProvider
     {
+        private const string AmcvPrefix = "AMCV_";
         private static VisitorProvider instance;
         private string orgId;
 
         private VisitorProvider(string orgId)
         {
             this.orgId = orgId;
-            this.VisitorCookieName = new Visitor(orgId).AmcvCookieName;
+            this.VisitorCookieName = AmcvPrefix + orgId;
         }
 
         internal static VisitorProvider Instance
