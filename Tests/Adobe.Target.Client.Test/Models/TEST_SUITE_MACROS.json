@@ -28,7 +28,7 @@
             "mboxes": [
               {
                 "name": "mbox-macros",
-                "index": 0,
+                "index": 1,
                 "parameters": {
                   "user": "Mickey Mouse",
                   "pgname": "blippi",
@@ -51,7 +51,7 @@
                   "content": "<ul>\n  <li>246892</li>\n  <li>/_unit-test_mbox-macros/experiences/0/pages/0/zones/0/1612393051539</li>\n  <li>125891</li>\n  <li>[unit-test] mbox-macros</li>\n  <li>0</li>\n  <li>Experience A</li>\n  <li>125891</li>\n  <li>[unit-test] mbox-macros</li>\n  <li>0</li>\n  <li>Experience A</li>\n  <li>mbox-macros</li>\n  <li>Mickey Mouse</li>\n  <li>blippi</li>\n  <li>1024</li>\n</ul>"
                 }
               ],
-              "index": 0
+              "index": 1
             }
           ]
         }
@@ -78,7 +78,7 @@
             "mboxes": [
               {
                 "name": "mbox-macros",
-                "index": 0,
+                "index": 1,
                 "parameters": {
                   "user": "Donald"
                 }
@@ -99,7 +99,7 @@
                   "content": "<ul>\n  <li>246892</li>\n  <li>/_unit-test_mbox-macros/experiences/0/pages/0/zones/0/1612393051539</li>\n  <li>125891</li>\n  <li>[unit-test] mbox-macros</li>\n  <li>0</li>\n  <li>Experience A</li>\n  <li>125891</li>\n  <li>[unit-test] mbox-macros</li>\n  <li>0</li>\n  <li>Experience A</li>\n  <li>mbox-macros</li>\n  <li>Donald</li>\n  <li>${mbox.pgname}</li>\n  <li>${mbox.browserWidth}</li>\n</ul>"
                 }
               ],
-              "index": 0
+              "index": 1
             }
           ]
         }

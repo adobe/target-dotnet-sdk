@@ -139,7 +139,7 @@ namespace Adobe.Target.Client
             }
 
             var existingMboxNames = new HashSet<string>();
-            var index = 0;
+            var index = 1;
 
             var deliveryRequest = request.DeliveryRequest;
             var prefetchMboxes = deliveryRequest.Prefetch?.Mboxes ?? new List<MboxRequest>();
