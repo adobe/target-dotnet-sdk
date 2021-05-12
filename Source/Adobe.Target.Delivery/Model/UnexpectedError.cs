@@ -44,7 +44,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <param name="status">HTTP response codes: * &#x60;400&#x60; - Validation error (ex. invalid token) * &#x60;500&#x60; - An internal server error during processing  (required).</param>
         /// <param name="message">error message (required).</param>
-        public UnexpectedError(int status = default(int), string message = default(string))
+        public UnexpectedError(int? status = default(int?), string message = default(string))
         {
             this.Status = status;
             // to ensure "message" is required (not null)
@@ -56,7 +56,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>HTTP response codes: * &#x60;400&#x60; - Validation error (ex. invalid token) * &#x60;500&#x60; - An internal server error during processing </value>
         [DataMember(Name = "status", IsRequired = true, EmitDefaultValue = false)]
-        public int Status { get; set; }
+        public int? Status { get; set; }
 
         /// <summary>
         /// error message

@@ -32,9 +32,7 @@ namespace Adobe.Target.Delivery.Model
     /// Specifies the channel for the request. Only activities with the matching channel will be evaluated. 
     /// </summary>
     /// <value>Specifies the channel for the request. Only activities with the matching channel will be evaluated. </value>
-    
     [JsonConverter(typeof(StringEnumConverter))]
-    
     public enum ChannelType
     {
         /// <summary>

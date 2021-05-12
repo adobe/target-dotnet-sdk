@@ -41,7 +41,7 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="timestamp">Timestamp of the entry, in milliseconds elapsed since UNIX epoch..</param>
         /// <param name="execution">Execution time in milliseconds..</param>
         /// <param name="features">features.</param>
-        public TelemetryEntry(string requestId = default(string), long timestamp = default(long), int execution = default(int), TelemetryFeatures features = default(TelemetryFeatures))
+        public TelemetryEntry(string requestId = default(string), long? timestamp = default(long?), int? execution = default(int?), TelemetryFeatures features = default(TelemetryFeatures))
         {
             this.RequestId = requestId;
             this.Timestamp = timestamp;
@@ -61,14 +61,14 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>Timestamp of the entry, in milliseconds elapsed since UNIX epoch.</value>
         [DataMember(Name = "timestamp", EmitDefaultValue = false)]
-        public long Timestamp { get; set; }
+        public long? Timestamp { get; set; }
 
         /// <summary>
         /// Execution time in milliseconds.
         /// </summary>
         /// <value>Execution time in milliseconds.</value>
         [DataMember(Name = "execution", EmitDefaultValue = false)]
-        public int Execution { get; set; }
+        public int? Execution { get; set; }
 
         /// <summary>
         /// Gets or Sets Features

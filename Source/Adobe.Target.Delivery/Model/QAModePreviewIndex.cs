@@ -39,7 +39,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <param name="activityIndex">Index references the activity in the activity list (from the encrypted token). Validation   * If the activity list index is out of boundaries of the activities list in the token or if it is null it will  be ignored.   * Activity list index starts with 1.   * Should be at least one activity index, and should reference an activity specified in the token. .</param>
         /// <param name="experienceIndex">When specified, the experience with this index in the activity definition will be selected. Validation   * Can be null (unspecified)   * If index is not specified or out of bounds, the experience will be selected via activity experience selector strategy.   * Experience index starts with 1. .</param>
-        public QAModePreviewIndex(int activityIndex = default(int), int experienceIndex = default(int))
+        public QAModePreviewIndex(int? activityIndex = default(int?), int? experienceIndex = default(int?))
         {
             this.ActivityIndex = activityIndex;
             this.ExperienceIndex = experienceIndex;
@@ -50,14 +50,14 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>Index references the activity in the activity list (from the encrypted token). Validation   * If the activity list index is out of boundaries of the activities list in the token or if it is null it will  be ignored.   * Activity list index starts with 1.   * Should be at least one activity index, and should reference an activity specified in the token. </value>
         [DataMember(Name = "activityIndex", EmitDefaultValue = false)]
-        public int ActivityIndex { get; set; }
+        public int? ActivityIndex { get; set; }
 
         /// <summary>
         /// When specified, the experience with this index in the activity definition will be selected. Validation   * Can be null (unspecified)   * If index is not specified or out of bounds, the experience will be selected via activity experience selector strategy.   * Experience index starts with 1. 
         /// </summary>
         /// <value>When specified, the experience with this index in the activity definition will be selected. Validation   * Can be null (unspecified)   * If index is not specified or out of bounds, the experience will be selected via activity experience selector strategy.   * Experience index starts with 1. </value>
         [DataMember(Name = "experienceIndex", EmitDefaultValue = false)]
-        public int ExperienceIndex { get; set; }
+        public int? ExperienceIndex { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

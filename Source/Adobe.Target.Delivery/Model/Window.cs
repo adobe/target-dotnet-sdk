@@ -39,7 +39,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <param name="width">width.</param>
         /// <param name="height">height.</param>
-        public Window(double width = default(double), double height = default(double))
+        public Window(double? width = default(double?), double? height = default(double?))
         {
             this.Width = width;
             this.Height = height;
@@ -50,14 +50,14 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>width</value>
         [DataMember(Name = "width", EmitDefaultValue = false)]
-        public double Width { get; set; }
+        public double? Width { get; set; }
 
         /// <summary>
         /// height
         /// </summary>
         /// <value>height</value>
         [DataMember(Name = "height", EmitDefaultValue = false)]
-        public double Height { get; set; }
+        public double? Height { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

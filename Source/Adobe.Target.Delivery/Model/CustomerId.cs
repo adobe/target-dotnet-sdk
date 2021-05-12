@@ -34,6 +34,7 @@ namespace Adobe.Target.Delivery.Model
     [DataContract(Name = "CustomerId")]
     public partial class CustomerId : IEquatable<CustomerId>, IValidatableObject
     {
+
         /// <summary>
         /// Gets or Sets AuthenticatedState
         /// </summary>

@@ -44,7 +44,7 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="stateCode">Alphanumeric characters representing the subdivision part from ISO 3166-2.</param>
         /// <param name="city">City.</param>
         /// <param name="zip">Zip/Postal Code.</param>
-        public Geo(string ipAddress = default(string), float latitude = default(float), float longitude = default(float), string countryCode = default(string), string stateCode = default(string), string city = default(string), string zip = default(string))
+        public Geo(string ipAddress = default(string), float? latitude = default(float?), float? longitude = default(float?), string countryCode = default(string), string stateCode = default(string), string city = default(string), string zip = default(string))
         {
             this.IpAddress = ipAddress;
             this.Latitude = latitude;
@@ -67,14 +67,14 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>Latitude</value>
         [DataMember(Name = "latitude", EmitDefaultValue = false)]
-        public float Latitude { get; set; }
+        public float? Latitude { get; set; }
 
         /// <summary>
         /// Longitude
         /// </summary>
         /// <value>Longitude</value>
         [DataMember(Name = "longitude", EmitDefaultValue = false)]
-        public float Longitude { get; set; }
+        public float? Longitude { get; set; }
 
         /// <summary>
         /// Country code in ISO 3166-1 alpha-2 format

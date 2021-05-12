@@ -44,7 +44,7 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="analytics">analytics.</param>
         /// <param name="trace">The object containing all trace data for the request, only present if the trace token was provided in the request. .</param>
         /// <param name="state">Mbox state token that must be sent back with display notification for the mbox..</param>
-        public PrefetchMboxResponse(int index = default(int), string name = default(string), List<Option> options = default(List<Option>), List<Metric> metrics = default(List<Metric>), AnalyticsResponse analytics = default(AnalyticsResponse), Dictionary<string, Object> trace = default(Dictionary<string, Object>), string state = default(string))
+        public PrefetchMboxResponse(int? index = default(int?), string name = default(string), List<Option> options = default(List<Option>), List<Metric> metrics = default(List<Metric>), AnalyticsResponse analytics = default(AnalyticsResponse), Dictionary<string, Object> trace = default(Dictionary<string, Object>), string state = default(string))
         {
             this.Index = index;
             this.Name = name;
@@ -60,7 +60,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>Indicates that the response is for mbox with the same index, as was specified in the prefetch or execute request. </value>
         [DataMember(Name = "index", EmitDefaultValue = false)]
-        public int Index { get; set; }
+        public int? Index { get; set; }
 
         /// <summary>
         /// The name of the mbox. Since the same mbox name can be specified multiple times in the request it should be used in conjunction with the index. 

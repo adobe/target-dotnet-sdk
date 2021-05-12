@@ -31,9 +31,7 @@ namespace Adobe.Target.Delivery.Model
     /// <summary>
     /// Defines OptionType
     /// </summary>
-    
     [JsonConverter(typeof(StringEnumConverter))]
-    
     public enum OptionType
     {
         /// <summary>

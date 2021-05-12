@@ -31,9 +31,7 @@ namespace Adobe.Target.Delivery.Model
     /// <summary>
     /// Defines AuthenticatedState
     /// </summary>
-    
     [JsonConverter(typeof(StringEnumConverter))]
-    
     public enum AuthenticatedState
     {
         /// <summary>

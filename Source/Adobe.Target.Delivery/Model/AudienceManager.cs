@@ -39,7 +39,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <param name="locationHint">DCS location hint. Used to determine which AAM DCS Endpoint to hit in order to retrieve the profile. .</param>
         /// <param name="blob">AAM Blob. Used to send additional data to AAM. Validation   * Cannot be blank. .</param>
-        public AudienceManager(int locationHint = default(int), string blob = default(string))
+        public AudienceManager(int? locationHint = default(int?), string blob = default(string))
         {
             this.LocationHint = locationHint;
             this.Blob = blob;
@@ -50,7 +50,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>DCS location hint. Used to determine which AAM DCS Endpoint to hit in order to retrieve the profile. </value>
         [DataMember(Name = "locationHint", EmitDefaultValue = false)]
-        public int LocationHint { get; set; }
+        public int? LocationHint { get; set; }
 
         /// <summary>
         /// AAM Blob. Used to send additional data to AAM. Validation   * Cannot be blank. 

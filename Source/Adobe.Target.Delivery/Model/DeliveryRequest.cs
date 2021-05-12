@@ -56,7 +56,7 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="notifications">Notifications for the displayed content, clicked selectors, and/or visited views or mboxes..</param>
         /// <param name="qaMode">qaMode.</param>
         /// <param name="preview">preview.</param>
-        public DeliveryRequest(string requestId = default(string), string impressionId = default(string), VisitorId id = default(VisitorId), long environmentId = default(long), Property property = default(Property), Trace trace = default(Trace), Context context = default(Context), ExperienceCloud experienceCloud = default(ExperienceCloud), ExecuteRequest execute = default(ExecuteRequest), PrefetchRequest prefetch = default(PrefetchRequest), Telemetry telemetry = default(Telemetry), List<Notification> notifications = default(List<Notification>), QAMode qaMode = default(QAMode), Preview preview = default(Preview))
+        public DeliveryRequest(string requestId = default(string), string impressionId = default(string), VisitorId id = default(VisitorId), long? environmentId = default(long?), Property property = default(Property), Trace trace = default(Trace), Context context = default(Context), ExperienceCloud experienceCloud = default(ExperienceCloud), ExecuteRequest execute = default(ExecuteRequest), PrefetchRequest prefetch = default(PrefetchRequest), Telemetry telemetry = default(Telemetry), List<Notification> notifications = default(List<Notification>), QAMode qaMode = default(QAMode), Preview preview = default(Preview))
         {
             // to ensure "context" is required (not null)
             this.Context = context ?? throw new ArgumentNullException("context is a required property for DeliveryRequest and cannot be null");
@@ -100,7 +100,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>Valid client environment id. If not specified host will be determined base on the provided host.</value>
         [DataMember(Name = "environmentId", EmitDefaultValue = false)]
-        public long EnvironmentId { get; set; }
+        public long? EnvironmentId { get; set; }
 
         /// <summary>
         /// Gets or Sets Property

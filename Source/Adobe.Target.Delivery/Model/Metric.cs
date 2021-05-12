@@ -34,6 +34,7 @@ namespace Adobe.Target.Delivery.Model
     [DataContract(Name = "Metric")]
     public partial class Metric : IEquatable<Metric>, IValidatableObject
     {
+
         /// <summary>
         /// Gets or Sets Type
         /// </summary>

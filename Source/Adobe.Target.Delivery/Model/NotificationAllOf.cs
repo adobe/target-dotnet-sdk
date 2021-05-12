@@ -34,6 +34,7 @@ namespace Adobe.Target.Delivery.Model
     [DataContract(Name = "Notification_allOf")]
     public partial class NotificationAllOf : IEquatable<NotificationAllOf>, IValidatableObject
     {
+
         /// <summary>
         /// Gets or Sets Type
         /// </summary>
@@ -50,7 +51,7 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="mbox">mbox.</param>
         /// <param name="view">view.</param>
         /// <param name="pageLoad">pageLoad.</param>
-        public NotificationAllOf(string id = default(string), string impressionId = default(string), MetricType? type = default(MetricType?), long timestamp = default(long), List<string> tokens = default(List<string>), NotificationMbox mbox = default(NotificationMbox), NotificationView view = default(NotificationView), NotificationPageLoad pageLoad = default(NotificationPageLoad))
+        public NotificationAllOf(string id = default(string), string impressionId = default(string), MetricType? type = default(MetricType?), long? timestamp = default(long?), List<string> tokens = default(List<string>), NotificationMbox mbox = default(NotificationMbox), NotificationView view = default(NotificationView), NotificationPageLoad pageLoad = default(NotificationPageLoad))
         {
             this.Id = id;
             this.ImpressionId = impressionId;
@@ -81,7 +82,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>Timestamp of the notification, in milliseconds elapsed since UNIX epoch.</value>
         [DataMember(Name = "timestamp", EmitDefaultValue = false)]
-        public long Timestamp { get; set; }
+        public long? Timestamp { get; set; }
 
         /// <summary>
         /// A list of tokens for displayed content or clicked selectors, based on the type of notification.

@@ -34,6 +34,7 @@ namespace Adobe.Target.Delivery.Model
     [DataContract(Name = "Notification")]
     public partial class Notification : IEquatable<Notification>, IValidatableObject
     {
+
         /// <summary>
         /// Gets or Sets Type
         /// </summary>
@@ -60,7 +61,7 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="mbox">mbox.</param>
         /// <param name="view">view.</param>
         /// <param name="pageLoad">pageLoad.</param>
-        public Notification(Address address = default(Address), Dictionary<string, string> parameters = default(Dictionary<string, string>), Dictionary<string, string> profileParameters = default(Dictionary<string, string>), Order order = default(Order), Product product = default(Product), string id = default(string), string impressionId = default(string), MetricType type = default(MetricType), long timestamp = default(long), List<string> tokens = default(List<string>), NotificationMbox mbox = default(NotificationMbox), NotificationView view = default(NotificationView), NotificationPageLoad pageLoad = default(NotificationPageLoad))
+        public Notification(Address address = default(Address), Dictionary<string, string> parameters = default(Dictionary<string, string>), Dictionary<string, string> profileParameters = default(Dictionary<string, string>), Order order = default(Order), Product product = default(Product), string id = default(string), string impressionId = default(string), MetricType type = default(MetricType), long? timestamp = default(long?), List<string> tokens = default(List<string>), NotificationMbox mbox = default(NotificationMbox), NotificationView view = default(NotificationView), NotificationPageLoad pageLoad = default(NotificationPageLoad))
         {
             // to ensure "id" is required (not null)
             this.Id = id ?? throw new ArgumentNullException("id is a required property for Notification and cannot be null");
@@ -129,7 +130,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>Timestamp of the notification, in milliseconds elapsed since UNIX epoch.</value>
         [DataMember(Name = "timestamp", IsRequired = true, EmitDefaultValue = false)]
-        public long Timestamp { get; set; }
+        public long? Timestamp { get; set; }
 
         /// <summary>
         /// A list of tokens for displayed content or clicked selectors, based on the type of notification.

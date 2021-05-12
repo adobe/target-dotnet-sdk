@@ -45,7 +45,7 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="execute">execute.</param>
         /// <param name="prefetch">prefetch.</param>
         /// <param name="notifications">notifications.</param>
-        public DeliveryResponse(int status = default(int), string requestId = default(string), VisitorId id = default(VisitorId), string _client = default(string), string edgeHost = default(string), ExecuteResponse execute = default(ExecuteResponse), PrefetchResponse prefetch = default(PrefetchResponse), NotificationResponse notifications = default(NotificationResponse))
+        public DeliveryResponse(int? status = default(int?), string requestId = default(string), VisitorId id = default(VisitorId), string _client = default(string), string edgeHost = default(string), ExecuteResponse execute = default(ExecuteResponse), PrefetchResponse prefetch = default(PrefetchResponse), NotificationResponse notifications = default(NotificationResponse))
         {
             this.Status = status;
             this.RequestId = requestId;
@@ -61,7 +61,7 @@ namespace Adobe.Target.Delivery.Model
         /// Gets or Sets Status
         /// </summary>
         [DataMember(Name = "status", EmitDefaultValue = false)]
-        public int Status { get; set; }
+        public int? Status { get; set; }
 
         /// <summary>
         /// ID of the processed request. If it&#39;s not sent in the request, a random ID (UUID) is generated and returned with the response. 
