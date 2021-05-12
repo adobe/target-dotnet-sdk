@@ -44,7 +44,7 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="experienceLocalId">Id used to track the experience across POST/PUT requests.</param>
         /// <param name="duplicate">Whether or not the order is a duplicate.</param>
         /// <param name="outlier">Whether or not the order is abnormally different from the rest in volume.</param>
-        public Order(string id = default(string), decimal total = default(decimal), List<string> purchasedProductIds = default(List<string>), DateTime time = default(DateTime), int experienceLocalId = default(int), bool duplicate = default(bool), bool outlier = default(bool))
+        public Order(string id = default(string), decimal? total = default(decimal?), List<string> purchasedProductIds = default(List<string>), DateTime time = default(DateTime), int? experienceLocalId = default(int?), bool duplicate = default(bool), bool outlier = default(bool))
         {
             this.Id = id;
             this.Total = total;
@@ -67,7 +67,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>Order Total. The amount of money in the current order. </value>
         [DataMember(Name = "total", EmitDefaultValue = false)]
-        public decimal Total { get; set; }
+        public decimal? Total { get; set; }
 
         /// <summary>
         /// Order&#39;s product ids. Validation   * No blank values allowed.   * Each product Id max length 50.   * Product ids, separated by commas and concatenated, total length should not exceed 250. 
@@ -88,20 +88,20 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>Id used to track the experience across POST/PUT requests</value>
         [DataMember(Name = "experienceLocalId", EmitDefaultValue = false)]
-        public int ExperienceLocalId { get; set; }
+        public int? ExperienceLocalId { get; set; }
 
         /// <summary>
         /// Whether or not the order is a duplicate
         /// </summary>
         /// <value>Whether or not the order is a duplicate</value>
-        [DataMember(Name = "duplicate", EmitDefaultValue = false)]
+        [DataMember(Name = "duplicate", EmitDefaultValue = true)]
         public bool Duplicate { get; set; }
 
         /// <summary>
         /// Whether or not the order is abnormally different from the rest in volume
         /// </summary>
         /// <value>Whether or not the order is abnormally different from the rest in volume</value>
-        [DataMember(Name = "outlier", EmitDefaultValue = false)]
+        [DataMember(Name = "outlier", EmitDefaultValue = true)]
         public bool Outlier { get; set; }
 
         /// <summary>

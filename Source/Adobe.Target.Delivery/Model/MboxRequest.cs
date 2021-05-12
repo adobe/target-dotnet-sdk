@@ -49,7 +49,7 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="product">product.</param>
         /// <param name="index">An index for the mboxes to be executed or prefetched. Mbox index is used for correlation between the mbox request with the mbox response, for either prefetch or execute responses. Index should be unique in the mbox list.  (required).</param>
         /// <param name="name">The name of the regional mbox to be evaluated. .</param>
-        public MboxRequest(Address address = default(Address), Dictionary<string, string> parameters = default(Dictionary<string, string>), Dictionary<string, string> profileParameters = default(Dictionary<string, string>), Order order = default(Order), Product product = default(Product), int index = default(int), string name = default(string))
+        public MboxRequest(Address address = default(Address), Dictionary<string, string> parameters = default(Dictionary<string, string>), Dictionary<string, string> profileParameters = default(Dictionary<string, string>), Order order = default(Order), Product product = default(Product), int? index = default(int?), string name = default(string))
         {
             this.Index = index;
             this.Address = address;
@@ -97,7 +97,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>An index for the mboxes to be executed or prefetched. Mbox index is used for correlation between the mbox request with the mbox response, for either prefetch or execute responses. Index should be unique in the mbox list. </value>
         [DataMember(Name = "index", IsRequired = true, EmitDefaultValue = false)]
-        public int Index { get; set; }
+        public int? Index { get; set; }
 
         /// <summary>
         /// The name of the regional mbox to be evaluated. 

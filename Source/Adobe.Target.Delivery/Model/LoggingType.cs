@@ -32,9 +32,7 @@ namespace Adobe.Target.Delivery.Model
     /// Indicates whether integraion will be done via client side (from the client) or server side (edge servers) 
     /// </summary>
     /// <value>Indicates whether integraion will be done via client side (from the client) or server side (edge servers) </value>
-    
     [JsonConverter(typeof(StringEnumConverter))]
-    
     public enum LoggingType
     {
         /// <summary>

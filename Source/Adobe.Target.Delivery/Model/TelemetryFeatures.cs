@@ -34,6 +34,7 @@ namespace Adobe.Target.Delivery.Model
     [DataContract(Name = "TelemetryFeatures")]
     public partial class TelemetryFeatures : IEquatable<TelemetryFeatures>, IValidatableObject
     {
+
         /// <summary>
         /// Gets or Sets DecisioningMethod
         /// </summary>

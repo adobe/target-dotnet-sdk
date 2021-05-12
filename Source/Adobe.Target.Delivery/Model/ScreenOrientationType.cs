@@ -32,9 +32,7 @@ namespace Adobe.Target.Delivery.Model
     /// If not specified, all activities with any screen orientation will be evaluated. If specified, only the activities with the matching screen orientation will evaluated. 
     /// </summary>
     /// <value>If not specified, all activities with any screen orientation will be evaluated. If specified, only the activities with the matching screen orientation will evaluated. </value>
-    
     [JsonConverter(typeof(StringEnumConverter))]
-    
     public enum ScreenOrientationType
     {
         /// <summary>

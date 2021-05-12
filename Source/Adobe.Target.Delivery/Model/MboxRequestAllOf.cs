@@ -39,7 +39,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <param name="index">An index for the mboxes to be executed or prefetched. Mbox index is used for correlation between the mbox request with the mbox response, for either prefetch or execute responses. Index should be unique in the mbox list. .</param>
         /// <param name="name">The name of the regional mbox to be evaluated. .</param>
-        public MboxRequestAllOf(int index = default(int), string name = default(string))
+        public MboxRequestAllOf(int? index = default(int?), string name = default(string))
         {
             this.Index = index;
             this.Name = name;
@@ -50,7 +50,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>An index for the mboxes to be executed or prefetched. Mbox index is used for correlation between the mbox request with the mbox response, for either prefetch or execute responses. Index should be unique in the mbox list. </value>
         [DataMember(Name = "index", EmitDefaultValue = false)]
-        public int Index { get; set; }
+        public int? Index { get; set; }
 
         /// <summary>
         /// The name of the regional mbox to be evaluated. 

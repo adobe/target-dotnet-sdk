@@ -34,11 +34,13 @@ namespace Adobe.Target.Delivery.Model
     [DataContract(Name = "MobilePlatform")]
     public partial class MobilePlatform : IEquatable<MobilePlatform>, IValidatableObject
     {
+
         /// <summary>
         /// Gets or Sets DeviceType
         /// </summary>
         [DataMember(Name = "deviceType", IsRequired = true, EmitDefaultValue = false)]
         public DeviceType DeviceType { get; set; }
+
         /// <summary>
         /// Gets or Sets PlatformType
         /// </summary>

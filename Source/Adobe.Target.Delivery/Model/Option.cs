@@ -34,6 +34,7 @@ namespace Adobe.Target.Delivery.Model
     [DataContract(Name = "Option")]
     public partial class Option : IEquatable<Option>, IValidatableObject
     {
+
         /// <summary>
         /// Gets or Sets Type
         /// </summary>

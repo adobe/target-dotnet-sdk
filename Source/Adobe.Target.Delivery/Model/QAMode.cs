@@ -62,7 +62,7 @@ namespace Adobe.Target.Delivery.Model
         /// Specifies whether qa_mode campaigns should be executed in isolation or if they should be evaluated along other active campaigns for current environment. 
         /// </summary>
         /// <value>Specifies whether qa_mode campaigns should be executed in isolation or if they should be evaluated along other active campaigns for current environment. </value>
-        [DataMember(Name = "listedActivitiesOnly", EmitDefaultValue = false)]
+        [DataMember(Name = "listedActivitiesOnly", EmitDefaultValue = true)]
         public bool ListedActivitiesOnly { get; set; }
 
         /// <summary>

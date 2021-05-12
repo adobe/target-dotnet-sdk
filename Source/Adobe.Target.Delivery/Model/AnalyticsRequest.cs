@@ -34,6 +34,7 @@ namespace Adobe.Target.Delivery.Model
     [DataContract(Name = "AnalyticsRequest")]
     public partial class AnalyticsRequest : IEquatable<AnalyticsRequest>, IValidatableObject
     {
+
         /// <summary>
         /// Gets or Sets Logging
         /// </summary>

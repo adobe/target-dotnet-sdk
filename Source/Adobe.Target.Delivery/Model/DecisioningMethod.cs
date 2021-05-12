@@ -31,9 +31,7 @@ namespace Adobe.Target.Delivery.Model
     /// <summary>
     /// Defines DecisioningMethod
     /// </summary>
-    
     [JsonConverter(typeof(StringEnumConverter))]
-    
     public enum DecisioningMethod
     {
         /// <summary>

@@ -34,6 +34,7 @@ namespace Adobe.Target.Delivery.Model
     [DataContract(Name = "Context")]
     public partial class Context : IEquatable<Context>, IValidatableObject
     {
+
         /// <summary>
         /// Gets or Sets Channel
         /// </summary>
@@ -58,7 +59,7 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="timeOffsetInMinutes">Specifies minutes from UTC for specific client.</param>
         /// <param name="userAgent">User-Agent should be sent only via this property. HTTP header User-Agent is ignored..</param>
         /// <param name="beacon">In case beacon &#x3D; true is provided in the request, the server will return a 204 No Content response with no response body.  (default to false).</param>
-        public Context(ChannelType channel = default(ChannelType), MobilePlatform mobilePlatform = default(MobilePlatform), Application application = default(Application), Screen screen = default(Screen), Window window = default(Window), Browser browser = default(Browser), Address address = default(Address), Geo geo = default(Geo), double timeOffsetInMinutes = default(double), string userAgent = default(string), bool beacon = false)
+        public Context(ChannelType channel = default(ChannelType), MobilePlatform mobilePlatform = default(MobilePlatform), Application application = default(Application), Screen screen = default(Screen), Window window = default(Window), Browser browser = default(Browser), Address address = default(Address), Geo geo = default(Geo), double? timeOffsetInMinutes = default(double?), string userAgent = default(string), bool beacon = false)
         {
             this.Channel = channel;
             this.MobilePlatform = mobilePlatform;
@@ -120,7 +121,7 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>Specifies minutes from UTC for specific client</value>
         [DataMember(Name = "timeOffsetInMinutes", EmitDefaultValue = false)]
-        public double TimeOffsetInMinutes { get; set; }
+        public double? TimeOffsetInMinutes { get; set; }
 
         /// <summary>
         /// User-Agent should be sent only via this property. HTTP header User-Agent is ignored.
@@ -133,7 +134,7 @@ namespace Adobe.Target.Delivery.Model
         /// In case beacon &#x3D; true is provided in the request, the server will return a 204 No Content response with no response body. 
         /// </summary>
         /// <value>In case beacon &#x3D; true is provided in the request, the server will return a 204 No Content response with no response body. </value>
-        [DataMember(Name = "beacon", EmitDefaultValue = false)]
+        [DataMember(Name = "beacon", EmitDefaultValue = true)]
         public bool Beacon { get; set; }
 
         /// <summary>

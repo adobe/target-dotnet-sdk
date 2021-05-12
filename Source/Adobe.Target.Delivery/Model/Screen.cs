@@ -34,6 +34,7 @@ namespace Adobe.Target.Delivery.Model
     [DataContract(Name = "Screen")]
     public partial class Screen : IEquatable<Screen>, IValidatableObject
     {
+
         /// <summary>
         /// Gets or Sets Orientation
         /// </summary>
@@ -47,7 +48,7 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="colorDepth">color depth.</param>
         /// <param name="pixelRatio">Optional, Used for device detection using the device atlas.</param>
         /// <param name="orientation">orientation.</param>
-        public Screen(double width = default(double), double height = default(double), double colorDepth = default(double), double pixelRatio = default(double), ScreenOrientationType? orientation = default(ScreenOrientationType?))
+        public Screen(double? width = default(double?), double? height = default(double?), double? colorDepth = default(double?), double? pixelRatio = default(double?), ScreenOrientationType? orientation = default(ScreenOrientationType?))
         {
             this.Width = width;
             this.Height = height;
@@ -61,28 +62,28 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>width</value>
         [DataMember(Name = "width", EmitDefaultValue = false)]
-        public double Width { get; set; }
+        public double? Width { get; set; }
 
         /// <summary>
         /// height
         /// </summary>
         /// <value>height</value>
         [DataMember(Name = "height", EmitDefaultValue = false)]
-        public double Height { get; set; }
+        public double? Height { get; set; }
 
         /// <summary>
         /// color depth
         /// </summary>
         /// <value>color depth</value>
         [DataMember(Name = "colorDepth", EmitDefaultValue = false)]
-        public double ColorDepth { get; set; }
+        public double? ColorDepth { get; set; }
 
         /// <summary>
         /// Optional, Used for device detection using the device atlas
         /// </summary>
         /// <value>Optional, Used for device detection using the device atlas</value>
         [DataMember(Name = "pixelRatio", EmitDefaultValue = false)]
-        public double PixelRatio { get; set; }
+        public double? PixelRatio { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
