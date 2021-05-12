@@ -17,7 +17,7 @@ namespace Adobe.Target.Client.Extension
 
     internal static class DeliveryRequestExtension
     {
-        internal static void AddTelemetry(this TargetDeliveryRequest request, TargetClientConfig config, int execution = 0)
+        internal static void AddTelemetry(this TargetDeliveryRequest request, TargetClientConfig config, int? execution = default)
         {
             var telemetryEntry = request.GetTelemetryEntry(config, execution);
             if (telemetryEntry == null)
@@ -30,7 +30,7 @@ namespace Adobe.Target.Client.Extension
             deliveryRequest.Telemetry.Entries.Add(telemetryEntry);
         }
 
-        internal static TelemetryEntry GetTelemetryEntry(this TargetDeliveryRequest request, TargetClientConfig config, int execution = 0)
+        internal static TelemetryEntry GetTelemetryEntry(this TargetDeliveryRequest request, TargetClientConfig config, int? execution = default)
         {
             if (!config.TelemetryEnabled)
             {

@@ -52,7 +52,7 @@ namespace Adobe.Target.Client.OnDevice
         {
             return geo != null && !string.IsNullOrEmpty(geo.IpAddress) && string.IsNullOrEmpty(geo.City)
                    && string.IsNullOrEmpty(geo.StateCode) && string.IsNullOrEmpty(geo.CountryCode)
-                   && geo.Latitude == 0 && geo.Longitude == 0;
+                   && geo.Latitude == null && geo.Longitude == null;
         }
 
         private Geo HeadersToGeo(Geo originalGeo, IRestResponse response)

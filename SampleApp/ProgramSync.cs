@@ -42,7 +42,7 @@ namespace SampleApp
                 .SetContext(new Context(ChannelType.Web))
                 .SetExecute(new ExecuteRequest(null, new List<MboxRequest>
                 {
-                    new MboxRequest(index:1, name: "a1-serverside-ab")
+                    new (index: 0, name: "a1-serverside-ab")
                 }))
                 .Build();
 
@@ -60,8 +60,8 @@ namespace SampleApp
                 .SetContext(new Context(ChannelType.Web))
                 .SetNotifications(new List<Notification>()
                 {
-                    { new(id:"notificationId1", type: MetricType.Display, timestamp: DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
-                        tokens: new List<string>())}
+                    new (id:"notificationId1", type: MetricType.Display, timestamp: DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
+                        tokens: new List<string>())
                 })
                 .Build();
 
@@ -81,7 +81,7 @@ namespace SampleApp
                 .SetContext(new Context(ChannelType.Web, geo: new Geo("193.105.140.131")))
                 .SetExecute(new ExecuteRequest(new RequestDetails(), new List<MboxRequest>
                 {
-                    new(index:1, name: "a1-mobile-tstsree")
+                    new (index: 1, name: "a1-mobile-tstsree")
                 }))
                 .Build();
 
