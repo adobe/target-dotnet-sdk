@@ -150,7 +150,7 @@ namespace Adobe.Target.Client
             {
                 if (mbox.Index >= index)
                 {
-                    index = mbox.Index + 1;
+                    index = (int)mbox.Index + 1;
                 }
 
                 existingMboxNames.Add(mbox.Name);

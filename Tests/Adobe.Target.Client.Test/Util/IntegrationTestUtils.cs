@@ -206,7 +206,7 @@ namespace Adobe.Target.Client.Test.Util
                     ctx.Subject.Should().Be(ctx.Expectation);
                 })
                 .When(info => info.Type == typeof(string))
-                .Using<long>(ctx =>
+                .Using<long?>(ctx =>
                 {
                     if (ctx.Expectation == -999L)
                     {
@@ -216,8 +216,8 @@ namespace Adobe.Target.Client.Test.Util
 
                     ctx.Subject.Should().Be(ctx.Expectation);
                 })
-                .When(info => info.Type == typeof(long))
-                .Using<int>(ctx =>
+                .When(info => info.Type == typeof(long?))
+                .Using<int?>(ctx =>
                 {
                     if (ctx.Expectation == -999)
                     {
@@ -227,7 +227,7 @@ namespace Adobe.Target.Client.Test.Util
 
                     ctx.Subject.Should().Be(ctx.Expectation);
                 })
-                .When(info => info.Type == typeof(int))
+                .When(info => info.Type == typeof(int?))
                 .WithTracing();
     }
 }

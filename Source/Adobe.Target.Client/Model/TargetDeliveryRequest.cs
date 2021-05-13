@@ -180,7 +180,7 @@ namespace Adobe.Target.Client.Model
             /// </summary>
             /// <param name="environmentId">Environment Id</param>
             /// <returns><see cref="Builder"/> instance</returns>
-            public Builder SetEnvironmentId(long environmentId)
+            public Builder SetEnvironmentId(long? environmentId)
             {
                 this.DeliveryRequest.EnvironmentId = environmentId;
                 return this;
