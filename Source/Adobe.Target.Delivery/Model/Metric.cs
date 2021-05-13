@@ -46,11 +46,13 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="type">type.</param>
         /// <param name="selector">The selector.</param>
         /// <param name="eventToken">The event token that should be sent with the notifications in case the click occurred..</param>
-        public Metric(MetricType? type = default(MetricType?), string selector = default(string), string eventToken = default(string))
+        /// <param name="analytics">analytics.</param>
+        public Metric(MetricType? type = default(MetricType?), string selector = default(string), string eventToken = default(string), AnalyticsResponse analytics = default(AnalyticsResponse))
         {
             this.Type = type;
             this.Selector = selector;
             this.EventToken = eventToken;
+            this.Analytics = analytics;
         }
 
         /// <summary>
@@ -68,6 +70,12 @@ namespace Adobe.Target.Delivery.Model
         public string EventToken { get; set; }
 
         /// <summary>
+        /// Gets or Sets Analytics
+        /// </summary>
+        [DataMember(Name = "analytics", EmitDefaultValue = false)]
+        public AnalyticsResponse Analytics { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -78,6 +86,7 @@ namespace Adobe.Target.Delivery.Model
             sb.Append("  Type: ").Append(Type).Append("\n");
             sb.Append("  Selector: ").Append(Selector).Append("\n");
             sb.Append("  EventToken: ").Append(EventToken).Append("\n");
+            sb.Append("  Analytics: ").Append(Analytics).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -125,6 +134,11 @@ namespace Adobe.Target.Delivery.Model
                     this.EventToken == input.EventToken ||
                     (this.EventToken != null &&
                     this.EventToken.Equals(input.EventToken))
+                ) && 
+                (
+                    this.Analytics == input.Analytics ||
+                    (this.Analytics != null &&
+                    this.Analytics.Equals(input.Analytics))
                 );
         }
 
@@ -142,6 +156,8 @@ namespace Adobe.Target.Delivery.Model
                     hashCode = hashCode * 59 + this.Selector.GetHashCode();
                 if (this.EventToken != null)
                     hashCode = hashCode * 59 + this.EventToken.GetHashCode();
+                if (this.Analytics != null)
+                    hashCode = hashCode * 59 + this.Analytics.GetHashCode();
                 return hashCode;
             }
         }
