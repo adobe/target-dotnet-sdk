@@ -68,9 +68,10 @@ namespace Adobe.Target.Client.Util
         {
             var nowInSeconds = GetNowInSeconds();
             var targetCookieValue = new StringBuilder();
-            var maxAge = 0;
-            maxAge = CreateSessionId(sessionId, nowInSeconds, targetCookieValue, maxAge);
-            maxAge = CreateDeviceId(deviceId, nowInSeconds, targetCookieValue, maxAge);
+            var expires = 0;
+            expires = CreateSessionId(sessionId, nowInSeconds, targetCookieValue, expires);
+            expires = CreateDeviceId(deviceId, nowInSeconds, targetCookieValue, expires);
+            var maxAge = expires == 0 ? 0 : expires - nowInSeconds;
             var cookieValue = targetCookieValue.ToString();
 
             return string.IsNullOrEmpty(cookieValue) ? null : new TargetCookie(TargetConstants.MboxCookieName, cookieValue, maxAge);
@@ -90,9 +91,7 @@ namespace Adobe.Target.Client.Util
                 return null;
             }
 
-            var maxAge = GetNowInSeconds() + ClusterLocationHintMaxAge;
-
-            return new TargetCookie(TargetConstants.ClusterCookieName, locationHint, maxAge);
+            return new TargetCookie(TargetConstants.ClusterCookieName, locationHint, ClusterLocationHintMaxAge);
         }
 
         private static int GetNowInSeconds()
@@ -100,41 +99,41 @@ namespace Adobe.Target.Client.Util
             return (int)(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000);
         }
 
-        private static int CreateDeviceId(string? deviceId, int nowInSeconds, StringBuilder targetCookieValue, int maxAge)
+        private static int CreateDeviceId(string? deviceId, int nowInSeconds, StringBuilder targetCookieValue, int expires)
         {
             if (string.IsNullOrEmpty(deviceId))
             {
-                return maxAge;
+                return expires;
             }
 
-            var deviceIdMaxAge = nowInSeconds + DeviceIdCookieMaxAge;
-            maxAge = Math.Max(maxAge, deviceIdMaxAge);
-            AppendCookieValue(deviceId, targetCookieValue, deviceIdMaxAge, TargetConstants.DeviceIdCookieName);
+            var deviceIdExpires = nowInSeconds + DeviceIdCookieMaxAge;
+            expires = Math.Max(expires, deviceIdExpires);
+            AppendCookieValue(deviceId, targetCookieValue, deviceIdExpires, TargetConstants.DeviceIdCookieName);
 
-            return maxAge;
+            return expires;
         }
 
-        private static int CreateSessionId(string? sessionId, int nowInSeconds, StringBuilder targetCookieValue, int maxAge)
+        private static int CreateSessionId(string? sessionId, int nowInSeconds, StringBuilder targetCookieValue, int expires)
         {
             if (string.IsNullOrEmpty(sessionId))
             {
-                return maxAge;
+                return expires;
             }
 
-            var sessionIdMaxAge = nowInSeconds + SessionIdCookieMaxAge;
-            maxAge = sessionIdMaxAge;
-            AppendCookieValue(sessionId, targetCookieValue, sessionIdMaxAge, TargetConstants.SessionIdCookieName);
+            var sessionIdExpires = nowInSeconds + SessionIdCookieMaxAge;
+            expires = sessionIdExpires;
+            AppendCookieValue(sessionId, targetCookieValue, sessionIdExpires, TargetConstants.SessionIdCookieName);
 
-            return maxAge;
+            return expires;
         }
 
-        private static void AppendCookieValue(string? id, StringBuilder targetCookieValue, int maxAge, string cookieName)
+        private static void AppendCookieValue(string? id, StringBuilder targetCookieValue, int expires, string cookieName)
         {
             targetCookieValue.Append(cookieName)
                 .Append(InternalCookieSerializationSeparator)
                 .Append(id)
                 .Append(InternalCookieSerializationSeparator)
-                .Append(maxAge)
+                .Append(expires)
                 .Append(CookieValueSeparator);
         }
 
