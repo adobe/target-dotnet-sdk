@@ -35,16 +35,18 @@ namespace Adobe.Target.Client.OnDevice
             IDictionary<string, object> localContext,
             string visitorId,
             ISet<string> responseTokens,
+            TraceHandler traceHandler,
             OnDeviceDecisioningRuleSet ruleSet,
             RequestDetailsUnion details,
             PrefetchResponse prefetchResponse,
             ExecuteResponse executeResponse,
             IList<Notification> notifications)
         {
+            traceHandler?.UpdateRequest(deliveryRequest, details, executeResponse != null);
             var rules = GetDetailsRules(details, ruleSet);
             if (rules == null)
             {
-                UnhandledResponse(details, prefetchResponse, executeResponse);
+                UnhandledResponse(details, prefetchResponse, executeResponse, traceHandler);
                 return;
             }
 
@@ -64,8 +66,8 @@ namespace Adobe.Target.Client.OnDevice
                     continue;
                 }
 
-                var consequence = this.ruleExecutor.ExecuteRule(localContext, details, visitorId, rule, responseTokens);
-                if (!HandleResult(consequence, rule, details, prefetchResponse, executeResponse, notifications, ruleSet.GlobalMbox))
+                var consequence = this.ruleExecutor.ExecuteRule(localContext, details, visitorId, rule, responseTokens, traceHandler);
+                if (!HandleResult(consequence, rule, details, prefetchResponse, executeResponse, notifications, traceHandler, ruleSet.GlobalMbox))
                 {
                     continue;
                 }
@@ -87,7 +89,7 @@ namespace Adobe.Target.Client.OnDevice
 
             if (!handledAtLeastOnce)
             {
-                UnhandledResponse(details, prefetchResponse, executeResponse);
+                UnhandledResponse(details, prefetchResponse, executeResponse, traceHandler);
             }
         }
 
@@ -98,6 +100,7 @@ namespace Adobe.Target.Client.OnDevice
             PrefetchResponse prefetchResponse,
             ExecuteResponse executeResponse,
             IList<Notification> notifications,
+            TraceHandler traceHandler,
             string globalMbox = "target-global-mbox")
         {
             if (consequence == null || consequence.Count == 0)
@@ -117,20 +120,22 @@ namespace Adobe.Target.Client.OnDevice
             if (executeResponse != null)
             {
                 var notification = CreateNotification(details, consequenceOptions, globalMbox);
+                traceHandler?.AddNotification(rule, notification);
                 notifications.Add(notification);
             }
 
             return details.Match(
-                _ => HandlePageLoad(prefetchResponse, executeResponse, consequenceOptions, consequenceMetrics),
-                mboxRequest => HandleMboxRequest(prefetchResponse, executeResponse, mboxRequest, consequenceOptions, consequenceMetrics),
-                _ => HandleViewRequest(prefetchResponse, consequenceName, consequenceOptions, consequenceMetrics));
+                _ => HandlePageLoad(prefetchResponse, executeResponse, consequenceOptions, consequenceMetrics, traceHandler),
+                mboxRequest => HandleMboxRequest(prefetchResponse, executeResponse, mboxRequest, consequenceOptions, consequenceMetrics, traceHandler),
+                _ => HandleViewRequest(prefetchResponse, consequenceName, consequenceOptions, consequenceMetrics, traceHandler));
         }
 
         private static bool HandleViewRequest(
             PrefetchResponse prefetchResponse,
             string consequenceName,
             List<Option> consequenceOptions,
-            List<Metric> consequenceMetrics)
+            List<Metric> consequenceMetrics,
+            TraceHandler traceHandler)
         {
             if (prefetchResponse == null)
             {
@@ -138,6 +143,8 @@ namespace Adobe.Target.Client.OnDevice
             }
 
             var responseView = new View(consequenceName, null, consequenceOptions, consequenceMetrics);
+            responseView.Trace = traceHandler?.CurrentTrace;
+
             var views = prefetchResponse.Views;
             if (views == null)
             {
@@ -172,7 +179,8 @@ namespace Adobe.Target.Client.OnDevice
             ExecuteResponse executeResponse,
             MboxRequest mboxRequest,
             List<Option> consequenceOptions,
-            List<Metric> consequenceMetrics)
+            List<Metric> consequenceMetrics,
+            TraceHandler traceHandler)
         {
             if (prefetchResponse != null)
             {
@@ -199,6 +207,7 @@ namespace Adobe.Target.Client.OnDevice
                             })
                         .Where(option => option.Type != null || option.Content != null)
                         .ToList(),
+                    Trace = traceHandler?.CurrentTrace,
                 };
             executeResponse.Mboxes ??= new List<MboxResponse>();
             executeResponse.Mboxes.Add(mboxResponse);
@@ -209,7 +218,8 @@ namespace Adobe.Target.Client.OnDevice
             PrefetchResponse prefetchResponse,
             ExecuteResponse executeResponse,
             IList<Option> consequenceOptions,
-            IList<Metric> consequenceMetrics)
+            IList<Metric> consequenceMetrics,
+            TraceHandler traceHandler)
         {
             PageLoadResponse pageLoad = null;
             if (prefetchResponse != null)
@@ -227,6 +237,8 @@ namespace Adobe.Target.Client.OnDevice
             {
                 return false;
             }
+
+            pageLoad.Trace = traceHandler?.CurrentTrace;
 
             if (consequenceOptions != null)
             {
@@ -291,41 +303,58 @@ namespace Adobe.Target.Client.OnDevice
             return metricsObject is not JArray metricsArray || metricsArray.Count == 0 ? null : metricsArray.ToObject<List<Metric>>();
         }
 
-        private static void UnhandledResponse(RequestDetailsUnion details, PrefetchResponse prefetchResponse, ExecuteResponse executeResponse)
+        private static void UnhandledResponse(
+            RequestDetailsUnion details,
+            PrefetchResponse prefetchResponse,
+            ExecuteResponse executeResponse,
+            TraceHandler traceHandler)
         {
             _ = details.Match<object>(
-                _ => UnhandledPageLoadResponse(prefetchResponse, executeResponse),
-                mboxRequest => UnhandledMboxResponse(prefetchResponse, executeResponse, mboxRequest),
-                _ => UnhandledViewResponse(prefetchResponse));
+                _ => UnhandledPageLoadResponse(prefetchResponse, executeResponse, traceHandler),
+                mboxRequest => UnhandledMboxResponse(prefetchResponse, executeResponse, mboxRequest, traceHandler),
+                _ => UnhandledViewResponse(prefetchResponse, traceHandler));
         }
 
-        private static object UnhandledViewResponse(PrefetchResponse prefetchResponse)
+        private static object UnhandledViewResponse(PrefetchResponse prefetchResponse, TraceHandler traceHandler)
         {
-            var view = new View();
+            var view = new View { Trace = traceHandler?.CurrentTrace };
             prefetchResponse.Views ??= new List<View>();
             prefetchResponse.Views.Add(view);
             return null;
         }
 
-        private static object UnhandledMboxResponse(PrefetchResponse prefetchResponse, ExecuteResponse executeResponse, MboxRequest mboxRequest)
+        private static object UnhandledMboxResponse(
+            PrefetchResponse prefetchResponse,
+            ExecuteResponse executeResponse,
+            MboxRequest mboxRequest,
+            TraceHandler traceHandler)
         {
             if (prefetchResponse != null)
             {
-                var prefetchMboxResponse = new PrefetchMboxResponse(mboxRequest.Index, mboxRequest.Name);
+                var prefetchMboxResponse = new PrefetchMboxResponse(mboxRequest.Index, mboxRequest.Name)
+                {
+                    Trace = traceHandler?.CurrentTrace,
+                };
                 prefetchResponse.Mboxes ??= new List<PrefetchMboxResponse>();
                 prefetchResponse.Mboxes.Add(prefetchMboxResponse);
                 return null;
             }
 
-            var response = new MboxResponse(mboxRequest.Index, mboxRequest.Name);
+            var response = new MboxResponse(mboxRequest.Index, mboxRequest.Name)
+            {
+                Trace = traceHandler?.CurrentTrace,
+            };
             executeResponse.Mboxes ??= new List<MboxResponse>();
             executeResponse.Mboxes.Add(response);
             return null;
         }
 
-        private static object UnhandledPageLoadResponse(PrefetchResponse prefetchResponse, ExecuteResponse executeResponse)
+        private static object UnhandledPageLoadResponse(
+            PrefetchResponse prefetchResponse,
+            ExecuteResponse executeResponse,
+            TraceHandler traceHandler)
         {
-            var response = new PageLoadResponse();
+            var response = new PageLoadResponse { Trace = traceHandler?.CurrentTrace };
             if (prefetchResponse != null)
             {
                 prefetchResponse.PageLoad = response;

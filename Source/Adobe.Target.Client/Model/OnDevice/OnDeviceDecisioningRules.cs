@@ -11,6 +11,7 @@
 namespace Adobe.Target.Client.Model.OnDevice
 {
     using System.Collections.Generic;
+    using Adobe.Target.Client.Util;
     using Newtonsoft.Json;
 
     internal sealed class OnDeviceDecisioningRules
@@ -26,6 +27,6 @@ namespace Adobe.Target.Client.Model.OnDevice
 
         internal IReadOnlyDictionary<string, IReadOnlyList<OnDeviceDecisioningRule>> Views { get; }
 
-        public override string ToString() => JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
+        public override string ToString() => SerializationUtils.Serialize(this);
     }
 }

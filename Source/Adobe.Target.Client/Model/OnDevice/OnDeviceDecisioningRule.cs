@@ -11,6 +11,7 @@
 namespace Adobe.Target.Client.Model.OnDevice
 {
     using System.Collections.Generic;
+    using Adobe.Target.Client.Util;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
@@ -39,6 +40,6 @@ namespace Adobe.Target.Client.Model.OnDevice
 
         internal IReadOnlyDictionary<string, object> Meta { get; }
 
-        public override string ToString() => JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
+        public override string ToString() => SerializationUtils.Serialize(this);
     }
 }

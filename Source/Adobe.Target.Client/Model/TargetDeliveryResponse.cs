@@ -15,7 +15,6 @@ namespace Adobe.Target.Client.Model
     using Adobe.ExperienceCloud.Ecid;
     using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
-    using Newtonsoft.Json;
 
     /// <summary>
     /// Target Delivery Response
@@ -115,6 +114,6 @@ namespace Adobe.Target.Client.Model
         }
 
         /// <inheritdoc />
-        public override string ToString() => JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
+        public override string ToString() => SerializationUtils.Serialize(this);
     }
 }

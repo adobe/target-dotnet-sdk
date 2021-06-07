@@ -47,7 +47,6 @@ namespace Adobe.Target.Client.OnDevice
             HttpStatusCode.GatewayTimeout,
         };
 
-        private readonly int timerStartDelayMs;
         private readonly TargetClientConfig clientConfig;
         private readonly ILogger? logger;
         private Timer? timer;
@@ -58,7 +57,7 @@ namespace Adobe.Target.Client.OnDevice
         internal RuleLoader(TargetClientConfig clientConfig)
         {
             this.clientConfig = clientConfig;
-            this.timerStartDelayMs = clientConfig.OnDeviceDecisioningPollingIntSecs * 1000;
+            this.PollingInterval = clientConfig.OnDeviceDecisioningPollingIntSecs * 1000;
             this.logger = TargetClient.Logger;
             this.SetLocalRules();
             if (clientConfig.LocalArtifactOnly)
@@ -68,6 +67,14 @@ namespace Adobe.Target.Client.OnDevice
 
             this.ScheduleTimer(0);
         }
+
+        internal string ArtifactUrl => this.GetArtifactUrl();
+
+        internal int PollingInterval { get; }
+
+        internal int FetchCount { get; private set; }
+
+        internal DateTimeOffset LastFetch { get; private set; }
 
         internal OnDeviceDecisioningRuleSet? GetLatestRules()
         {
@@ -140,13 +147,16 @@ namespace Adobe.Target.Client.OnDevice
             var policyResult = await Policy
                 .Handle<HttpRequestException>()
                 .OrResult<IRestResponse>(r => HttpStatusCodesWorthRetrying.Contains(r.StatusCode))
-                .RetryAsync(MaxRetries)
+                .RetryAsync(MaxRetries, onRetry: (exception, retryCount, context) =>
+                {
+                    this.logger.LogError(exception.Exception, Messages.RuleLoadingError, retryCount);
+                })
                 .ExecuteAndCaptureAsync(() => client.ExecuteAsync(this.GetRequest()))
                 .ConfigureAwait(false);
 
             this.ProcessResult(policyResult);
 
-            this.ScheduleTimer(this.timerStartDelayMs);
+            this.ScheduleTimer(this.PollingInterval);
         }
 
         private IRestRequest GetRequest()
@@ -200,6 +210,9 @@ namespace Adobe.Target.Client.OnDevice
                 this.succeeded = true;
                 this.RunOnDeviceDecisioningDelegate(this.clientConfig.OnDeviceDecisioningReady);
             }
+
+            this.FetchCount++;
+            this.LastFetch = DateTimeOffset.UtcNow;
         }
 
         private void SetLastEtag(IRestResponse response)
