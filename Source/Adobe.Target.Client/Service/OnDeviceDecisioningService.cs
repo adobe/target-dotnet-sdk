@@ -108,12 +108,19 @@ namespace Adobe.Target.Client.Service
             var visitorId = this.GetOrCreateVisitorId(deliveryRequest, targetResponse);
             var prefetchDetails = this.GetPrefetchDetails(deliveryRequest.DeliveryRequest);
 
+            TraceHandler traceHandler = null;
+            if (deliveryRequest.DeliveryRequest.Trace != null)
+            {
+                traceHandler = new TraceHandler(this.clientConfig, this.ruleLoader, ruleSet, deliveryRequest);
+            }
+
             this.HandleDetails(
                 prefetchDetails,
                 requestContext,
                 deliveryRequest,
                 visitorId,
                 responseTokens,
+                traceHandler,
                 ruleSet,
                 targetResponse.Response.Prefetch);
 
@@ -126,6 +133,7 @@ namespace Adobe.Target.Client.Service
                 deliveryRequest,
                 visitorId,
                 responseTokens,
+                traceHandler,
                 ruleSet,
                 null,
                 targetResponse.Response.Execute,
@@ -168,6 +176,7 @@ namespace Adobe.Target.Client.Service
             TargetDeliveryRequest deliveryRequest,
             string visitorId,
             ISet<string> responseTokens,
+            TraceHandler traceHandler,
             OnDeviceDecisioningRuleSet ruleSet,
             PrefetchResponse prefetchResponse,
             ExecuteResponse executeResponse = default,
@@ -183,6 +192,7 @@ namespace Adobe.Target.Client.Service
                     detailsContext,
                     visitorId,
                     responseTokens,
+                    traceHandler,
                     ruleSet,
                     details,
                     prefetchResponse,

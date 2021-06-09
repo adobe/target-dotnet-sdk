@@ -17,22 +17,15 @@ namespace Adobe.Target.Client.Test.Util
     using FluentAssertions;
     using FluentAssertions.Equivalency;
     using Moq;
-    using Newtonsoft.Json;
     using OnDevice;
     using Service;
     using Action = Delivery.Model.Action;
 
     public static class IntegrationTestUtils
     {
-        public static T ConvertObject<T>(object from)
-        {
-            var serialized = JsonConvert.SerializeObject(from);
-            return JsonConvert.DeserializeObject<T>(serialized);
-        }
-
         public static DeliveryResponse ConvertExpectedResponse(object expectedResponseObject)
         {
-            var deserialized = ConvertObject<DeliveryResponse>(expectedResponseObject);
+            var deserialized = SerializationUtils.ConvertObject<DeliveryResponse>(expectedResponseObject);
             return TargetService.ConvertResponseOptions(deserialized);
         }
 
@@ -108,7 +101,7 @@ namespace Adobe.Target.Client.Test.Util
                 return null;
             }
 
-            var mockGeo = ConvertObject<Geo>(test["mockGeo"]);
+            var mockGeo = SerializationUtils.ConvertObject<Geo>(test["mockGeo"]);
 
             var geoMock = new Mock<IGeoClient>();
             geoMock.Setup(x => x.LookupGeoAsync(It.IsAny<Geo>()))

@@ -97,7 +97,7 @@ namespace Adobe.Target.Client.Test
             if (expectedNotificationObject != null)
             {
                 var expectedNotificationRequestObject = ((IDictionary<string, object>) expectedNotificationObject)["request"];
-                var expectedNotification = IntegrationTestUtils.ConvertObject<DeliveryRequest>(expectedNotificationRequestObject);
+                var expectedNotification = SerializationUtils.ConvertObject<DeliveryRequest>(expectedNotificationRequestObject);
                 Thread.Sleep(500);
                 var notificationRequest = ((TargetDeliveryRequest) mockTargetService.Invocations.Last().Arguments.First()).DeliveryRequest;
                 _ = notificationRequest.Should().BeEquivalentTo(expectedNotification, IntegrationTestUtils.RootRequestEquivalenceOptions);
@@ -109,7 +109,7 @@ namespace Adobe.Target.Client.Test
         private static TargetDeliveryRequest GetTargetDeliveryRequest(IDictionary<string, object> test)
         {
             var requestObject = ((IDictionary<string, object>) test["input"])["request"];
-            var deliveryRequest = IntegrationTestUtils.ConvertObject<DeliveryRequest>(requestObject);
+            var deliveryRequest = SerializationUtils.ConvertObject<DeliveryRequest>(requestObject);
 
             return new TargetDeliveryRequest.Builder(deliveryRequest).Build();
         }

@@ -42,12 +42,15 @@ namespace Adobe.Target.Client.OnDevice
             RequestDetailsUnion details,
             string visitorId,
             OnDeviceDecisioningRule rule,
-            ISet<string> responseTokens)
+            ISet<string> responseTokens,
+            TraceHandler traceHandler)
         {
             localContext.Remove(Allocation);
             localContext.Add(Allocation, this.ComputeAllocation(visitorId, rule));
 
             var matched = this.EvaluateRule(rule.Condition, localContext.ToExpandoObject());
+            traceHandler?.AddCampaign(rule, localContext, matched);
+
             if (!matched)
             {
                 return null;

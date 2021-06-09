@@ -18,6 +18,7 @@ namespace Adobe.Target.Client.Util
         internal const string NotificationsRequired = "Notifications array is required in request";
         internal const string LogTargetServiceRequest = "Request sessionId: {sessionId}, request: {request}";
         internal const string LogTargetServiceResponse = "Response: {response}";
+        internal const string RuleLoadingError = "Artifact download failed on attempt {retry}. Retrying. ";
         internal const string RuleLoadingFailed = "Artifact download failed. ";
         internal const string RuleDeserializationFailed = "Artifact deserialization failed. ";
         internal const string UnknownArtifactVersion = "Unknown rules version: ";
