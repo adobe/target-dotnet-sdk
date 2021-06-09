@@ -14,7 +14,10 @@ namespace Adobe.Target.Client.Model.OnDevice
     using Adobe.Target.Client.Util;
     using Newtonsoft.Json;
 
-    internal sealed class OnDeviceDecisioningRuleSet
+    /// <summary>
+    /// On-Device Decisioning Ruleset
+    /// </summary>
+    public sealed class OnDeviceDecisioningRuleSet
     {
         [JsonConstructor]
         internal OnDeviceDecisioningRuleSet(string version, string globalMbox, bool geoTargetingEnabled, IReadOnlyList<string> remoteMboxes, IReadOnlyList<string> remoteViews, IReadOnlyList<string> localMboxes, IReadOnlyList<string> localViews, IReadOnlyList<string> responseTokens, OnDeviceDecisioningRules rules, IDictionary<string, object> meta)
@@ -51,6 +54,10 @@ namespace Adobe.Target.Client.Model.OnDevice
 
         internal IDictionary<string, object> Meta { get; }
 
+        /// <summary>
+        /// Serializes ruleset to string
+        /// </summary>
+        /// <returns>Serialized ruleset</returns>
         public override string ToString() => SerializationUtils.Serialize(this);
     }
 }

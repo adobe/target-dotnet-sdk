@@ -28,7 +28,7 @@ namespace Adobe.Target.Client.OnDevice
     using RestSharp;
     using Action = System.Action;
 
-    internal sealed class RuleLoader
+    internal sealed class RuleLoader : IRuleLoader
     {
         private const string AcceptHeader = "Accept";
         private const string EtagHeader = "ETag";
@@ -68,15 +68,15 @@ namespace Adobe.Target.Client.OnDevice
             this.ScheduleTimer(0);
         }
 
-        internal string ArtifactUrl => this.GetArtifactUrl();
+        public string ArtifactUrl => this.GetArtifactUrl();
 
-        internal int PollingInterval { get; }
+        public int PollingInterval { get; }
 
-        internal int FetchCount { get; private set; }
+        public int FetchCount { get; private set; }
 
-        internal DateTimeOffset LastFetch { get; private set; }
+        public DateTimeOffset LastFetch { get; private set; }
 
-        internal OnDeviceDecisioningRuleSet? GetLatestRules()
+        public OnDeviceDecisioningRuleSet? GetLatestRules()
         {
             return this.latestRules;
         }

@@ -75,7 +75,7 @@ namespace Adobe.Target.Client.OnDevice
 
         internal TraceHandler(
             TargetClientConfig clientConfig,
-            RuleLoader ruleLoader,
+            IRuleLoader ruleLoader,
             OnDeviceDecisioningRuleSet ruleSet,
             TargetDeliveryRequest request)
         {
@@ -213,13 +213,10 @@ namespace Adobe.Target.Client.OnDevice
             var idx = tntId.LastIndexOf('.');
             if (idx >= 0 && idx < tntId.Length - 1)
             {
-                visitorIdMap.Add(TntIdKey, tntId.Substring(0, idx));
                 visitorIdMap.Add(ProfileLocationKey, tntId.Substring(idx + 1));
             }
-            else
-            {
-                visitorIdMap.Add(TntIdKey, tntId);
-            }
+
+            visitorIdMap.Add(TntIdKey, tntId);
 
             var mcid = visitorId.MarketingCloudVisitorId;
             if (!string.IsNullOrEmpty(mcid))
@@ -273,7 +270,7 @@ namespace Adobe.Target.Client.OnDevice
             return result;
         }
 
-        private IReadOnlyDictionary<string, object> ArtifactTrace(RuleLoader ruleLoader)
+        private IReadOnlyDictionary<string, object> ArtifactTrace(IRuleLoader ruleLoader)
         {
             var artifacts = new Dictionary<string, object>(this.ruleSet.Meta)
             {
