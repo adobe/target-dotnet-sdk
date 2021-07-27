@@ -10,7 +10,9 @@
  */
 namespace Adobe.Target.Client.Util
 {
-    internal static class MurmurHash3
+    using System;
+
+    internal static class HashUtils
     {
         private const int Seed = 0;
         private const int CharBytes = 2;
@@ -22,7 +24,7 @@ namespace Adobe.Target.Client.Util
         private const uint N = 0xe6546b64;
 
         /// <summary>
-        /// hashUnencodedChars() implementation ported from Guava
+        /// MurmurHash3 hashUnencodedChars() implementation ported from Guava
         /// </summary>
         /// <param name="input">Input</param>
         /// <returns>Hashed output</returns>
@@ -31,13 +33,25 @@ namespace Adobe.Target.Client.Util
             return unchecked((int)HashStringUnsigned(input));
         }
 
+        public static int SimpleHash(string input)
+        {
+            uint result = 0;
+
+            for (var i = 0; i < input.Length; i++)
+            {
+                result = ((result << 5) - result + input[i]) & uint.MaxValue;
+            }
+
+            return unchecked((int)result);
+        }
+
         private static uint HashStringUnsigned(string input)
         {
             uint h1 = Seed;
 
-            for (int i = 1; i < input.Length; i += 2)
+            for (var i = 1; i < input.Length; i += 2)
             {
-                uint k1 = unchecked((uint)input[i - 1] | (((uint)input[i]) << 16));
+                var k1 = unchecked(input[i - 1] | ((uint)input[i] << 16));
                 k1 = MixK1(k1);
                 h1 = MixH1(h1, k1);
             }
