@@ -47,7 +47,7 @@ namespace Adobe.Target.Client.Test
 
             Assert.Equal(testClientId, targetClientConfig.Client);
             Assert.Equal(testOrgId, targetClientConfig.OrganizationId);
-            Assert.Equal("https://" + testClientId + "." + testDomain, targetClientConfig.DefaultUrl);
+            Assert.Equal("https://" + testDomain, targetClientConfig.DefaultUrl);
             Assert.Equal(testPropertyToken, targetClientConfig.DefaultPropertyToken);
             Assert.Equal(testLogger, targetClientConfig.Logger);
             Assert.Equal(testTimeout, targetClientConfig.Timeout);

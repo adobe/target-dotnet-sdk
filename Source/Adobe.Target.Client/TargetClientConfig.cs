@@ -25,6 +25,9 @@ namespace Adobe.Target.Client
     public sealed class TargetClientConfig
     {
         private const string ClusterPrefix = "mboxedge";
+        private const string DefaultDomain = "tt.omtrdc.net";
+        private const string Https = "https://";
+        private const string Http = "http://";
 
         private TargetClientConfig()
         {
@@ -35,11 +38,13 @@ namespace Adobe.Target.Client
             ValidateConfig(builder);
             this.Client = builder.Client;
             this.OrganizationId = builder.OrganizationId;
-            this.Protocol = builder.Secure ? "https://" : "http://";
+            this.Protocol = builder.Secure ? Https : Http;
             this.DefaultPropertyToken = builder.DefaultPropertyToken;
-            this.DefaultUrl = this.Protocol + this.Client + "." + builder.ServerDomain;
-            this.ClusterUrlPrefix = this.Protocol + ClusterPrefix;
-            this.ClusterUrlSuffix = "." + builder.ServerDomain;
+            this.DefaultUrl = builder.ServerDomain != DefaultDomain
+                ? $"{this.Protocol}{builder.ServerDomain}"
+                : $"{this.Protocol}{this.Client}.{DefaultDomain}";
+            this.ClusterUrlPrefix = $"{this.Protocol}{ClusterPrefix}";
+            this.ClusterUrlSuffix = $".{DefaultDomain}";
             this.Logger = builder.Logger;
             this.Timeout = builder.Timeout;
             this.Proxy = builder.Proxy;
@@ -81,16 +86,6 @@ namespace Adobe.Target.Client
         /// DefaultUrl
         /// </summary>
         public string DefaultUrl { get; }
-
-        /// <summary>
-        /// ClusterUrlPrefix
-        /// </summary>
-        public string ClusterUrlPrefix { get; }
-
-        /// <summary>
-        /// ClusterUrlSuffix
-        /// </summary>
-        public string ClusterUrlSuffix { get; }
 
         /// <summary>
         /// Default Property Token
@@ -173,6 +168,16 @@ namespace Adobe.Target.Client
         /// </summary>
         public bool LocalArtifactOnly { get; }
 
+        /// <summary>
+        /// ClusterUrlPrefix
+        /// </summary>
+        internal string ClusterUrlPrefix { get; }
+
+        /// <summary>
+        /// ClusterUrlSuffix
+        /// </summary>
+        internal string ClusterUrlSuffix { get; }
+
         private static void ValidateConfig(Builder builder)
         {
             if (builder.Client == null)
@@ -215,7 +220,7 @@ namespace Adobe.Target.Client
             /// <summary>
             /// ServerDomain
             /// </summary>
-            internal string ServerDomain { get; private set; } = "tt.omtrdc.net";
+            internal string ServerDomain { get; private set; } = DefaultDomain;
 
             /// <summary>
             /// DefaultPropertyToken
