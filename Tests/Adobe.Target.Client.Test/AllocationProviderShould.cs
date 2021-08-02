@@ -18,10 +18,10 @@ namespace Adobe.Target.Client.Test
         [Fact]
         public void MurmurHash3_HashUnencodedChars()
         {
-            var hashed = MurmurHash3.HashUnencodedChars("someClientId.123456.tntId123.salty");
+            var hashed = HashUtils.HashUnencodedChars("someClientId.123456.tntId123.salty");
             Assert.Equal(-1846592194, hashed);
 
-            hashed = MurmurHash3.HashUnencodedChars("targettesting.125880.4c038b35f1b1453d80a3e7da8208c617.campaign");
+            hashed = HashUtils.HashUnencodedChars("targettesting.125880.4c038b35f1b1453d80a3e7da8208c617.campaign");
             Assert.Equal(-683299703, hashed);
         }
 

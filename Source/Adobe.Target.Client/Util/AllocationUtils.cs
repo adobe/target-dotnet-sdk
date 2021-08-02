@@ -29,7 +29,7 @@ namespace Adobe.Target.Client.Util
 
         private static double CalculateAllocation(string deviceId)
         {
-            var hashValue = MurmurHash3.HashUnencodedChars(deviceId);
+            var hashValue = HashUtils.HashUnencodedChars(deviceId);
 
             var hashFixedBucket = Math.Abs(hashValue) % TotalBuckets;
             var allocationValue = (float)hashFixedBucket / TotalBuckets * MaxPercentage;

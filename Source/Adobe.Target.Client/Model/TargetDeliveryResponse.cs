@@ -85,6 +85,22 @@ namespace Adobe.Target.Client.Model
         }
 
         /// <summary>
+        /// Visitor State JSON string
+        /// </summary>
+        public string VisitorStateAsJson
+        {
+            get
+            {
+                if (this.Request.Visitor == null)
+                {
+                    return string.Empty;
+                }
+
+                return SerializationUtils.SerializeVisitorState(this.Request.Visitor.GetState());
+            }
+        }
+
+        /// <summary>
         /// Gets Target cookies
         /// </summary>
         /// <returns>Target cookies</returns>

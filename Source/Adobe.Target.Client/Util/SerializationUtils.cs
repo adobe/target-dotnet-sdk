@@ -10,6 +10,8 @@
  */
 namespace Adobe.Target.Client.Util
 {
+    using System.Collections.Generic;
+    using Adobe.ExperienceCloud.Ecid;
     using Newtonsoft.Json;
 
     internal static class SerializationUtils
@@ -23,6 +25,18 @@ namespace Adobe.Target.Client.Util
         {
             var serialized = JsonConvert.SerializeObject(from);
             return JsonConvert.DeserializeObject<T>(serialized);
+        }
+
+        public static string SerializeVisitorState(IDictionary<string, VisitorState> state)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = new VisitorStateContractResolver(),
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore,
+            };
+
+            return JsonConvert.SerializeObject(state, settings);
         }
     }
 }

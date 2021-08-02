@@ -14,6 +14,7 @@ namespace Adobe.Target.Client.Model
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Text;
     using Adobe.ExperienceCloud.Ecid;
     using Adobe.Target.Client.Util;
     using Adobe.Target.Delivery.Model;
@@ -447,6 +448,20 @@ namespace Adobe.Target.Client.Model
                 return new TargetDeliveryRequest(this);
             }
 
+            private static string GetMboxNames(IEnumerable<MboxRequest> mboxes)
+            {
+                return string.Join(
+                    string.Empty,
+                    mboxes?.Select(mbox => mbox.Name) ?? Array.Empty<string>());
+            }
+
+            private static string GetViewNames(IEnumerable<ViewRequest> views)
+            {
+                return string.Join(
+                    string.Empty,
+                    views?.Select(view => view.Name) ?? Array.Empty<string>());
+            }
+
             private void SetTargetValues()
             {
                 var targetCookie = this.Cookies[TargetConstants.MboxCookieName]?.Value;
@@ -524,10 +539,24 @@ namespace Adobe.Target.Client.Model
                     TrackingServer = this.TrackingServer,
                     TrackingServerSecure = this.TrackingServerSecure,
                     Logging = LoggingType.ServerSide,
-                    SupplementalDataId = this.Visitor.GetSupplementalDataId(TargetConstants.DefaultSdidConsumerId),
+                    SupplementalDataId = this.Visitor.GetSupplementalDataId(this.GetVisitorConsumerId()),
                 };
 
                 this.ExperienceCloud.Analytics = analyticsRequest;
+            }
+
+            private string GetVisitorConsumerId()
+            {
+                var consumerId = new StringBuilder(TargetConstants.SdkNameValue);
+                _ = consumerId.Append(this.DeliveryRequest.Execute?.PageLoad != null ||
+                                  this.DeliveryRequest.Prefetch?.PageLoad != null
+                    ? TargetConstants.DefaultSdidConsumerId : string.Empty);
+                _ = consumerId.Append(GetMboxNames(this.DeliveryRequest.Execute?.Mboxes));
+                _ = consumerId.Append(GetMboxNames(this.DeliveryRequest.Prefetch?.Mboxes));
+                _ = consumerId.Append(GetViewNames(this.DeliveryRequest.Prefetch?.Views));
+                var consumerIdHash = HashUtils.SimpleHash(consumerId.ToString());
+
+                return Convert.ToBase64String(BitConverter.GetBytes(consumerIdHash));
             }
 
             private void CreateAndSetAudienceManager()
