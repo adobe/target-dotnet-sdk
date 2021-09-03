@@ -110,6 +110,11 @@ namespace Adobe.Target.Client.Service
 
         private TargetDeliveryResponse GetTargetDeliveryResponse(TargetDeliveryRequest request, DeliveryResponse response)
         {
+            if (response == null)
+            {
+                return new TargetDeliveryResponse(request, null, HttpStatusCode.ServiceUnavailable);
+            }
+
             this.UpdateStickyLocationHint(response);
             this.logger.LogResponse(response);
             return new TargetDeliveryResponse(request, ConvertResponseOptions(response), (HttpStatusCode)response.Status);
