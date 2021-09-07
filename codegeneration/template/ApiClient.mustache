@@ -90,7 +90,7 @@ namespace {{packageName}}.Client
         /// <returns>Object representation of the JSON string.</returns>
         internal object Deserialize(IRestResponse response, Type type)
         {
-            IList<Parameter> headers = response.Headers;
+            var headers = response.Headers;
             if (type == typeof(byte[])) // return byte array
             {
                 return response.RawBytes;
