@@ -173,7 +173,9 @@ namespace Adobe.Target.Client.OnDevice
         private string GetArtifactUrl()
         {
             return this.clientConfig.Client + "/" + this.clientConfig.OnDeviceEnvironment.ToLowerInvariant()
-                + "/v" + MajorVersion + ArtifactFilename;
+                + "/v" + MajorVersion
+                + (string.IsNullOrEmpty(this.clientConfig.DefaultPropertyToken) ? string.Empty : "/" + this.clientConfig.DefaultPropertyToken)
+                + ArtifactFilename;
         }
 
         private void ProcessResult(PolicyResult<IRestResponse> policyResult)
