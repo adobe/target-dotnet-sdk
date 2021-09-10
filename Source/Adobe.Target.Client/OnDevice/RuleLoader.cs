@@ -236,6 +236,10 @@ namespace Adobe.Target.Client.OnDevice
             try
             {
                 deserialized = JsonConvert.DeserializeObject<OnDeviceDecisioningRuleSet>(rules);
+                if (deserialized == null)
+                {
+                    throw new ApplicationException(Messages.RuleDeserializationFailed);
+                }
             }
             catch (Exception e)
             {
