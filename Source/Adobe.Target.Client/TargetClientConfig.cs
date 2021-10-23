@@ -59,7 +59,7 @@ namespace Adobe.Target.Client
             this.OnDeviceConfigHostname = builder.OnDeviceConfigHostname;
             this.OnDeviceDecisioningPollingIntSecs = builder.OnDeviceDecisioningPollingIntSecs;
             this.OnDeviceArtifactPayload = builder.OnDeviceArtifactPayload;
-            this.LocalArtifactOnly = builder.LocalArtifactOnly;
+            this.UpdateLocalArtifact = builder.UpdateLocalArtifact;
         }
 
         /// <summary>
@@ -98,7 +98,8 @@ namespace Adobe.Target.Client
         public ILogger Logger { get; }
 
         /// <summary>
-        /// Timeout (defaults to 100000 ms)
+        /// Timeout <br/>
+        /// Default: <c>100000ms</c>
         /// </summary>
         public int Timeout { get; }
 
@@ -163,10 +164,10 @@ namespace Adobe.Target.Client
         public string OnDeviceArtifactPayload { get; }
 
         /// <summary>
-        /// When true, Target SDK won't attempt to update the locally set artifact <br/>
-        /// Used together with <see cref="OnDeviceArtifactPayload"/>
+        /// When <c>false</c>, the SDK won't attempt to update the artifact set locally using <see cref="OnDeviceArtifactPayload"/><br/>
+        /// Default: <c>true</c>
         /// </summary>
-        public bool LocalArtifactOnly { get; }
+        public bool UpdateLocalArtifact { get; }
 
         /// <summary>
         /// ClusterUrlPrefix
@@ -302,7 +303,10 @@ namespace Adobe.Target.Client
             /// </summary>
             internal string OnDeviceArtifactPayload { get; private set; }
 
-            internal bool LocalArtifactOnly { get; private set; }
+            /// <summary>
+            /// Update Local Artifact
+            /// </summary>
+            internal bool UpdateLocalArtifact { get; private set; } = true;
 
             /// <summary>
             /// Sets ServerDomain <br/>
@@ -490,8 +494,21 @@ namespace Adobe.Target.Client
             }
 
             /// <summary>
+            /// Sets Update Local Artifact <br/>
+            /// When <c>false</c>, the SDK won't attempt to update the artifact set locally using <see cref="OnDeviceArtifactPayload"/><br/>
+            /// Default: <c>true</c>
+            /// </summary>
+            /// <param name="updateLocalArtifact">Update Local Artifact</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetUpdateLocalArtifact(bool updateLocalArtifact)
+            {
+                this.UpdateLocalArtifact = updateLocalArtifact;
+                return this;
+            }
+
+            /// <summary>
             /// Sets the number of seconds between OnDevice rule update requests <br/>
-            /// Default: 300
+            /// Default: <c>300s</c>
             /// </summary>
             /// <param name="pollingSeconds">OnDevice Decisioning Polling Interval Seconds</param>
             /// <returns><see cref="Builder"/> instance</returns>
@@ -508,12 +525,6 @@ namespace Adobe.Target.Client
             public TargetClientConfig Build()
             {
                 return new (this);
-            }
-
-            internal Builder SetLocalArtifactOnly(bool localOnly)
-            {
-                this.LocalArtifactOnly = localOnly;
-                return this;
             }
         }
     }

@@ -118,7 +118,7 @@ namespace Adobe.Target.Client.Test
         {
             var configBuilder =
                 new TargetClientConfig.Builder((string) config["client"], (string) config["organizationId"])
-                    .SetLocalArtifactOnly(true)
+                    .SetUpdateLocalArtifact(false)
                     .SetOnDeviceArtifactPayload(this.fixture.Artifacts[artifact]);
 
             if (config.ContainsKey("decisioningMethod"))

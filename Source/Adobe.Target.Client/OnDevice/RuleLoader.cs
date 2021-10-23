@@ -60,7 +60,7 @@ namespace Adobe.Target.Client.OnDevice
             this.PollingInterval = clientConfig.OnDeviceDecisioningPollingIntSecs * 1000;
             this.logger = TargetClient.Logger;
             this.SetLocalRules();
-            if (clientConfig.LocalArtifactOnly)
+            if (!clientConfig.UpdateLocalArtifact)
             {
                 return;
             }
