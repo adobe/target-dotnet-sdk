@@ -59,7 +59,9 @@
                     "content": "greg is correct"
                   }
                 ]
-              }
+              },
+              {},
+              {}
             ],
             "metrics": [
               {
@@ -123,7 +125,9 @@
                     "content": "jason is correct"
                   }
                 ]
-              }
+              },
+              {},
+              {}
             ],
             "metrics": [
               {
@@ -183,7 +187,9 @@
                     "content": "all visitors"
                   }
                 ]
-              }
+              },
+              {},
+              {}
             ],
             "metrics": [
               {
