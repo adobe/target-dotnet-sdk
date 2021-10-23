@@ -134,7 +134,7 @@ namespace Adobe.Target.Client.OnDevice
                 return;
             }
 
-            RestClient client = new (Uri.UriSchemeHttps + "://" + this.clientConfig.OnDeviceConfigHostname);
+            RestClient client = new (this.clientConfig.Protocol + this.clientConfig.OnDeviceConfigHostname);
 
             client.ClearHandlers();
             client.AddDefaultHeader(AcceptHeader, AcceptHeaderValue);

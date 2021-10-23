@@ -10,7 +10,6 @@
  */
 namespace Adobe.Target.Client.OnDevice
 {
-    using System;
     using System.Threading.Tasks;
     using Adobe.Target.Delivery.Model;
     using RestSharp;
@@ -90,7 +89,7 @@ namespace Adobe.Target.Client.OnDevice
 
         private string GetGeoUrl(TargetClientConfig clientConfig)
         {
-            return Uri.UriSchemeHttps + "://" + clientConfig.OnDeviceConfigHostname + GeoPath;
+            return clientConfig.Protocol + clientConfig.OnDeviceConfigHostname + GeoPath;
         }
     }
 }
