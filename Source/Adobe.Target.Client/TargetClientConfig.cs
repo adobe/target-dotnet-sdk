@@ -26,8 +26,6 @@ namespace Adobe.Target.Client
     {
         private const string ClusterPrefix = "mboxedge";
         private const string DefaultDomain = "tt.omtrdc.net";
-        private const string Https = "https://";
-        private const string Http = "http://";
 
         private TargetClientConfig()
         {
@@ -38,7 +36,7 @@ namespace Adobe.Target.Client
             ValidateConfig(builder);
             this.Client = builder.Client;
             this.OrganizationId = builder.OrganizationId;
-            this.Protocol = builder.Secure ? Https : Http;
+            this.Protocol = $"{(builder.Secure ? Uri.UriSchemeHttps : Uri.UriSchemeHttp)}{Uri.SchemeDelimiter}";
             this.DefaultPropertyToken = builder.DefaultPropertyToken;
             this.DefaultUrl = builder.ServerDomain != DefaultDomain
                 ? $"{this.Protocol}{builder.ServerDomain}"
