@@ -59,6 +59,12 @@
                     "content": "greg is correct"
                   }
                 ]
+              },
+              {
+                "responseTokens":  {}
+              },
+              {
+                "responseTokens":  {}
               }
             ],
             "metrics": [
@@ -123,6 +129,12 @@
                     "content": "jason is correct"
                   }
                 ]
+              },
+              {
+                "responseTokens":  {}
+              },
+              {
+                "responseTokens":  {}
               }
             ],
             "metrics": [
@@ -183,6 +195,12 @@
                     "content": "all visitors"
                   }
                 ]
+              },
+              {
+                "responseTokens":  {}
+              },
+              {
+                "responseTokens":  {}
               }
             ],
             "metrics": [

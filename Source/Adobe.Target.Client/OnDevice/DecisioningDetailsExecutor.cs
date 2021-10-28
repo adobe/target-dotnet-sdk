@@ -205,7 +205,7 @@ namespace Adobe.Target.Client.OnDevice
                                 option.EventToken = null;
                                 return option;
                             })
-                        .Where(option => option.Type != null || option.Content != null)
+                        .Where(option => option.Type != null || option.Content != null || option.ResponseTokens != null)
                         .ToList(),
                     Trace = traceHandler?.CurrentTrace,
                 };
@@ -249,7 +249,7 @@ namespace Adobe.Target.Client.OnDevice
                         option.EventToken = null;
                     }
 
-                    if (option.Type == null && option.Content == null && option.EventToken == null)
+                    if (option.Type == null && option.Content == null && option.EventToken == null && option.ResponseTokens == null)
                     {
                         continue;
                     }

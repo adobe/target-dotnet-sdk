@@ -163,7 +163,7 @@ namespace Adobe.Target.Client.Test.Util
                 .ComparingByMembers<Action>()
                 .Using<Dictionary<string, object>>(ctx =>
                 {
-                    if (ctx.Expectation == null)
+                    if (ctx.Expectation == null || ctx.Expectation.Count == 0)
                     {
                         return;
                     }
