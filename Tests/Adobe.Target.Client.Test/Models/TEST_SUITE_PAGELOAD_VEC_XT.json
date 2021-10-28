@@ -60,8 +60,12 @@
                   }
                 ]
               },
-              {},
-              {}
+              {
+                "responseTokens":  {}
+              },
+              {
+                "responseTokens":  {}
+              }
             ],
             "metrics": [
               {
@@ -126,8 +130,12 @@
                   }
                 ]
               },
-              {},
-              {}
+              {
+                "responseTokens":  {}
+              },
+              {
+                "responseTokens":  {}
+              }
             ],
             "metrics": [
               {
@@ -188,8 +196,12 @@
                   }
                 ]
               },
-              {},
-              {}
+              {
+                "responseTokens":  {}
+              },
+              {
+                "responseTokens":  {}
+              }
             ],
             "metrics": [
               {

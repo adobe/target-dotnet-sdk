@@ -69,7 +69,9 @@
                   }
                 ]
               },
-              {}
+              {
+                "responseTokens":  {}
+              }
             ],
             "metrics": [
               {
@@ -175,9 +177,15 @@
                   }
                 ]
               },
-              {},
-              {},
-              {}
+              {
+                "responseTokens":  {}
+              },
+              {
+                "responseTokens":  {}
+              },
+              {
+                "responseTokens":  {}
+              }
             ],
             "metrics": [
               {
@@ -306,11 +314,21 @@
                   }
                 ]
               },
-              {},
-              {},
-              {},
-              {},
-              {}
+              {
+                "responseTokens":  {}
+              },
+              {
+                "responseTokens":  {}
+              },
+              {
+                "responseTokens":  {}
+              },
+              {
+                "responseTokens":  {}
+              },
+              {
+                "responseTokens":  {}
+              }
             ],
             "metrics": [
               {
