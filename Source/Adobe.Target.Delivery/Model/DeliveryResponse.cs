@@ -45,7 +45,7 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="execute">execute.</param>
         /// <param name="prefetch">prefetch.</param>
         /// <param name="notifications">notifications.</param>
-        public DeliveryResponse(int? status = default(int?), string requestId = default(string), VisitorId id = default(VisitorId), string _client = default(string), string edgeHost = default(string), ExecuteResponse execute = default(ExecuteResponse), PrefetchResponse prefetch = default(PrefetchResponse), NotificationResponse notifications = default(NotificationResponse))
+        public DeliveryResponse(int? status = default(int?), string requestId = default(string), VisitorId id = default(VisitorId), string _client = default(string), string edgeHost = default(string), ExecuteResponse execute = default(ExecuteResponse), PrefetchResponse prefetch = default(PrefetchResponse), IEnumerable<NotificationResponse> notifications = null)
         {
             this.Status = status;
             this.RequestId = requestId;
@@ -106,7 +106,7 @@ namespace Adobe.Target.Delivery.Model
         /// Gets or Sets Notifications
         /// </summary>
         [DataMember(Name = "notifications", EmitDefaultValue = false)]
-        public NotificationResponse Notifications { get; set; }
+        public IEnumerable<NotificationResponse> Notifications { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
