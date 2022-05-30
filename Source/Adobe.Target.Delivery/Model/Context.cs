@@ -58,8 +58,9 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="geo">geo.</param>
         /// <param name="timeOffsetInMinutes">Specifies minutes from UTC for specific client.</param>
         /// <param name="userAgent">User-Agent should be sent only via this property. HTTP header User-Agent is ignored..</param>
+        /// <param name="clientHints">clientHints.</param>
         /// <param name="beacon">In case beacon &#x3D; true is provided in the request, the server will return a 204 No Content response with no response body.  (default to false).</param>
-        public Context(ChannelType channel = default(ChannelType), MobilePlatform mobilePlatform = default(MobilePlatform), Application application = default(Application), Screen screen = default(Screen), Window window = default(Window), Browser browser = default(Browser), Address address = default(Address), Geo geo = default(Geo), double? timeOffsetInMinutes = default(double?), string userAgent = default(string), bool beacon = false)
+        public Context(ChannelType channel = default(ChannelType), MobilePlatform mobilePlatform = default(MobilePlatform), Application application = default(Application), Screen screen = default(Screen), Window window = default(Window), Browser browser = default(Browser), Address address = default(Address), Geo geo = default(Geo), double? timeOffsetInMinutes = default(double?), string userAgent = default(string), ClientHints clientHints = default(ClientHints), bool beacon = false)
         {
             this.Channel = channel;
             this.MobilePlatform = mobilePlatform;
@@ -71,6 +72,7 @@ namespace Adobe.Target.Delivery.Model
             this.Geo = geo;
             this.TimeOffsetInMinutes = timeOffsetInMinutes;
             this.UserAgent = userAgent;
+            this.ClientHints = clientHints;
             this.Beacon = beacon;
         }
 
@@ -131,6 +133,12 @@ namespace Adobe.Target.Delivery.Model
         public string UserAgent { get; set; }
 
         /// <summary>
+        /// Gets or Sets ClientHints
+        /// </summary>
+        [DataMember(Name = "clientHints", EmitDefaultValue = false)]
+        public ClientHints ClientHints { get; set; }
+
+        /// <summary>
         /// In case beacon &#x3D; true is provided in the request, the server will return a 204 No Content response with no response body. 
         /// </summary>
         /// <value>In case beacon &#x3D; true is provided in the request, the server will return a 204 No Content response with no response body. </value>
@@ -155,6 +163,7 @@ namespace Adobe.Target.Delivery.Model
             sb.Append("  Geo: ").Append(Geo).Append("\n");
             sb.Append("  TimeOffsetInMinutes: ").Append(TimeOffsetInMinutes).Append("\n");
             sb.Append("  UserAgent: ").Append(UserAgent).Append("\n");
+            sb.Append("  ClientHints: ").Append(ClientHints).Append("\n");
             sb.Append("  Beacon: ").Append(Beacon).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -239,6 +248,11 @@ namespace Adobe.Target.Delivery.Model
                     this.UserAgent.Equals(input.UserAgent))
                 ) && 
                 (
+                    this.ClientHints == input.ClientHints ||
+                    (this.ClientHints != null &&
+                    this.ClientHints.Equals(input.ClientHints))
+                ) && 
+                (
                     this.Beacon == input.Beacon ||
                     this.Beacon.Equals(input.Beacon)
                 );
@@ -271,6 +285,8 @@ namespace Adobe.Target.Delivery.Model
                 hashCode = hashCode * 59 + this.TimeOffsetInMinutes.GetHashCode();
                 if (this.UserAgent != null)
                     hashCode = hashCode * 59 + this.UserAgent.GetHashCode();
+                if (this.ClientHints != null)
+                    hashCode = hashCode * 59 + this.ClientHints.GetHashCode();
                 hashCode = hashCode * 59 + this.Beacon.GetHashCode();
                 return hashCode;
             }

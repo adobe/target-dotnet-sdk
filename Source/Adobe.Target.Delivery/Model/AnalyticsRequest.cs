@@ -45,8 +45,8 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <param name="supplementalDataId">Supplemental data id, used for **server side** integrations. Format &lt;16 hexadecimal digits&gt;-&lt;16 hexadecimal digits&gt; .</param>
         /// <param name="logging">logging.</param>
-        /// <param name="trackingServer">tracking server.</param>
-        /// <param name="trackingServerSecure">secure tracking server.</param>
+        /// <param name="trackingServer">tracking server domain (should not include http://).</param>
+        /// <param name="trackingServerSecure">secure tracking server domain (should not include https://).</param>
         public AnalyticsRequest(string supplementalDataId = default(string), LoggingType? logging = default(LoggingType?), string trackingServer = default(string), string trackingServerSecure = default(string))
         {
             this.SupplementalDataId = supplementalDataId;
@@ -63,16 +63,16 @@ namespace Adobe.Target.Delivery.Model
         public string SupplementalDataId { get; set; }
 
         /// <summary>
-        /// tracking server
+        /// tracking server domain (should not include http://)
         /// </summary>
-        /// <value>tracking server</value>
+        /// <value>tracking server domain (should not include http://)</value>
         [DataMember(Name = "trackingServer", EmitDefaultValue = false)]
         public string TrackingServer { get; set; }
 
         /// <summary>
-        /// secure tracking server
+        /// secure tracking server domain (should not include https://)
         /// </summary>
-        /// <value>secure tracking server</value>
+        /// <value>secure tracking server domain (should not include https://)</value>
         [DataMember(Name = "trackingServerSecure", EmitDefaultValue = false)]
         public string TrackingServerSecure { get; set; }
 

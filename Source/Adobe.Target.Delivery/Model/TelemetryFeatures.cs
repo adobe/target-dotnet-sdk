@@ -44,10 +44,55 @@ namespace Adobe.Target.Delivery.Model
         /// Initializes a new instance of the <see cref="TelemetryFeatures" /> class.
         /// </summary>
         /// <param name="decisioningMethod">decisioningMethod.</param>
-        public TelemetryFeatures(DecisioningMethod? decisioningMethod = default(DecisioningMethod?))
+        /// <param name="executeMboxCount">Number of mboxes in execute request.</param>
+        /// <param name="executePageLoad">Indicates if execute pageLoad was used.</param>
+        /// <param name="prefetchMboxCount">Number of prefetched mboxes.</param>
+        /// <param name="prefetchPageLoad">Indicates if prefetch pageLoad was used.</param>
+        /// <param name="prefetchViewCount">Number of prefetched views.</param>
+        public TelemetryFeatures(DecisioningMethod? decisioningMethod = default(DecisioningMethod?), int? executeMboxCount = default(int?), bool executePageLoad = default(bool), int? prefetchMboxCount = default(int?), bool prefetchPageLoad = default(bool), int? prefetchViewCount = default(int?))
         {
             this.DecisioningMethod = decisioningMethod;
+            this.ExecuteMboxCount = executeMboxCount;
+            this.ExecutePageLoad = executePageLoad;
+            this.PrefetchMboxCount = prefetchMboxCount;
+            this.PrefetchPageLoad = prefetchPageLoad;
+            this.PrefetchViewCount = prefetchViewCount;
         }
+
+        /// <summary>
+        /// Number of mboxes in execute request
+        /// </summary>
+        /// <value>Number of mboxes in execute request</value>
+        [DataMember(Name = "executeMboxCount", EmitDefaultValue = false)]
+        public int? ExecuteMboxCount { get; set; }
+
+        /// <summary>
+        /// Indicates if execute pageLoad was used
+        /// </summary>
+        /// <value>Indicates if execute pageLoad was used</value>
+        [DataMember(Name = "executePageLoad", EmitDefaultValue = true)]
+        public bool ExecutePageLoad { get; set; }
+
+        /// <summary>
+        /// Number of prefetched mboxes
+        /// </summary>
+        /// <value>Number of prefetched mboxes</value>
+        [DataMember(Name = "prefetchMboxCount", EmitDefaultValue = false)]
+        public int? PrefetchMboxCount { get; set; }
+
+        /// <summary>
+        /// Indicates if prefetch pageLoad was used
+        /// </summary>
+        /// <value>Indicates if prefetch pageLoad was used</value>
+        [DataMember(Name = "prefetchPageLoad", EmitDefaultValue = true)]
+        public bool PrefetchPageLoad { get; set; }
+
+        /// <summary>
+        /// Number of prefetched views
+        /// </summary>
+        /// <value>Number of prefetched views</value>
+        [DataMember(Name = "prefetchViewCount", EmitDefaultValue = false)]
+        public int? PrefetchViewCount { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -58,6 +103,11 @@ namespace Adobe.Target.Delivery.Model
             var sb = new StringBuilder();
             sb.Append("class TelemetryFeatures {\n");
             sb.Append("  DecisioningMethod: ").Append(DecisioningMethod).Append("\n");
+            sb.Append("  ExecuteMboxCount: ").Append(ExecuteMboxCount).Append("\n");
+            sb.Append("  ExecutePageLoad: ").Append(ExecutePageLoad).Append("\n");
+            sb.Append("  PrefetchMboxCount: ").Append(PrefetchMboxCount).Append("\n");
+            sb.Append("  PrefetchPageLoad: ").Append(PrefetchPageLoad).Append("\n");
+            sb.Append("  PrefetchViewCount: ").Append(PrefetchViewCount).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -95,6 +145,26 @@ namespace Adobe.Target.Delivery.Model
                 (
                     this.DecisioningMethod == input.DecisioningMethod ||
                     this.DecisioningMethod.Equals(input.DecisioningMethod)
+                ) && 
+                (
+                    this.ExecuteMboxCount == input.ExecuteMboxCount ||
+                    this.ExecuteMboxCount.Equals(input.ExecuteMboxCount)
+                ) && 
+                (
+                    this.ExecutePageLoad == input.ExecutePageLoad ||
+                    this.ExecutePageLoad.Equals(input.ExecutePageLoad)
+                ) && 
+                (
+                    this.PrefetchMboxCount == input.PrefetchMboxCount ||
+                    this.PrefetchMboxCount.Equals(input.PrefetchMboxCount)
+                ) && 
+                (
+                    this.PrefetchPageLoad == input.PrefetchPageLoad ||
+                    this.PrefetchPageLoad.Equals(input.PrefetchPageLoad)
+                ) && 
+                (
+                    this.PrefetchViewCount == input.PrefetchViewCount ||
+                    this.PrefetchViewCount.Equals(input.PrefetchViewCount)
                 );
         }
 
@@ -108,6 +178,11 @@ namespace Adobe.Target.Delivery.Model
             {
                 int hashCode = 41;
                 hashCode = hashCode * 59 + this.DecisioningMethod.GetHashCode();
+                hashCode = hashCode * 59 + this.ExecuteMboxCount.GetHashCode();
+                hashCode = hashCode * 59 + this.ExecutePageLoad.GetHashCode();
+                hashCode = hashCode * 59 + this.PrefetchMboxCount.GetHashCode();
+                hashCode = hashCode * 59 + this.PrefetchPageLoad.GetHashCode();
+                hashCode = hashCode * 59 + this.PrefetchViewCount.GetHashCode();
                 return hashCode;
             }
         }

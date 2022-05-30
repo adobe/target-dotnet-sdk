@@ -45,7 +45,8 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="execute">execute.</param>
         /// <param name="prefetch">prefetch.</param>
         /// <param name="notifications">notifications.</param>
-        public DeliveryResponse(int? status = default(int?), string requestId = default(string), VisitorId id = default(VisitorId), string _client = default(string), string edgeHost = default(string), ExecuteResponse execute = default(ExecuteResponse), PrefetchResponse prefetch = default(PrefetchResponse), NotificationResponse notifications = default(NotificationResponse))
+        /// <param name="telemetryServerToken">Encoded data with request telemetry collected from Delivery API.</param>
+        public DeliveryResponse(int? status = default(int?), string requestId = default(string), VisitorId id = default(VisitorId), string _client = default(string), string edgeHost = default(string), ExecuteResponse execute = default(ExecuteResponse), PrefetchResponse prefetch = default(PrefetchResponse), List<NotificationResponse> notifications = default(List<NotificationResponse>), string telemetryServerToken = default(string))
         {
             this.Status = status;
             this.RequestId = requestId;
@@ -55,6 +56,7 @@ namespace Adobe.Target.Delivery.Model
             this.Execute = execute;
             this.Prefetch = prefetch;
             this.Notifications = notifications;
+            this.TelemetryServerToken = telemetryServerToken;
         }
 
         /// <summary>
@@ -106,7 +108,14 @@ namespace Adobe.Target.Delivery.Model
         /// Gets or Sets Notifications
         /// </summary>
         [DataMember(Name = "notifications", EmitDefaultValue = false)]
-        public NotificationResponse Notifications { get; set; }
+        public List<NotificationResponse> Notifications { get; set; }
+
+        /// <summary>
+        /// Encoded data with request telemetry collected from Delivery API
+        /// </summary>
+        /// <value>Encoded data with request telemetry collected from Delivery API</value>
+        [DataMember(Name = "telemetryServerToken", EmitDefaultValue = false)]
+        public string TelemetryServerToken { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -124,6 +133,7 @@ namespace Adobe.Target.Delivery.Model
             sb.Append("  Execute: ").Append(Execute).Append("\n");
             sb.Append("  Prefetch: ").Append(Prefetch).Append("\n");
             sb.Append("  Notifications: ").Append(Notifications).Append("\n");
+            sb.Append("  TelemetryServerToken: ").Append(TelemetryServerToken).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -194,8 +204,14 @@ namespace Adobe.Target.Delivery.Model
                 ) && 
                 (
                     this.Notifications == input.Notifications ||
-                    (this.Notifications != null &&
-                    this.Notifications.Equals(input.Notifications))
+                    this.Notifications != null &&
+                    input.Notifications != null &&
+                    this.Notifications.SequenceEqual(input.Notifications)
+                ) && 
+                (
+                    this.TelemetryServerToken == input.TelemetryServerToken ||
+                    (this.TelemetryServerToken != null &&
+                    this.TelemetryServerToken.Equals(input.TelemetryServerToken))
                 );
         }
 
@@ -223,6 +239,8 @@ namespace Adobe.Target.Delivery.Model
                     hashCode = hashCode * 59 + this.Prefetch.GetHashCode();
                 if (this.Notifications != null)
                     hashCode = hashCode * 59 + this.Notifications.GetHashCode();
+                if (this.TelemetryServerToken != null)
+                    hashCode = hashCode * 59 + this.TelemetryServerToken.GetHashCode();
                 return hashCode;
             }
         }

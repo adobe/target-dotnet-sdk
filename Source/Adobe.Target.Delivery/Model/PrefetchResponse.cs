@@ -29,7 +29,7 @@ using OpenAPIDateConverter = Adobe.Target.Delivery.Client.OpenAPIDateConverter;
 namespace Adobe.Target.Delivery.Model
 {
     /// <summary>
-    /// The object that will return the prefetched content based on the request, active activites etc 
+    /// The object that will return the prefetched content based on the request, active activities etc 
     /// </summary>
     [DataContract(Name = "PrefetchResponse")]
     public partial class PrefetchResponse : IEquatable<PrefetchResponse>, IValidatableObject
@@ -40,7 +40,7 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="views">Contains all the views matching the request. .</param>
         /// <param name="pageLoad">pageLoad.</param>
         /// <param name="mboxes">Prefetched mboxes, including content and notification tokens to be sent back when the mboxes are displayed. .</param>
-        /// <param name="metrics">The click track metrics that are not assigned to a view but are present in activites that have views, except in case the same activity is serving content for selectors both assinged to a view and selectors without any views, and having click track metrics that are not assotiated with any view within the activity, then:   * in case of a prefetch only request, these metrics (tokens) will be set in the prefetch response&#39;s metrics.   * in case of an execute only request, the metrics will be set in the page load response&#39;s metrics.   * in case of a request, with both, execute and prefetch, metrics will be set in the page load response&#39;s     metrics only. .</param>
+        /// <param name="metrics">Click track metrics that are not assigned with a view but are present in activities that have views. If the same activity is serving content for selectors on a view and selectors unassociated with views, and having click track metrics not associated with any view within the activity, then:   * in case of a prefetch-only request, these metrics (tokens) will be set in the prefetch response&#39;s metrics.   * in case of an execute-only request, the metrics will be set in the pageLoad response&#39;s metrics.   * in case of a request, with both execute and prefetch, the metrics will be set in the pageLoad response&#39;s metrics only. .</param>
         public PrefetchResponse(List<View> views = default(List<View>), PageLoadResponse pageLoad = default(PageLoadResponse), List<PrefetchMboxResponse> mboxes = default(List<PrefetchMboxResponse>), List<Metric> metrics = default(List<Metric>))
         {
             this.Views = views;
@@ -70,9 +70,9 @@ namespace Adobe.Target.Delivery.Model
         public List<PrefetchMboxResponse> Mboxes { get; set; }
 
         /// <summary>
-        /// The click track metrics that are not assigned to a view but are present in activites that have views, except in case the same activity is serving content for selectors both assinged to a view and selectors without any views, and having click track metrics that are not assotiated with any view within the activity, then:   * in case of a prefetch only request, these metrics (tokens) will be set in the prefetch response&#39;s metrics.   * in case of an execute only request, the metrics will be set in the page load response&#39;s metrics.   * in case of a request, with both, execute and prefetch, metrics will be set in the page load response&#39;s     metrics only. 
+        /// Click track metrics that are not assigned with a view but are present in activities that have views. If the same activity is serving content for selectors on a view and selectors unassociated with views, and having click track metrics not associated with any view within the activity, then:   * in case of a prefetch-only request, these metrics (tokens) will be set in the prefetch response&#39;s metrics.   * in case of an execute-only request, the metrics will be set in the pageLoad response&#39;s metrics.   * in case of a request, with both execute and prefetch, the metrics will be set in the pageLoad response&#39;s metrics only. 
         /// </summary>
-        /// <value>The click track metrics that are not assigned to a view but are present in activites that have views, except in case the same activity is serving content for selectors both assinged to a view and selectors without any views, and having click track metrics that are not assotiated with any view within the activity, then:   * in case of a prefetch only request, these metrics (tokens) will be set in the prefetch response&#39;s metrics.   * in case of an execute only request, the metrics will be set in the page load response&#39;s metrics.   * in case of a request, with both, execute and prefetch, metrics will be set in the page load response&#39;s     metrics only. </value>
+        /// <value>Click track metrics that are not assigned with a view but are present in activities that have views. If the same activity is serving content for selectors on a view and selectors unassociated with views, and having click track metrics not associated with any view within the activity, then:   * in case of a prefetch-only request, these metrics (tokens) will be set in the prefetch response&#39;s metrics.   * in case of an execute-only request, the metrics will be set in the pageLoad response&#39;s metrics.   * in case of a request, with both execute and prefetch, the metrics will be set in the pageLoad response&#39;s metrics only. </value>
         [DataMember(Name = "metrics", EmitDefaultValue = false)]
         public List<Metric> Metrics { get; set; }
 

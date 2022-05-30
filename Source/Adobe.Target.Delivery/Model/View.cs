@@ -40,7 +40,7 @@ namespace Adobe.Target.Delivery.Model
         /// <param name="name">View Name - Unique view name. If the activity has a metric with a view with this name it will be matched, providing the Key matches as well or is null and view and metric targeting is matched. .</param>
         /// <param name="key">View Key - An optional encoded String identifier used in advanced scenarios, such as View fingerprinting. Same matching conditions as for View Name. .</param>
         /// <param name="options">The prefetched content (options) to be displayed for the current view. .</param>
-        /// <param name="metrics">Click track metrics for the current view. .</param>
+        /// <param name="metrics">Click track metrics associated with the current view. .</param>
         /// <param name="analytics">analytics.</param>
         /// <param name="state">View state token that must be sent back with display notification for the view..</param>
         /// <param name="trace">The object containing all trace data for the request, only present if the trace token was provided in the request. .</param>
@@ -77,9 +77,9 @@ namespace Adobe.Target.Delivery.Model
         public List<Option> Options { get; set; }
 
         /// <summary>
-        /// Click track metrics for the current view. 
+        /// Click track metrics associated with the current view. 
         /// </summary>
-        /// <value>Click track metrics for the current view. </value>
+        /// <value>Click track metrics associated with the current view. </value>
         [DataMember(Name = "metrics", EmitDefaultValue = false)]
         public List<Metric> Metrics { get; set; }
 
