@@ -34,19 +34,33 @@ namespace Adobe.Target.Delivery.Model
     [DataContract(Name = "TelemetryEntry")]
     public partial class TelemetryEntry : IEquatable<TelemetryEntry>, IValidatableObject
     {
+
+        /// <summary>
+        /// Gets or Sets Mode
+        /// </summary>
+        [DataMember(Name = "mode", EmitDefaultValue = false)]
+        public ExecutionMode? Mode { get; set; }
         /// <summary>
         /// Initializes a new instance of the <see cref="TelemetryEntry" /> class.
         /// </summary>
         /// <param name="requestId">Request Id.</param>
         /// <param name="timestamp">Timestamp of the entry, in milliseconds elapsed since UNIX epoch..</param>
+        /// <param name="mode">mode.</param>
         /// <param name="execution">Execution time in milliseconds..</param>
+        /// <param name="parsing">Response parsing time, in milliseconds elapsed since UNIX epoch..</param>
         /// <param name="features">features.</param>
-        public TelemetryEntry(string requestId = default(string), long? timestamp = default(long?), int? execution = default(int?), TelemetryFeatures features = default(TelemetryFeatures))
+        /// <param name="request">request.</param>
+        /// <param name="telemetryServerToken">Encoded data with telemetry collected from previous request to Delivery API.</param>
+        public TelemetryEntry(string requestId = default(string), long? timestamp = default(long?), ExecutionMode? mode = default(ExecutionMode?), double? execution = default(double?), double? parsing = default(double?), TelemetryFeatures features = default(TelemetryFeatures), TelemetryRequest request = default(TelemetryRequest), string telemetryServerToken = default(string))
         {
             this.RequestId = requestId;
             this.Timestamp = timestamp;
+            this.Mode = mode;
             this.Execution = execution;
+            this.Parsing = parsing;
             this.Features = features;
+            this.Request = request;
+            this.TelemetryServerToken = telemetryServerToken;
         }
 
         /// <summary>
@@ -68,13 +82,33 @@ namespace Adobe.Target.Delivery.Model
         /// </summary>
         /// <value>Execution time in milliseconds.</value>
         [DataMember(Name = "execution", EmitDefaultValue = false)]
-        public int? Execution { get; set; }
+        public double? Execution { get; set; }
+
+        /// <summary>
+        /// Response parsing time, in milliseconds elapsed since UNIX epoch.
+        /// </summary>
+        /// <value>Response parsing time, in milliseconds elapsed since UNIX epoch.</value>
+        [DataMember(Name = "parsing", EmitDefaultValue = false)]
+        public double? Parsing { get; set; }
 
         /// <summary>
         /// Gets or Sets Features
         /// </summary>
         [DataMember(Name = "features", EmitDefaultValue = false)]
         public TelemetryFeatures Features { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Request
+        /// </summary>
+        [DataMember(Name = "request", EmitDefaultValue = false)]
+        public TelemetryRequest Request { get; set; }
+
+        /// <summary>
+        /// Encoded data with telemetry collected from previous request to Delivery API
+        /// </summary>
+        /// <value>Encoded data with telemetry collected from previous request to Delivery API</value>
+        [DataMember(Name = "telemetryServerToken", EmitDefaultValue = false)]
+        public string TelemetryServerToken { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -86,8 +120,12 @@ namespace Adobe.Target.Delivery.Model
             sb.Append("class TelemetryEntry {\n");
             sb.Append("  RequestId: ").Append(RequestId).Append("\n");
             sb.Append("  Timestamp: ").Append(Timestamp).Append("\n");
+            sb.Append("  Mode: ").Append(Mode).Append("\n");
             sb.Append("  Execution: ").Append(Execution).Append("\n");
+            sb.Append("  Parsing: ").Append(Parsing).Append("\n");
             sb.Append("  Features: ").Append(Features).Append("\n");
+            sb.Append("  Request: ").Append(Request).Append("\n");
+            sb.Append("  TelemetryServerToken: ").Append(TelemetryServerToken).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -132,13 +170,31 @@ namespace Adobe.Target.Delivery.Model
                     this.Timestamp.Equals(input.Timestamp)
                 ) && 
                 (
+                    this.Mode == input.Mode ||
+                    this.Mode.Equals(input.Mode)
+                ) && 
+                (
                     this.Execution == input.Execution ||
                     this.Execution.Equals(input.Execution)
+                ) && 
+                (
+                    this.Parsing == input.Parsing ||
+                    this.Parsing.Equals(input.Parsing)
                 ) && 
                 (
                     this.Features == input.Features ||
                     (this.Features != null &&
                     this.Features.Equals(input.Features))
+                ) && 
+                (
+                    this.Request == input.Request ||
+                    (this.Request != null &&
+                    this.Request.Equals(input.Request))
+                ) && 
+                (
+                    this.TelemetryServerToken == input.TelemetryServerToken ||
+                    (this.TelemetryServerToken != null &&
+                    this.TelemetryServerToken.Equals(input.TelemetryServerToken))
                 );
         }
 
@@ -154,9 +210,15 @@ namespace Adobe.Target.Delivery.Model
                 if (this.RequestId != null)
                     hashCode = hashCode * 59 + this.RequestId.GetHashCode();
                 hashCode = hashCode * 59 + this.Timestamp.GetHashCode();
+                hashCode = hashCode * 59 + this.Mode.GetHashCode();
                 hashCode = hashCode * 59 + this.Execution.GetHashCode();
+                hashCode = hashCode * 59 + this.Parsing.GetHashCode();
                 if (this.Features != null)
                     hashCode = hashCode * 59 + this.Features.GetHashCode();
+                if (this.Request != null)
+                    hashCode = hashCode * 59 + this.Request.GetHashCode();
+                if (this.TelemetryServerToken != null)
+                    hashCode = hashCode * 59 + this.TelemetryServerToken.GetHashCode();
                 return hashCode;
             }
         }
