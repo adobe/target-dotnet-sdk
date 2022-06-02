@@ -210,6 +210,17 @@ namespace Adobe.Target.Client.Test.Util
                     ctx.Subject.Should().Be(ctx.Expectation);
                 })
                 .When(info => info.Type == typeof(long?))
+                .Using<double?>(ctx =>
+                {
+                    if (ctx.Expectation == -999)
+                    {
+                        ctx.Subject.Should().BePositive();
+                        return;
+                    }
+
+                    ctx.Subject.Should().Be(ctx.Expectation);
+                })
+                .When(info => info.Type == typeof(double?))
                 .Using<int?>(ctx =>
                 {
                     if (ctx.Expectation == -999)
