@@ -40,11 +40,13 @@ namespace Adobe.Target.Client.Extension
             var decisioningMethod = request.DecisioningMethod != default(DecisioningMethod)
                 ? request.DecisioningMethod : config.DecisioningMethod;
 
-            return new TelemetryEntry(
-                request.DeliveryRequest.RequestId,
-                DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
-                execution,
-                new TelemetryFeatures(decisioningMethod));
+            return new TelemetryEntry
+            {
+                RequestId = request.DeliveryRequest.RequestId,
+                Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
+                Execution = execution,
+                Features = new TelemetryFeatures(decisioningMethod),
+            };
         }
     }
 }
