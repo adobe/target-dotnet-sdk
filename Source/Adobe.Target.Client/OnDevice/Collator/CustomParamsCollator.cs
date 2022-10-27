@@ -28,11 +28,47 @@ namespace Adobe.Target.Client.OnDevice.Collator
 
             foreach (var param in requestDetails.Parameters)
             {
-                result.Add(param.Key, param.Value);
-                result.Add(param.Key + LowerCasePostfix, param.Value?.ToLowerInvariant());
+                var paramStringValue = (string)param.Value;
+                result.Add(param.Key, paramStringValue);
+                result.Add(param.Key + LowerCasePostfix, paramStringValue?.ToLowerInvariant());
+            }
+
+            return this.CreateNestedParametersFromDots(result);
+        }
+
+        public Dictionary<string, object> CreateNestedParametersFromDots(Dictionary<string, object> custom)
+        {
+            var result = new Dictionary<string, object>();
+            foreach (KeyValuePair<string, object> entry in custom)
+            {
+                if (entry.Key.Contains(".")
+                    && !entry.Key.Contains("..")
+                    && entry.Key[0] != '.'
+                    && entry.Key[entry.Key.Length - 1] != '.')
+                {
+                    this.AddNestedKeyToParameters(result, entry.Key, entry.Value);
+                }
+
+                result.Add(entry.Key, entry.Value);
             }
 
             return result;
+        }
+
+        public void AddNestedKeyToParameters(Dictionary<string, object> custom, string key, object value)
+        {
+            string[] keys = key.Split('.');
+            for (int i = 0; i < keys.Length - 1; i++)
+            {
+                if (!custom.ContainsKey(keys[i]))
+                {
+                    custom.Add(keys[i], new Dictionary<string, object>());
+                }
+
+                custom = (Dictionary<string, object>)custom[keys[i]];
+            }
+
+            custom.Add(keys[keys.Length - 1], value);
         }
     }
 }
