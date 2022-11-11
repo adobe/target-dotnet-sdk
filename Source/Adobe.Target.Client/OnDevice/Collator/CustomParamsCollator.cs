@@ -28,15 +28,14 @@ namespace Adobe.Target.Client.OnDevice.Collator
 
             foreach (var param in requestDetails.Parameters)
             {
-                var paramStringValue = (string)param.Value;
-                result.Add(param.Key, paramStringValue);
-                result.Add(param.Key + LowerCasePostfix, paramStringValue?.ToLowerInvariant());
+                result.Add(param.Key, param.Value);
+                result.Add(param.Key + LowerCasePostfix, param.Value?.ToLowerInvariant());
             }
 
             return this.CreateNestedParametersFromDots(result);
         }
 
-        public Dictionary<string, object> CreateNestedParametersFromDots(Dictionary<string, object> custom)
+        private Dictionary<string, object> CreateNestedParametersFromDots(Dictionary<string, object> custom)
         {
             var result = new Dictionary<string, object>();
             foreach (KeyValuePair<string, object> entry in custom)
@@ -55,7 +54,7 @@ namespace Adobe.Target.Client.OnDevice.Collator
             return result;
         }
 
-        public void AddNestedKeyToParameters(Dictionary<string, object> custom, string key, object value)
+        private void AddNestedKeyToParameters(Dictionary<string, object> custom, string key, object value)
         {
             string[] keys = key.Split('.');
             for (int i = 0; i < keys.Length - 1; i++)
