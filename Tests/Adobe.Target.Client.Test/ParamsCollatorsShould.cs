@@ -17,6 +17,7 @@ namespace Adobe.Target.Client.Test
     using Moq;
     using OnDevice.Collator;
     using Client.Util;
+    using Newtonsoft.Json;
     using Xunit;
 
     [Collection("Datetime-mocked Collection")]
@@ -95,13 +96,36 @@ namespace Adobe.Target.Client.Test
         [Fact]
         public void CollateParams_ReturnCustomParams()
         {
-            var paramDict = new Dictionary<string, string> {{"Param1", "Value1"}, {"Param2", "Value2"}};
+            var paramDict = new Dictionary<string, string>
+            {
+                {"foo", "bar"},
+                {"BAZ", "BUZ"},
+                {"dot.notation", "isConfusing"},
+                {"first.second.third", "value"},
+                {"first.second.wonky", "DONKEY"},
+                {"this..should..be", "ignored"},
+                {".something", "aaa"},
+                {"=cranky .chicken.", "bbb"}
+            };
             var details = new RequestDetails(parameters: paramDict);
             var result = new CustomParamsCollator().CollateParams(requestDetails: details);
 
-            Assert.Equal("Value1", result["Param1"]);
-            Assert.Equal("Value2", result["Param2"]);
+            var dot = (Dictionary<String, Object>) result["dot"];
+            Assert.Equal("isConfusing", dot["notation"]);
+            Assert.Equal("isconfusing", dot["notation_lc"]);
+
+            var first = (Dictionary<String, Object>) result["first"];
+            var second = (Dictionary<String, Object>) first["second"];
+
+            Assert.Equal("value", second["third"]);
+            Assert.Equal("value", second["third_lc"]);
+            Assert.Equal("DONKEY", second["wonky"]);
+            Assert.Equal("donkey", second["wonky_lc"]);
+
+            Assert.Equal("aaa", result[".something"]);
+            Assert.Equal("bbb", result["=cranky .chicken."]);
         }
+
 
         [Fact]
         public void CollateParams_ReturnTimeParams()
