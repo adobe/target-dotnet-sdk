@@ -13,7 +13,7 @@
 
   <ItemGroup Label="Project References">
     <PackageReference Include="Adobe.ExperienceCloud.Ecid" Version="1.0.0" />
-    <ProjectReference Include="../Adobe.Target.Delivery/Adobe.Target.Delivery.csproj" />
+    <PackageReference Include="Adobe.Target.Delivery" Version="1.1.3" />
     <PackageReference Include="JsonLogic.Net" Version="1.1.11" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
