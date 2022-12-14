@@ -12,18 +12,18 @@
   </PropertyGroup>
 
   <ItemGroup Label="Platform references for .NET 5 / Standard 2.0" Condition = "'$(TargetFramework)' == 'net5.0' OR '$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.*" />
   </ItemGroup>
 
   <ItemGroup Label="Platform references for .NET 6" Condition = "'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.*" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.*" />
   </ItemGroup>
 
   <ItemGroup Label="Platform references for .NET 7" Condition = "'$(TargetFramework)' == 'net7.0'">
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.*" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.*" />
   </ItemGroup>
 
   <ItemGroup Label="Project References">
