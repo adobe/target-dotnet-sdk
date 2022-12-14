@@ -149,7 +149,7 @@ namespace Adobe.Target.Client.OnDevice
                 .OrResult<IRestResponse>(r => HttpStatusCodesWorthRetrying.Contains(r.StatusCode))
                 .RetryAsync(MaxRetries, onRetry: (exception, retryCount, context) =>
                 {
-                    this.logger.LogError(exception.Exception, Messages.RuleLoadingError, retryCount);
+                    this.logger?.LogError(exception.Exception, Messages.RuleLoadingError, retryCount);
                 })
                 .ExecuteAndCaptureAsync(() => client.ExecuteAsync(this.GetRequest()))
                 .ConfigureAwait(false);
