@@ -112,6 +112,7 @@ namespace Adobe.Target.Client.Service
         {
             if (response == null)
             {
+                this.logger?.LogWarning("Null response for requestId: {requestId}, sessionId: {sessionId}", request.DeliveryRequest.RequestId, request.SessionId);
                 return new TargetDeliveryResponse(request, null, HttpStatusCode.ServiceUnavailable);
             }
 

@@ -87,6 +87,7 @@ namespace Adobe.Target.Client.Service
             var ruleSet = this.ruleLoader.GetLatestRules();
             if (ruleSet == null)
             {
+                TargetClient.Logger?.LogWarning("Decisioning rules not loaded, returning empty response");
                 var deliveryResponse = new DeliveryResponse(
                     (int)HttpStatusCode.ServiceUnavailable,
                     deliveryRequest.DeliveryRequest.RequestId,
@@ -203,10 +204,15 @@ namespace Adobe.Target.Client.Service
 
         private void SendNotifications(TargetDeliveryRequest request, TargetDeliveryResponse targetResponse, List<Notification> notifications, TelemetryEntry telemetryEntry)
         {
+            TargetClient.Logger?.LogDebug("Sending notifications for requestId: {requestId} sessionId: {sessionId}", request.DeliveryRequest.RequestId, request.SessionId);
+
             if (notifications.Count == 0 && telemetryEntry == null)
             {
+                TargetClient.Logger?.LogDebug("No notifications to send");
                 return;
             }
+
+            TargetClient.Logger?.LogDebug("Notifications: {notifications}", string.Join(", ", notifications));
 
             var deliveryRequest = request.DeliveryRequest;
             var locationHint = request.LocationHint ?? this.clusterLocator.GetLocationHint();
