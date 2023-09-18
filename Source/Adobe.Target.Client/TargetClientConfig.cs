@@ -13,6 +13,7 @@ namespace Adobe.Target.Client
     using System;
     using System.Net;
     using System.Threading.Tasks;
+    using Adobe.Target.Delivery.Client;
     using Adobe.Target.Delivery.Model;
     using Microsoft.Extensions.Logging;
     using Polly;
@@ -53,6 +54,7 @@ namespace Adobe.Target.Client
             this.OnDeviceDecisioningReady = builder.OnDeviceDecisioningReady;
             this.ArtifactDownloadSucceeded = builder.ArtifactDownloadSucceeded;
             this.ArtifactDownloadFailed = builder.ArtifactDownloadFailed;
+            this.ExceptionFactory = builder.ExceptionFactory;
             this.OnDeviceEnvironment = builder.OnDeviceEnvironment;
             this.OnDeviceConfigHostname = builder.OnDeviceConfigHostname;
             this.OnDeviceDecisioningPollingIntSecs = builder.OnDeviceDecisioningPollingIntSecs;
@@ -139,6 +141,11 @@ namespace Adobe.Target.Client
         /// Artifact Download Failed Delegate
         /// </summary>
         public Action<Exception> ArtifactDownloadFailed { get; }
+
+        /// <summary>
+        /// Exception Factory delegate
+        /// </summary>
+        public ExceptionFactory ExceptionFactory { get; }
 
         /// <summary>
         /// OnDevice Environment
@@ -279,6 +286,11 @@ namespace Adobe.Target.Client
             /// Artifact Download Failed delegate
             /// </summary>
             internal Action<Exception> ArtifactDownloadFailed { get; private set; }
+
+            /// <summary>
+            /// Exception Factory delegate
+            /// </summary>
+            internal ExceptionFactory ExceptionFactory { get; private set; }
 
             /// <summary>
             /// OnDevice Environment
@@ -449,6 +461,19 @@ namespace Adobe.Target.Client
             public Builder SetArtifactDownloadFailed(Action<Exception> @delegate)
             {
                 this.ArtifactDownloadFailed = @delegate;
+                return this;
+            }
+
+            /// <summary>
+            /// Sets Exception Factory delegate<br/>
+            /// Note: this will receive all raw Delivery API responses, <see cref="IApiResponse"/>
+            /// Make sure to return <c>null</c> after handling any exceptions if you don't want these to be re-thrown
+            /// </summary>
+            /// <param name="factory"><see cref="ExceptionFactory"/> delegate</param>
+            /// <returns><see cref="Builder"/> instance</returns>
+            public Builder SetExceptionFactory(ExceptionFactory factory)
+            {
+                this.ExceptionFactory = factory;
                 return this;
             }
 

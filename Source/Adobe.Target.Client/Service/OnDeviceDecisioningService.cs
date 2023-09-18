@@ -144,6 +144,8 @@ namespace Adobe.Target.Client.Service
             var elapsedMilliseconds = (int)stopwatch.ElapsedMilliseconds;
             var telemetry = deliveryRequest.GetTelemetryEntry(this.clientConfig, elapsedMilliseconds);
 
+            CleanupGeoContext(deliveryRequest);
+
             this.SendNotifications(deliveryRequest, targetResponse, notifications, telemetry);
 
             TargetClient.Logger?.LogDebug(targetResponse.ToString());
@@ -158,6 +160,30 @@ namespace Adobe.Target.Client.Service
         internal OnDeviceDecisioningEvaluation EvaluateLocalExecution(TargetDeliveryRequest request)
         {
             return this.decisioningEvaluator.EvaluateLocalExecution(request);
+        }
+
+        private static void CleanupGeoContext(TargetDeliveryRequest deliveryRequest)
+        {
+            var geo = deliveryRequest.DeliveryRequest.Context.Geo;
+            if (geo == null)
+            {
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(geo.City))
+            {
+                geo.City = null;
+            }
+
+            if (string.IsNullOrWhiteSpace(geo.StateCode))
+            {
+                geo.StateCode = null;
+            }
+
+            if (string.IsNullOrWhiteSpace(geo.CountryCode))
+            {
+                geo.CountryCode = null;
+            }
         }
 
         private static string RemoveLocationHint(string tntId)
